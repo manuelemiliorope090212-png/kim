@@ -346,30 +346,30 @@ export default function Home() {
       {/* Floating Coffee Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Coffee PNG Images with DVD-like bouncing animation - distributed across screen */}
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-1 opacity-60" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-2 opacity-50" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-14 h-14 bouncing-coffee-3 opacity-70" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-4 opacity-55" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-5 opacity-65" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-6 opacity-45" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-7 opacity-60" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-8 opacity-50" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-9 opacity-70" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-15 h-15 bouncing-coffee-10 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-1 opacity-60" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-2 opacity-50" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-14 h-14 bouncing-coffee-3 opacity-70" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-4 opacity-55" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-5 opacity-65" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-6 opacity-45" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-7 opacity-60" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-8 opacity-50" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-9 opacity-70" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-15 h-15 bouncing-coffee-10 opacity-40" />
 
         {/* Extra coffee images for mobile - distributed left and right */}
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-11 opacity-55 md:hidden" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-12 opacity-65 md:hidden" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-13 opacity-45 md:hidden" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-14 opacity-60 md:hidden" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-15 opacity-50 md:hidden" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-11 opacity-55 md:hidden" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-12 opacity-65 md:hidden" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-13 opacity-45 md:hidden" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-14 opacity-60 md:hidden" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-15 opacity-50 md:hidden" />
 
         {/* Many more coffee images - distributed across entire screen */}
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-16 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-17 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-18 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-19 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-20 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-16 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-17 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-18 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-19 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-20 opacity-40" />
         <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-21 opacity-45" />
         <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-22 opacity-30" />
         <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-23 opacity-35" />
@@ -412,96 +412,96 @@ export default function Home() {
         <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-60 opacity-35" />
 
         {/* Even more coffee images */}
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-61 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-62 opacity-15" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-63 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-64 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-65 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-66 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-67 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-68 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-69 opacity-15" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-70 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-71 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-72 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-73 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-74 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-75 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-76 opacity-15" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-77 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-78 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-79 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-80 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-81 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-82 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-83 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-84 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-85 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-86 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-87 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-88 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-89 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-90 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-91 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-92 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-93 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-94 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-95 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-96 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-97 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-98 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-99 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-100 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-101 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-102 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-103 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-104 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-105 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-106 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-107 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-108 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-109 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-110 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-111 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-112 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-113 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-114 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-115 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-116 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-117 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-118 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-119 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-120 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-121 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-122 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-123 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-124 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-125 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-126 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-127 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-128 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-129 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-130 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-131 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-132 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-133 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-134 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-135 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-136 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-137 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-138 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-139 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-140 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-141 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-142 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-143 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-144 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-145 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-146 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-147 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-148 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-149 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-150 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-61 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-62 opacity-15" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-63 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-64 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-65 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-66 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-67 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-68 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-69 opacity-15" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-70 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-71 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-72 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-73 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-74 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-75 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-76 opacity-15" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-77 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-78 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-79 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-80 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-81 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-82 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-83 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-84 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-85 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-86 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-87 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-88 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-89 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-90 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-91 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-92 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-93 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-94 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-95 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-96 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-97 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-98 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-99 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-100 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-101 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-102 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-103 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-104 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-105 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-106 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-107 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-108 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-109 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-110 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-111 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-112 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-113 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-114 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-115 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-116 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-117 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-118 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-119 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-120 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-121 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-122 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-123 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-124 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-125 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-126 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-127 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-128 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-129 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-130 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-131 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-132 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-133 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-134 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-135 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-136 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-137 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-138 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-139 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-140 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-141 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-142 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-143 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-144 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-145 opacity-40" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-146 opacity-30" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-147 opacity-35" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-148 opacity-20" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-149 opacity-25" />
+        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-150 opacity-40" />
 
         {/* Additional emoji elements */}
         <span className="absolute top-16 left-16 text-4xl floating-heart">🍪</span>
