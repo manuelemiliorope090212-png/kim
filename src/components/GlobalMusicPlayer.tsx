@@ -63,7 +63,7 @@ export default function GlobalMusicPlayer() {
       {musicFiles.length > 0 && (
         <audio
           ref={audioRef}
-          className="block" // Visible on all devices
+          className="hidden md:block" // Hidden on mobile, visible on desktop
           src={musicFiles[currentSongIndex]?.url}
           preload="auto"
           controls // Show controls always
