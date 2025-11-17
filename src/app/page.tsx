@@ -68,6 +68,9 @@ export default function Home() {
   useEffect(() => {
     if (musicPlaylist.length === 0) return;
 
+    // Detectar si es dispositivo móvil
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     const syncMusic = () => {
       // Timestamp base: medianoche del día actual (en zona horaria del usuario)
       const now = new Date();
@@ -103,8 +106,10 @@ export default function Home() {
     // Sincronizar inmediatamente
     syncMusic();
 
-    // Actualizar cada 30 segundos para correcciones menores (menos interrupciones)
-    const interval = setInterval(syncMusic, 30000);
+    // En móvil: sincronizar cada 30 segundos
+    // En PC: sincronizar cada 5 minutos (300 segundos) para evitar interrupciones
+    const syncInterval = isMobile ? 30000 : 300000;
+    const interval = setInterval(syncMusic, syncInterval);
 
     return () => clearInterval(interval);
   }, [musicPlaylist]);
@@ -388,8 +393,13 @@ export default function Home() {
           }}
           onTimeUpdate={(e) => {
             const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 30) {
-              // Re-sincronizar solo si hay drift muy grande (>30 segundos) para evitar reinicios constantes
+            // Detectar si es dispositivo móvil para ajustar sincronización
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const driftThreshold = isMobile ? 30 : 300; // 30s para móvil, 5 minutos para PC
+
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > driftThreshold) {
+              // En PC: drift muy grande necesario para evitar interrupciones
+              // En móvil: sincronización más frecuente pero no tan agresiva
               audio.currentTime = currentTime;
             }
           }}
