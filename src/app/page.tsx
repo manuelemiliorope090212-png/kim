@@ -344,18 +344,25 @@ export default function Home() {
   return (
     <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
       {/* Floating Coffee Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Coffee PNG Images */}
-        <img src="/coffee.png" alt="coffee" className="absolute top-10 left-10 w-12 h-12 floating-coffee-1 opacity-60" />
-        <img src="/coffee.png" alt="coffee" className="absolute top-20 right-20 w-10 h-10 floating-coffee-2 opacity-50" />
-        <img src="/coffee.png" alt="coffee" className="absolute bottom-40 left-20 w-14 h-14 floating-coffee-3 opacity-70" />
-        <img src="/coffee.png" alt="coffee" className="absolute bottom-20 right-10 w-11 h-11 floating-coffee-4 opacity-55" />
-        <img src="/coffee.png" alt="coffee" className="absolute top-1/2 left-5 w-9 h-9 floating-coffee-5 opacity-65" />
-        <img src="/coffee.png" alt="coffee" className="absolute top-1/3 right-5 w-13 h-13 floating-coffee-6 opacity-45" />
-        <img src="/coffee.png" alt="coffee" className="absolute bottom-1/3 left-1/3 w-10 h-10 floating-coffee-7 opacity-60" />
-        <img src="/coffee.png" alt="coffee" className="absolute top-3/4 right-1/4 w-12 h-12 floating-coffee-8 opacity-50" />
-        <img src="/coffee.png" alt="coffee" className="absolute top-1/4 left-1/2 w-8 h-8 floating-coffee-9 opacity-70" />
-        <img src="/coffee.png" alt="coffee" className="absolute bottom-1/4 right-1/3 w-15 h-15 floating-coffee-10 opacity-40" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Coffee PNG Images with DVD-like bouncing animation */}
+        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-1 opacity-60" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-2 opacity-50" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-14 h-14 bouncing-coffee-3 opacity-70" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-4 opacity-55" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-5 opacity-65" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-6 opacity-45" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-7 opacity-60" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-8 opacity-50" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-9 opacity-70" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-15 h-15 bouncing-coffee-10 opacity-40" />
+
+        {/* Extra coffee images for mobile */}
+        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-11 opacity-55 md:hidden" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-12 opacity-65 md:hidden" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-13 opacity-45 md:hidden" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-14 opacity-60 md:hidden" />
+        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-15 opacity-50 md:hidden" />
 
         {/* Additional emoji elements */}
         <span className="absolute top-16 left-16 text-4xl floating-heart">🍪</span>
