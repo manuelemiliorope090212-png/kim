@@ -345,7 +345,7 @@ export default function Home() {
     <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
       {/* Floating Coffee Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Coffee PNG Images with DVD-like bouncing animation */}
+        {/* Coffee PNG Images with DVD-like bouncing animation - distributed across screen */}
         <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-1 opacity-60" />
         <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-2 opacity-50" />
         <img src="/coffee.png" alt="coffee" className="absolute w-14 h-14 bouncing-coffee-3 opacity-70" />
@@ -357,14 +357,14 @@ export default function Home() {
         <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-9 opacity-70" />
         <img src="/coffee.png" alt="coffee" className="absolute w-15 h-15 bouncing-coffee-10 opacity-40" />
 
-        {/* Extra coffee images for mobile */}
+        {/* Extra coffee images for mobile - distributed left and right */}
         <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-11 opacity-55 md:hidden" />
         <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-12 opacity-65 md:hidden" />
         <img src="/coffee.png" alt="coffee" className="absolute w-13 h-13 bouncing-coffee-13 opacity-45 md:hidden" />
         <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-14 opacity-60 md:hidden" />
         <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-15 opacity-50 md:hidden" />
 
-        {/* Many more coffee images */}
+        {/* Many more coffee images - distributed across entire screen */}
         <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-16 opacity-30" />
         <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-17 opacity-25" />
         <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-18 opacity-35" />
