@@ -85,8 +85,8 @@ export default function Manuel() {
     // Sincronizar inmediatamente
     syncMusic();
 
-    // Actualizar cada segundo para mantener sincronización
-    const interval = setInterval(syncMusic, 1000);
+    // Actualizar cada 30 segundos para correcciones menores (menos interrupciones)
+    const interval = setInterval(syncMusic, 30000);
 
     return () => clearInterval(interval);
   }, [musicFiles]);
@@ -281,8 +281,8 @@ export default function Manuel() {
           }}
           onTimeUpdate={(e) => {
             const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 1) {
-              // Re-sincronizar si hay drift significativo
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 5) {
+              // Re-sincronizar solo si hay drift muy grande (>5 segundos)
               audio.currentTime = currentTime;
             }
           }}
@@ -489,71 +489,97 @@ export default function Manuel() {
                     </div>
                   </div>
 
-                  {/* Selector Manual de Canciones */}
+                  {/* Selector Manual de Canciones (estilo Spotify) */}
                   <div className="aesthetic-card p-6">
                     <h3 className="text-lg font-bold text-[var(--cream)] mb-3">
-                      🎛️ Reproducción Manual
+                      🎵 Control de Música (Estilo Spotify)
                     </h3>
                     <p className="text-[var(--cream)] opacity-75 text-sm mb-4">
-                      Selecciona una canción específica para reproducir
+                      Haz clic en cualquier canción para reproducirla desde el segundo 0
                     </p>
+
+                    {/* Control de tiempo personalizado */}
+                    <div className="mb-4 p-3 bg-[rgba(254,247,237,0.1)] rounded-lg">
+                      <label className="block text-[var(--cream)] font-medium mb-2">
+                        ⏰ Segundo personalizado (opcional):
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        max="180"
+                        placeholder="0"
+                        className="w-full p-2 border-2 border-[var(--cream)] border-opacity-30 rounded-lg bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70 focus:border-[var(--cream)] focus:outline-none"
+                        onChange={(e) => {
+                          const customTime = parseInt(e.target.value) || 0;
+                          if (audioRef.current && isPlaying) {
+                            audioRef.current.currentTime = customTime;
+                          }
+                        }}
+                      />
+                      <p className="text-xs text-[var(--cream)] opacity-60 mt-1">
+                        Cambia el segundo mientras la canción está reproduciéndose
+                      </p>
+                    </div>
+
                     <div className="space-y-2">
                       {musicFiles.map((music, index) => (
-                        <div key={music._id} className="flex items-center justify-between p-3 bg-[rgba(254,247,237,0.1)] rounded-lg">
-                          <div className="flex-1">
-                            <h4 className="text-[var(--cream)] font-medium">
-                              {music.name}
-                            </h4>
-                            <p className="text-[var(--cream)] opacity-60 text-sm">
-                              #{music.order}
-                            </p>
-                          </div>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => {
-                                // Reproducir canción específica
-                                if (audioRef.current) {
-                                  audioRef.current.src = music.url;
-                                  audioRef.current.currentTime = 0;
-                                  audioRef.current.play().then(() => {
-                                    setIsPlaying(true);
-                                    setCurrentSongIndex(index);
-                                  }).catch(err => console.error('Error reproduciendo:', err));
-                                }
-                              }}
-                              className="px-3 py-1 bg-green-600 text-white rounded text-sm font-semibold hover:bg-green-700 transition-colors"
-                            >
-                              ▶️ Play
-                            </button>
-                            <button
-                              onClick={() => {
-                                // Pausar
-                                if (audioRef.current) {
-                                  audioRef.current.pause();
-                                  setIsPlaying(false);
-                                }
-                              }}
-                              className="px-3 py-1 bg-yellow-600 text-white rounded text-sm font-semibold hover:bg-yellow-700 transition-colors"
-                            >
-                              ⏸️ Pause
-                            </button>
-                            <button
-                              onClick={() => {
-                                // Detener y volver a sincronización
-                                if (audioRef.current) {
-                                  audioRef.current.pause();
-                                  setIsPlaying(false);
-                                  // Volver a la canción sincronizada actual
-                                  setTimeout(() => startMusic(), 500);
-                                }
-                              }}
-                              className="px-3 py-1 bg-blue-600 text-white rounded text-sm font-semibold hover:bg-blue-700 transition-colors"
-                            >
-                              🔄 Sync
-                            </button>
+                        <div
+                          key={music._id}
+                          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                            currentSongIndex === index && isPlaying
+                              ? 'bg-[var(--coffee-light)] border-2 border-[var(--cream)]'
+                              : 'bg-[rgba(254,247,237,0.1)] hover:bg-[rgba(254,247,237,0.2)]'
+                          }`}
+                          onClick={() => {
+                            // Detener canción anterior si está reproduciendo
+                            if (audioRef.current) {
+                              audioRef.current.pause();
+                            }
+
+                            // Cambiar a la nueva canción y reproducir desde el segundo 0
+                            if (audioRef.current) {
+                              audioRef.current.src = music.url;
+                              audioRef.current.currentTime = 0;
+                              audioRef.current.play().then(() => {
+                                setIsPlaying(true);
+                                setCurrentSongIndex(index);
+                              }).catch(err => console.error('Error reproduciendo:', err));
+                            }
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h4 className="text-[var(--cream)] font-medium flex items-center gap-2">
+                                {currentSongIndex === index && isPlaying ? '🎵' : '🎶'} {music.name}
+                              </h4>
+                              <p className="text-[var(--cream)] opacity-60 text-sm">
+                                #{music.order} • Haz clic para reproducir desde el inicio
+                              </p>
+                            </div>
+                            <div className="text-[var(--cream)] opacity-75">
+                              {currentSongIndex === index && isPlaying ? '🔊 Reproduciendo' : '🔇 Lista'}
+                            </div>
                           </div>
                         </div>
                       ))}
+                    </div>
+
+                    {/* Botón para volver a sincronización */}
+                    <div className="mt-4 pt-4 border-t border-[var(--cream)] border-opacity-20">
+                      <button
+                        onClick={() => {
+                          // Detener reproducción manual y volver a sincronización
+                          if (audioRef.current) {
+                            audioRef.current.pause();
+                            setIsPlaying(false);
+                            // Volver a la canción sincronizada actual después de un breve delay
+                            setTimeout(() => startMusic(), 500);
+                          }
+                        }}
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                      >
+                        🔄 Volver a Reproducción Sincronizada
+                      </button>
                     </div>
                   </div>
                 </div>

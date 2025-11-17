@@ -103,8 +103,8 @@ export default function Home() {
     // Sincronizar inmediatamente
     syncMusic();
 
-    // Actualizar cada segundo para mantener sincronización
-    const interval = setInterval(syncMusic, 1000);
+    // Actualizar cada 30 segundos para correcciones menores (menos interrupciones)
+    const interval = setInterval(syncMusic, 30000);
 
     return () => clearInterval(interval);
   }, [musicPlaylist]);
@@ -176,7 +176,7 @@ export default function Home() {
   }, [currentSongIndex, isPlaying, musicPlaylist.length]);
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
-  const getRandomSize = () => Math.random() > 0.5 ? 'w-full' : 'w-3/4 mx-auto';
+  const getRandomSize = () => 'w-full'; // Tamaño consistente para mejor concentración
 
   const renderContent = (item: ContentItem, index: number) => {
     const isManuelNote = item.source === 'manuel';
@@ -388,8 +388,8 @@ export default function Home() {
           }}
           onTimeUpdate={(e) => {
             const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 1) {
-              // Re-sincronizar si hay drift significativo
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 5) {
+              // Re-sincronizar solo si hay drift muy grande (>5 segundos)
               audio.currentTime = currentTime;
             }
           }}
