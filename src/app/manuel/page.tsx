@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useMusic } from '../../components/MusicContext';
 
 const MANUEL_PASSWORD = 'manuel123'; // Change this to a secure password
 
@@ -29,15 +30,85 @@ export default function Manuel() {
   const [noteContent, setNoteContent] = useState('');
   const [noteImage, setNoteImage] = useState<File | null>(null);
 
-  // Music state
-  const [musicFiles, setMusicFiles] = useState<MusicFile[]>([]);
-  const [selectedMusic, setSelectedMusic] = useState<File | null>(null);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  // Music state from context
+  const {
+    musicFiles,
+    currentSongIndex,
+    currentTime,
+    isPlaying,
+    setMusicFiles,
+    setCurrentSongIndex,
+    setCurrentTime,
+    setIsPlaying,
+    playSong,
+    seekTo,
+    audioRef
+  } = useMusic();
 
+  const [selectedMusic, setSelectedMusic] = useState<File | null>(null);
   const [message, setMessage] = useState('');
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === dropIndex) return;
+
+    const newMusicFiles = [...musicFiles];
+    const draggedItem = newMusicFiles[draggedIndex];
+    newMusicFiles.splice(draggedIndex, 1);
+    newMusicFiles.splice(dropIndex, 0, draggedItem);
+
+    // Update order numbers
+    const updatedFiles = newMusicFiles.map((file, index) => ({
+      ...file,
+      order: index + 1
+    }));
+
+    setMusicFiles(updatedFiles);
+
+    // Update current song index if it was affected
+    if (currentSongIndex === draggedIndex) {
+      setCurrentSongIndex(dropIndex);
+    } else if (currentSongIndex > draggedIndex && currentSongIndex <= dropIndex) {
+      setCurrentSongIndex(currentSongIndex - 1);
+    } else if (currentSongIndex < draggedIndex && currentSongIndex >= dropIndex) {
+      setCurrentSongIndex(currentSongIndex + 1);
+    }
+
+    // Update database
+    try {
+      for (const file of updatedFiles) {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/${file._id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order: file.order }),
+        });
+      }
+      setMessage('Orden de música actualizado!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      console.error('Error updating music order:', error);
+      setMessage('Error actualizando orden');
+      // Revert changes on error
+      fetchMusicFiles();
+    }
+
+    setDraggedIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+  };
 
   useEffect(() => {
     if (loggedIn) {
@@ -46,46 +117,12 @@ export default function Manuel() {
     }
   }, [loggedIn]);
 
-  // Sincronización de música con el servidor
-  useEffect(() => {
-    if (musicFiles.length === 0) return;
-
-    const syncWithServer = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.currentSong) {
-            // Encontrar el índice de la canción actual en la playlist
-            const songIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
-            if (songIndex !== -1) {
-              setCurrentSongIndex(songIndex);
-              setCurrentTime(data.currentTime);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error syncing with server:', error);
-      }
-    };
-
-    // Sincronizar inmediatamente al cargar
-    syncWithServer();
-
-    // Sincronizar cada 30 segundos para mantener consistencia
-    const interval = setInterval(syncWithServer, 30000);
-
-    return () => clearInterval(interval);
-  }, [musicFiles]);
-
   // Función para iniciar música
   const startMusic = async () => {
-    if (!audioRef.current || musicFiles.length === 0) return;
+    if (musicFiles.length === 0) return;
 
     try {
-      audioRef.current.currentTime = currentTime;
-      await audioRef.current.play();
-      setIsPlaying(true);
+      playSong(currentSongIndex);
     } catch (error) {
       console.error('Error al reproducir música:', error);
     }
@@ -241,62 +278,6 @@ export default function Manuel() {
         <span className="absolute top-1/3 right-5 text-xl floating-cat">🎵</span>
       </div>
 
-      {/* Música sincronizada (siempre reproduciendo) */}
-      {musicFiles.length > 0 && (
-        <audio
-          ref={audioRef}
-          className="hidden"
-          src={musicFiles[currentSongIndex]?.url}
-          preload="auto"
-          onLoadedData={(e) => {
-            const audio = e.target as HTMLAudioElement;
-            if (isPlaying) {
-              // Solo ajustar currentTime si no excede la duración de la canción
-              if (currentTime < audio.duration) {
-                audio.currentTime = currentTime;
-              } else {
-                audio.currentTime = 0;
-              }
-            }
-          }}
-          onCanPlayThrough={() => {
-            // Cuando está lista, ajustar el tiempo actual si es razonable
-            if (audioRef.current) {
-              const audio = audioRef.current;
-              // Solo ajustar currentTime si no excede la duración de la canción
-              if (currentTime < audio.duration) {
-                audio.currentTime = currentTime;
-              } else {
-                // Si currentTime excede la duración, empezar desde el principio
-                audio.currentTime = 0;
-              }
-              // Solo reproducir si está configurado para reproducir
-              if (isPlaying) {
-                audio.play().catch(err => console.error('Error reproduciendo:', err));
-              }
-            }
-          }}
-          onEnded={() => {
-            // Cambiar inmediatamente a la siguiente canción para reproducción continua
-            const nextIndex = (currentSongIndex + 1) % musicFiles.length;
-            setCurrentSongIndex(nextIndex);
-          }}
-          onTimeUpdate={(e) => {
-            // Solo corregir si hay un drift muy grande (más de 60 segundos)
-            // Esto permite que la música fluya naturalmente pero se corrija si hay problemas grandes
-            const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 60) {
-              audio.currentTime = currentTime;
-            }
-          }}
-          onError={(e) => {
-            console.error('Error cargando audio:', e);
-            // Intentar pasar a la siguiente canción si hay error
-            const nextIndex = (currentSongIndex + 1) % musicFiles.length;
-            setCurrentSongIndex(nextIndex);
-          }}
-        />
-      )}
 
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="text-center py-8 md:py-12 mb-8">
@@ -489,6 +470,37 @@ export default function Manuel() {
                           </button>
                         )}
                       </div>
+ 
+                      {/* Progress Bar */}
+                      <div className="mt-4">
+                        <div className="flex items-center gap-2 text-[var(--cream)] text-sm">
+                          <span>0:00</span>
+                          <input
+                            type="range"
+                            min="0"
+                            max={audioRef.current?.duration || 180}
+                            value={currentTime}
+                            onChange={(e) => {
+                              const newTime = parseFloat(e.target.value);
+                              seekTo(newTime);
+                              // Update server with new time
+                              fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  currentSongId: musicFiles[currentSongIndex]?._id,
+                                  currentTime: newTime
+                                })
+                              }).catch(err => console.error('Error updating server time:', err));
+                            }}
+                            className="flex-1 h-2 bg-[var(--cream)] bg-opacity-30 rounded-lg appearance-none cursor-pointer slider"
+                          />
+                          <span>{Math.floor((audioRef.current?.duration || 180) / 60)}:{String(Math.floor((audioRef.current?.duration || 180) % 60)).padStart(2, '0')}</span>
+                        </div>
+                        <div className="text-center text-[var(--cream)] text-xs mt-1">
+                          {Math.floor(currentTime / 60)}:{String(Math.floor(currentTime % 60)).padStart(2, '0')} / {Math.floor((audioRef.current?.duration || 180) / 60)}:{String(Math.floor((audioRef.current?.duration || 180) % 60)).padStart(2, '0')}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -528,26 +540,18 @@ export default function Manuel() {
                       {musicFiles.map((music, index) => (
                         <div
                           key={music._id}
+                          draggable
                           className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
                             currentSongIndex === index && isPlaying
-                              ? 'bg-[var(--coffee-light)] border-2 border-[var(--cream)]'
+                              ? 'bg-white border-2 border-[var(--coffee-medium)] text-black'
                               : 'bg-[rgba(254,247,237,0.1)] hover:bg-[rgba(254,247,237,0.2)]'
-                          }`}
+                          } ${draggedIndex === index ? 'opacity-50' : ''}`}
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={handleDragOver}
+                          onDrop={(e) => handleDrop(e, index)}
+                          onDragEnd={handleDragEnd}
                           onClick={() => {
-                            // Detener canción anterior si está reproduciendo
-                            if (audioRef.current) {
-                              audioRef.current.pause();
-                            }
-
-                            // Cambiar a la nueva canción y reproducir desde el segundo 0
-                            if (audioRef.current) {
-                              audioRef.current.src = music.url;
-                              audioRef.current.currentTime = 0;
-                              audioRef.current.play().then(() => {
-                                setIsPlaying(true);
-                                setCurrentSongIndex(index);
-                              }).catch(err => console.error('Error reproduciendo:', err));
-                            }
+                            playSong(index);
                           }}
                         >
                           <div className="flex items-center justify-between">
@@ -576,7 +580,20 @@ export default function Manuel() {
                             audioRef.current.pause();
                             setIsPlaying(false);
                             // Volver a la canción sincronizada actual después de un breve delay
-                            setTimeout(() => startMusic(), 500);
+                            setTimeout(() => {
+                              // Sync with server to get current state
+                              fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`)
+                                .then(res => res.json())
+                                .then(data => {
+                                  if (data.currentSong) {
+                                    const songIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
+                                    if (songIndex !== -1) {
+                                      playSong(songIndex);
+                                      seekTo(data.currentTime);
+                                    }
+                                  }
+                                });
+                            }, 500);
                           }
                         }}
                         className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"

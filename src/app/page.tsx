@@ -255,7 +255,7 @@ export default function Home() {
         <header className="relative text-center py-12 md:py-16 px-4 mt-8">
           <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
-              ☕ Para Kimberly ☕
+              ☕ Para Kim ☕
             </h1>
 
             <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">

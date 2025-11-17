@@ -164,6 +164,33 @@ app.post('/api/manuel/music', upload.single('music'), async (req, res) => {
   }
 });
 
+app.put('/api/manuel/music/:id', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const { order } = req.body;
+    await Music.findByIdAndUpdate(req.params.id, { order });
+    res.status(200).json({ message: 'Music updated' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update music' });
+  }
+});
+
+// Update current music state (for manual seeking)
+app.post('/api/manuel/music/current', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const { currentSongId, currentTime } = req.body;
+
+    // For now, we'll just acknowledge the update
+    // In a more complex system, you might store this in a global state
+    // But since we're using time-based calculation, manual seeks will override the automatic sync
+
+    res.status(200).json({ message: 'Current music state updated' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update current music state' });
+  }
+});
+
 app.delete('/api/manuel/music/:id', async (req, res) => {
   try {
     await connectToDatabase();
