@@ -32,15 +32,17 @@ export default function Home() {
   const getRandomSize = () => Math.random() > 0.5 ? 'w-full' : 'w-3/4 mx-auto';
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fef7ed] via-[#fce7f3] to-[#fef7ed] text-[var(--foreground)] relative overflow-hidden">
-      {/* Floating Elements */}
+    <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
+      {/* Floating Coffee Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        <span className="absolute top-10 left-10 text-4xl floating-heart">💖</span>
-        <span className="absolute top-20 right-20 text-3xl floating-cat">🐱</span>
-        <span className="absolute bottom-40 left-20 text-2xl floating-heart">☕</span>
-        <span className="absolute bottom-20 right-10 text-4xl floating-cat">💕</span>
+        <span className="absolute top-10 left-10 text-4xl floating-heart">☕</span>
+        <span className="absolute top-20 right-20 text-3xl floating-cat">🫖</span>
+        <span className="absolute bottom-40 left-20 text-2xl floating-heart">🍪</span>
+        <span className="absolute bottom-20 right-10 text-4xl floating-cat">🥐</span>
         <span className="absolute top-1/2 left-5 text-3xl floating-heart">🌸</span>
-        <span className="absolute top-1/3 right-5 text-2xl floating-cat">🍪</span>
+        <span className="absolute top-1/3 right-5 text-2xl floating-cat">💖</span>
+        <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🐱</span>
+        <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">✨</span>
       </div>
 
       {/* Background Music Playlist */}
@@ -53,16 +55,21 @@ export default function Home() {
       )}
 
       {/* Header */}
-      <header className="relative text-center py-12 bg-gradient-to-r from-[var(--pastel-pink)] to-[var(--soft-pink)] rounded-b-3xl shadow-lg mx-4 mt-4">
-        <h1 className="text-5xl font-bold text-[var(--coffee-brown)] mb-4 animate-pulse">
-          💖 Para Kimberly 💖
-        </h1>
-        <p className="text-xl text-[var(--coffee-brown)]">☕</p>
-        <div className="mt-4 flex justify-center space-x-4">
-          <span className="text-2xl">🎨</span>
-          <span className="text-2xl">💌</span>
-          <span className="text-2xl">📸</span>
-          <span className="text-2xl">📝</span>
+      <header className="relative text-center py-16 mx-4 mt-8">
+        <div className="aesthetic-card p-8 max-w-2xl mx-auto">
+          <h1 className="text-6xl font-bold text-[var(--cream)] mb-6 animate-pulse drop-shadow-lg">
+            ☕ Para Kimberly ☕
+          </h1>
+          <p className="text-2xl text-[var(--cream)] opacity-90 mb-6">
+            Un rincón aesthetic de amor y creatividad
+          </p>
+          <div className="flex justify-center space-x-6 text-3xl">
+            <span className="drop-shadow-lg">🎨</span>
+            <span className="drop-shadow-lg">💌</span>
+            <span className="drop-shadow-lg">📸</span>
+            <span className="drop-shadow-lg">📝</span>
+            <span className="drop-shadow-lg">🎵</span>
+          </div>
         </div>
       </header>
 
@@ -72,14 +79,14 @@ export default function Home() {
           {memories.map((memory, index) => (
             <div
               key={memory._id}
-              className={`kawaii-card bg-white p-6 break-inside-avoid mb-6 ${getRandomSize()}`}
+              className={`aesthetic-card p-6 break-inside-avoid mb-6 ${getRandomSize()}`}
               style={{
                 transform: `rotate(${getRandomRotation()}deg)`,
                 animationDelay: `${index * 0.1}s`
               }}
             >
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-xl font-semibold text-[var(--coffee-brown)]">{memory.title}</h2>
+                <h2 className="text-xl font-semibold text-[var(--cream)]">{memory.title}</h2>
                 <span className="text-lg">
                   {memory.type === 'drawing' && '🎨'}
                   {memory.type === 'letter' && '💌'}
@@ -87,7 +94,7 @@ export default function Home() {
                   {memory.type === 'note' && '📝'}
                 </span>
               </div>
-              <p className="text-sm text-[var(--coffee-brown)] opacity-75 mb-4">
+              <p className="text-sm text-[var(--cream)] opacity-75 mb-4">
                 📅 {new Date(memory.date).toLocaleDateString()}
               </p>
               {memory.type === 'photo' || memory.type === 'drawing' ? (
@@ -98,24 +105,24 @@ export default function Home() {
                   style={{ maxHeight: '300px', objectFit: 'cover' }}
                 />
               ) : (
-                <div className="notebook-note bg-white border-2 border-[var(--coffee-brown)] p-6 rounded-lg shadow-lg text-[var(--coffee-brown)] whitespace-pre-wrap text-sm leading-relaxed relative">
+                <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg text-[var(--cream)] whitespace-pre-wrap text-sm leading-relaxed relative">
                   {/* Líneas de cuaderno */}
-                  <div className="absolute inset-0 pointer-events-none opacity-20">
-                    {[...Array(10)].map((_, i) => (
+                  <div className="absolute inset-0 pointer-events-none opacity-30">
+                    {[...Array(8)].map((_, i) => (
                       <div
                         key={i}
-                        className="absolute w-full border-b border-[var(--coffee-brown)]"
-                        style={{ top: `${(i + 1) * 2}rem` }}
+                        className="absolute w-full border-b border-[var(--cream)] border-opacity-50"
+                        style={{ top: `${(i + 1) * 2.2}rem` }}
                       />
                     ))}
                   </div>
                   {/* Agujeros del cuaderno */}
                   <div className="absolute left-0 top-4 bottom-4 flex flex-col justify-around">
-                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
-                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
-                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
+                    <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
+                    <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
+                    <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
                   </div>
-                  <div className="pl-6">
+                  <div className="pl-6 relative z-10">
                     {memory.content}
                   </div>
                 </div>
@@ -130,8 +137,8 @@ export default function Home() {
         </div>
         {memories.length === 0 && (
           <div className="text-center py-20">
-            <div className="kawaii-card bg-white p-8 max-w-md mx-auto">
-              <p className="text-2xl text-[var(--coffee-brown)] mb-4">Aún no hay recuerdos... ¡pero pronto! 💕</p>
+            <div className="aesthetic-card p-8 max-w-md mx-auto">
+              <p className="text-2xl text-[var(--cream)] mb-4">Aún no hay recuerdos... ¡pero pronto! 💕</p>
               <div className="flex justify-center space-x-4 text-3xl">
                 <span>🐱</span>
                 <span>☕</span>
@@ -143,13 +150,17 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative text-center py-12 bg-gradient-to-r from-[var(--soft-pink)] to-[var(--pastel-pink)] rounded-t-3xl mx-4 mb-4 shadow-lg">
-        <p className="text-xl text-[var(--coffee-brown)] mb-2">Hecho con amor infinito ❤️ para ti, Kimberly</p>
-        <p className="text-lg text-[var(--coffee-brown)] opacity-75">🐱☕🎶💕</p>
-        <div className="mt-4 flex justify-center space-x-2">
-          <span className="text-2xl animate-bounce">🌸</span>
-          <span className="text-2xl animate-bounce" style={{ animationDelay: '0.2s' }}>💖</span>
-          <span className="text-2xl animate-bounce" style={{ animationDelay: '0.4s' }}>🐱</span>
+      <footer className="relative text-center py-12 mx-4 mb-4">
+        <div className="aesthetic-card p-8 max-w-lg mx-auto">
+          <p className="text-xl text-[var(--cream)] mb-2">Con amor eterno,</p>
+          <p className="text-2xl font-bold text-[var(--cream)] mb-4">Kimberly 💕</p>
+          <p className="text-lg text-[var(--cream)] opacity-75 mb-6">🐱☕🎶✨</p>
+          <div className="flex justify-center space-x-3">
+            <span className="text-3xl animate-bounce drop-shadow-lg">🌸</span>
+            <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.2s' }}>💖</span>
+            <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.4s' }}>🐱</span>
+            <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.6s' }}>☕</span>
+          </div>
         </div>
       </footer>
     </div>

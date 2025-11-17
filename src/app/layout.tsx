@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "💖 Para Kimberly 💖",
-  description: "",
+  title: "☕ Para Kimberly ☕",
+  description: "Un rincón aesthetic de amor y creatividad",
 };
 
 export default function RootLayout({
