@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kimberly's Memory Site
 
-## Getting Started
+A beautiful, scrollable website to share memories with Kimberly, featuring a coffee-themed kawaii design with hearts and cats.
 
-First, run the development server:
+## Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend**: Next.js app deployed on Vercel
+- **Backend**: Express.js API deployed on Render
+- **Database**: MongoDB
+- **File Storage**: Cloudinary
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Public Site**: Long scrollable collage of drawings, letters, photos, and notes with dates
+- **Background Music**: Plays songs from Humbe and Latin Mafia
+- **Admin Panel**: Private area to upload new memories (password protected)
+- **Mobile Optimized**: Responsive design for mobile viewing
+- **Cloud Storage**: Images stored on Cloudinary
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup
 
-## Learn More
+### Backend (Deploy to Render)
 
-To learn more about Next.js, take a look at the following resources:
+1. Go to `backend/` folder.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Set up environment variables in `.env`:
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
+   PORT=5000
+   ```
 
-## Deploy on Vercel
+4. Set up MongoDB database and Cloudinary account.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Run locally:
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. Deploy to Render: Connect GitHub repo, set build command `npm install`, start command `npm start`, and environment variables.
+
+### Frontend (Deploy to Vercel)
+
+1. In root folder, install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Set up environment variables in `.env.local`:
+   ```
+   NEXT_PUBLIC_API_URL=https://your-render-backend-url
+   ```
+
+3. Update the music source in `src/app/page.tsx` with actual Humbe/Latin Mafia song URLs.
+
+4. Change the admin password in `src/app/admin/page.tsx`.
+
+5. Run locally:
+   ```bash
+   npm run dev
+   ```
+
+6. Deploy to Vercel: Connect GitHub repo, Vercel will auto-detect Next.js.
+
+## Usage
+
+- **Public Site**: Scroll through the memories. Music plays automatically.
+- **Admin Panel**: Login with password, then upload new memories by selecting type, adding title, content/date, and file if image.
