@@ -60,10 +60,10 @@ export default function GlobalMusicPlayer() {
       {musicFiles.length > 0 && (
         <audio
           ref={audioRef}
-          className="hidden md:block" // Hidden on desktop, visible on mobile for interaction
+          className="md:block" // Visible on all sizes for better browser handling
           src={musicFiles[currentSongIndex]?.url}
           preload="auto"
-          controls={typeof window !== 'undefined' && window.innerWidth < 768} // Show controls on mobile
+          controls // Show controls always
           onLoadedData={(e) => {
             const audio = e.target as HTMLAudioElement;
             if (isPlaying) {
