@@ -120,9 +120,24 @@ export default function Manuel() {
   }, [loggedIn]);
 
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (password === MANUEL_PASSWORD) {
       setLoggedIn(true);
+      // Auto-play music after successful login
+      setTimeout(async () => {
+        try {
+          if (musicFiles.length > 0) {
+            console.log('🎵 Auto-playing music after login...');
+            await playSong(currentSongIndex);
+            setMessage('🎵 ¡Música iniciada automáticamente!');
+            setTimeout(() => setMessage(''), 3000);
+          }
+        } catch (error) {
+          console.error('❌ Auto-play failed after login:', error);
+          setMessage('Haz clic en cualquier canción para iniciar la música');
+          setTimeout(() => setMessage(''), 5000);
+        }
+      }, 500); // Small delay to ensure context is ready
     } else {
       alert('Contraseña incorrecta');
     }

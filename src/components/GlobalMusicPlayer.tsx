@@ -36,12 +36,20 @@ export default function GlobalMusicPlayer() {
               if (data.currentTime !== undefined) {
                 setCurrentTime(data.currentTime);
               }
-              // Set the new song but don't auto-play (browsers require user interaction)
+              // Set the new song and try to auto-play (user interaction may have occurred)
               if (audioRef.current) {
-                console.log('🎵 Setting synced song src and currentTime (will play on user interaction)');
+                console.log('🎵 Setting synced song src and currentTime, attempting auto-play');
                 audioRef.current.src = musicFiles[serverSongIndex].url;
                 audioRef.current.currentTime = data.currentTime || 0;
-                // Don't set isPlaying to true here - wait for user interaction
+
+                // Try to auto-play, but handle failure gracefully
+                audioRef.current.play().then(() => {
+                  console.log('✅ Auto-play succeeded for synced song');
+                  setIsPlaying(true);
+                }).catch(err => {
+                  console.log('⚠️ Auto-play failed for synced song (expected on some browsers):', err.message);
+                  // Keep isPlaying as false so play button shows
+                });
               }
             }
           }
