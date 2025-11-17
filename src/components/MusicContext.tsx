@@ -87,7 +87,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
       }
     } catch (err) {
       console.error('❌ Error playing:', err);
-      console.error('❌ Error details:', err.message, err.name);
+      console.error('❌ Error details:', (err as Error).message, (err as Error).name);
       // On mobile, this might fail due to autoplay restrictions
       // The audio will be prepared but won't play until user interaction
       setCurrentSongIndex(index);
