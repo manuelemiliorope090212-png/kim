@@ -436,10 +436,10 @@ export default function Manuel() {
               )}
             </div>
 
-            {/* Canción Actual */}
+            {/* Control de Música */}
             <div>
               <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
-                🎵 Canción Reproduciendo Ahora
+                🎵 Control de Música
               </h2>
               {musicFiles.length === 0 ? (
                 <div className="aesthetic-card p-8 text-center">
@@ -448,28 +448,113 @@ export default function Manuel() {
                   </p>
                 </div>
               ) : (
-                <div className="aesthetic-card p-6">
-                  <div className="text-center mb-4">
-                    <div className="text-4xl mb-2">
-                      {isPlaying ? '🎵' : '⏸️'}
-                    </div>
-                    <h3 className="text-xl font-bold text-[var(--cream)] mb-2">
-                      {musicFiles[currentSongIndex]?.name}
+                <div className="space-y-4">
+                  {/* Canción Actual Sincronizada */}
+                  <div className="aesthetic-card p-6">
+                    <h3 className="text-lg font-bold text-[var(--cream)] mb-3">
+                      🎶 Reproducción Sincronizada
                     </h3>
-                    <p className="text-[var(--cream)] opacity-75">
-                      Canción {currentSongIndex + 1} de {musicFiles.length}
-                    </p>
-                    {!isPlaying && (
-                      <button
-                        onClick={startMusic}
-                        className="mt-4 px-6 py-2 bg-[var(--coffee-light)] text-[var(--cream)] rounded-lg font-semibold hover:bg-[var(--coffee-medium)] transition-colors"
-                      >
-                        ▶️ Reproducir Música
-                      </button>
-                    )}
+                    <div className="text-center">
+                      <div className="text-3xl mb-2">
+                        {isPlaying ? '🎵' : '⏸️'}
+                      </div>
+                      <h4 className="text-lg font-semibold text-[var(--cream)] mb-2">
+                        {musicFiles[currentSongIndex]?.name}
+                      </h4>
+                      <p className="text-[var(--cream)] opacity-75 text-sm mb-4">
+                        Canción {currentSongIndex + 1} de {musicFiles.length} - Sincronizada
+                      </p>
+                      <div className="flex justify-center gap-3">
+                        {!isPlaying ? (
+                          <button
+                            onClick={startMusic}
+                            className="px-4 py-2 bg-[var(--coffee-light)] text-[var(--cream)] rounded-lg font-semibold hover:bg-[var(--coffee-medium)] transition-colors"
+                          >
+                            ▶️ Iniciar Sincronización
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              if (audioRef.current) {
+                                audioRef.current.pause();
+                                setIsPlaying(false);
+                              }
+                            }}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+                          >
+                            ⏸️ Pausar
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-sm text-[var(--cream)] opacity-60 text-center">
-                    <p>🎶 Música sincronizada - Todos escuchan lo mismo 🎶</p>
+
+                  {/* Selector Manual de Canciones */}
+                  <div className="aesthetic-card p-6">
+                    <h3 className="text-lg font-bold text-[var(--cream)] mb-3">
+                      🎛️ Reproducción Manual
+                    </h3>
+                    <p className="text-[var(--cream)] opacity-75 text-sm mb-4">
+                      Selecciona una canción específica para reproducir
+                    </p>
+                    <div className="space-y-2">
+                      {musicFiles.map((music, index) => (
+                        <div key={music._id} className="flex items-center justify-between p-3 bg-[rgba(254,247,237,0.1)] rounded-lg">
+                          <div className="flex-1">
+                            <h4 className="text-[var(--cream)] font-medium">
+                              {music.name}
+                            </h4>
+                            <p className="text-[var(--cream)] opacity-60 text-sm">
+                              #{music.order}
+                            </p>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => {
+                                // Reproducir canción específica
+                                if (audioRef.current) {
+                                  audioRef.current.src = music.url;
+                                  audioRef.current.currentTime = 0;
+                                  audioRef.current.play().then(() => {
+                                    setIsPlaying(true);
+                                    setCurrentSongIndex(index);
+                                  }).catch(err => console.error('Error reproduciendo:', err));
+                                }
+                              }}
+                              className="px-3 py-1 bg-green-600 text-white rounded text-sm font-semibold hover:bg-green-700 transition-colors"
+                            >
+                              ▶️ Play
+                            </button>
+                            <button
+                              onClick={() => {
+                                // Pausar
+                                if (audioRef.current) {
+                                  audioRef.current.pause();
+                                  setIsPlaying(false);
+                                }
+                              }}
+                              className="px-3 py-1 bg-yellow-600 text-white rounded text-sm font-semibold hover:bg-yellow-700 transition-colors"
+                            >
+                              ⏸️ Pause
+                            </button>
+                            <button
+                              onClick={() => {
+                                // Detener y volver a sincronización
+                                if (audioRef.current) {
+                                  audioRef.current.pause();
+                                  setIsPlaying(false);
+                                  // Volver a la canción sincronizada actual
+                                  setTimeout(() => startMusic(), 500);
+                                }
+                              }}
+                              className="px-3 py-1 bg-blue-600 text-white rounded text-sm font-semibold hover:bg-blue-700 transition-colors"
+                            >
+                              🔄 Sync
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
