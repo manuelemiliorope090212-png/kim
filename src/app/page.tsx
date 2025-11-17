@@ -388,8 +388,8 @@ export default function Home() {
           }}
           onTimeUpdate={(e) => {
             const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 5) {
-              // Re-sincronizar solo si hay drift muy grande (>5 segundos)
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 30) {
+              // Re-sincronizar solo si hay drift muy grande (>30 segundos) para evitar reinicios constantes
               audio.currentTime = currentTime;
             }
           }}
