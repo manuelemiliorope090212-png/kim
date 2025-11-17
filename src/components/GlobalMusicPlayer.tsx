@@ -78,7 +78,7 @@ export default function GlobalMusicPlayer() {
             console.log('🎵 onCanPlayThrough triggered - isPlaying:', isPlaying, 'currentTime:', currentTime, 'audio.readyState:', audioRef.current?.readyState);
             if (audioRef.current && isPlaying && audioRef.current.paused) {
               const audio = audioRef.current;
-              console.log('🎵 Audio duration:', audio.duration, 'currentTime before:', audio.currentTime);
+              console.log('🎵 Audio duration:', audio.duration, 'currentTime before:', audio.currentTime, 'muted:', audio.muted, 'volume:', audio.volume);
               if (currentTime < audio.duration) {
                 audio.currentTime = currentTime;
                 console.log('🎵 Set currentTime to:', currentTime);
@@ -92,7 +92,7 @@ export default function GlobalMusicPlayer() {
               const playPromise = audio.play();
               if (playPromise !== undefined) {
                 playPromise.then(() => {
-                  console.log('✅ Audio started playing from onCanPlayThrough - currentTime:', audio.currentTime);
+                  console.log('✅ Audio started playing from onCanPlayThrough - currentTime:', audio.currentTime, 'muted:', audio.muted, 'volume:', audio.volume);
                 }).catch(err => {
                   console.error('❌ Autoplay prevented in onCanPlayThrough:', err);
                   console.error('❌ Error details:', (err as Error).message, (err as Error).name);
