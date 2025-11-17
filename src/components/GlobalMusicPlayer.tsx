@@ -115,7 +115,7 @@ export default function GlobalMusicPlayer() {
           }}
           onError={(e) => {
             console.error('❌ Error loading audio:', e);
-            console.error('❌ Audio error details:', e.target?.error);
+            console.error('❌ Audio error details:', (e.target as HTMLAudioElement)?.error);
             const nextIndex = (currentSongIndex + 1) % musicFiles.length;
             console.log('🎵 Trying next song due to error:', nextIndex);
             if (audioRef.current) {
