@@ -119,22 +119,6 @@ export default function Manuel() {
     }
   }, [loggedIn]);
 
-  // Función para iniciar música
-  const startMusic = async () => {
-    if (musicFiles.length === 0) return;
-
-    try {
-      await playSong(currentSongIndex);
-      setAutoplayFailed(false);
-      setMessage('Música iniciada! 🎵');
-      setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
-      console.error('Error al reproducir música:', error);
-      setAutoplayFailed(true);
-      setMessage('En móvil, toca el botón de play en el reproductor de audio visible 📱');
-      setTimeout(() => setMessage(''), 5000);
-    }
-  };
 
   const handleLogin = () => {
     if (password === MANUEL_PASSWORD) {
@@ -456,27 +440,8 @@ export default function Manuel() {
                       <p className="text-[var(--cream)] opacity-75 text-sm mb-4">
                         Canción {currentSongIndex + 1} de {musicFiles.length} - Sincronizada
                       </p>
-                      <div className="flex justify-center gap-3">
-                        {!isPlaying ? (
-                          <button
-                            onClick={startMusic}
-                            className="px-4 py-2 bg-[var(--coffee-light)] text-[var(--cream)] rounded-lg font-semibold hover:bg-[var(--coffee-medium)] transition-colors"
-                          >
-                            ▶️ Iniciar Sincronización
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              if (audioRef.current) {
-                                audioRef.current.pause();
-                                setIsPlaying(false);
-                              }
-                            }}
-                            className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
-                          >
-                            ⏸️ Pausar
-                          </button>
-                        )}
+                      <div className="text-center text-[var(--cream)] opacity-75 text-sm">
+                        🎵 Haz clic en cualquier canción para reproducirla para todos
                       </div>
  
                       {/* Mobile autoplay warning */}
@@ -567,8 +532,28 @@ export default function Manuel() {
                           onDragOver={handleDragOver}
                           onDrop={(e) => handleDrop(e, index)}
                           onDragEnd={handleDragEnd}
-                          onClick={() => {
-                            playSong(index);
+                          onClick={async () => {
+                            try {
+                              await playSong(index);
+                              setAutoplayFailed(false);
+                              setMessage(`🎵 Reproduciendo: ${music.name}`);
+                              setTimeout(() => setMessage(''), 3000);
+
+                              // Update server with new song selection
+                              await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  currentSongId: music._id,
+                                  currentTime: 0
+                                })
+                              });
+                            } catch (error) {
+                              console.error('Error playing song:', error);
+                              setAutoplayFailed(true);
+                              setMessage('En móvil, usa los controles de audio visibles 📱');
+                              setTimeout(() => setMessage(''), 5000);
+                            }
                           }}
                         >
                           <div className="flex items-center justify-between">
@@ -588,36 +573,6 @@ export default function Manuel() {
                       ))}
                     </div>
 
-                    {/* Botón para volver a sincronización */}
-                    <div className="mt-4 pt-4 border-t border-[var(--cream)] border-opacity-20">
-                      <button
-                        onClick={() => {
-                          // Detener reproducción manual y volver a sincronización
-                          if (audioRef.current) {
-                            audioRef.current.pause();
-                            setIsPlaying(false);
-                            // Volver a la canción sincronizada actual después de un breve delay
-                            setTimeout(() => {
-                              // Sync with server to get current state
-                              fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`)
-                                .then(res => res.json())
-                                .then(data => {
-                                  if (data.currentSong) {
-                                    const songIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
-                                    if (songIndex !== -1) {
-                                      playSong(songIndex);
-                                      seekTo(data.currentTime);
-                                    }
-                                  }
-                                });
-                            }, 500);
-                          }
-                        }}
-                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                      >
-                        🔄 Volver a Reproducción Sincronizada
-                      </button>
-                    </div>
                   </div>
                 </div>
               )}
