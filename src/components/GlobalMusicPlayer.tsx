@@ -29,9 +29,16 @@ export default function GlobalMusicPlayer() {
             const serverSongIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
             if (serverSongIndex !== -1 && serverSongIndex !== currentSongIndex) {
               console.log('🎵 Server song changed, updating local player:', data.currentSong.name);
-              // Update immediately when server song changes
-              // Note: We can't call setCurrentSongIndex here because it's not in the destructuring
-              // The sync will happen through the context when the song is selected in Manuel page
+              setCurrentSongIndex(serverSongIndex);
+              if (data.currentTime !== undefined) {
+                setCurrentTime(data.currentTime);
+              }
+              // Try to play the new song if audio is available
+              if (audioRef.current && !isPlaying) {
+                audioRef.current.src = musicFiles[serverSongIndex].url;
+                audioRef.current.currentTime = data.currentTime || 0;
+                audioRef.current.play().catch(err => console.error('Error playing synced song:', err));
+              }
             }
           }
         }
