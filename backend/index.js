@@ -13,7 +13,10 @@ const Music = require('./models/Music');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://hadaitzy.vercel.app', 'https://kim-qtbq.onrender.com'],
+  credentials: true
+}));
 app.use(express.json());
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -70,29 +73,43 @@ app.get('/api/manuel/notes', async (req, res) => {
 
 app.post('/api/manuel/notes', upload.single('image'), async (req, res) => {
   try {
+    console.log('Received note upload request');
+    console.log('Body:', req.body);
+    console.log('File:', req.file ? 'Present' : 'Not present');
+
     await connectToDatabase();
 
     const { title, content, type } = req.body;
 
+    if (!title || !type) {
+      return res.status(400).json({ error: 'Title and type are required' });
+    }
+
     let imageUrl = null;
     if (type === 'image' && req.file) {
+      console.log('Uploading image to Cloudinary...');
       const result = await uploadToCloudinary(req.file.buffer, 'manuel-notes');
       imageUrl = result.secure_url;
+      console.log('Image uploaded successfully:', imageUrl);
     }
 
     const note = new ManuelNote({
       title,
-      content,
+      content: content || '',
       type,
       imageUrl,
       date: new Date(),
     });
 
     await note.save();
+    console.log('Note saved successfully');
     res.status(201).json(note);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create note' });
+    console.error('Error creating note:', error);
+    res.status(500).json({
+      error: 'Failed to create note',
+      details: error.message
+    });
   }
 });
 

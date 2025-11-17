@@ -160,7 +160,7 @@ export default function Manuel() {
 
         <div className="aesthetic-card p-6 md:p-8 max-w-md mx-4 relative z-10">
           <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-6 text-center animate-pulse drop-shadow-lg">
-            👨 Panel de Manuel
+             Panel de Manuel
           </h1>
           <input
             type="password"
@@ -196,7 +196,7 @@ export default function Manuel() {
         <header className="text-center py-8 md:py-12 mb-8">
           <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-3 md:mb-4 animate-pulse drop-shadow-lg">
-              👨 Panel Personal de Manuel
+               Panel Personal de Manuel
             </h1>
             <p className="text-lg md:text-xl text-[var(--cream)] opacity-90">
               Sube dibujos, escribe notas y agrega música para Kimberly 💕
