@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface Memory {
   _id: string;
@@ -28,6 +28,8 @@ export default function Home() {
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     // Fetch memories
@@ -103,6 +105,19 @@ export default function Home() {
 
     return () => clearInterval(interval);
   }, [musicPlaylist]);
+
+  // Función para iniciar música después de interacción del usuario
+  const startMusic = async () => {
+    if (!audioRef.current || musicPlaylist.length === 0) return;
+
+    try {
+      audioRef.current.currentTime = currentTime;
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } catch (error) {
+      console.error('Error al reproducir música:', error);
+    }
+  };
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
   const getRandomSize = () => Math.random() > 0.5 ? 'w-full' : 'w-3/4 mx-auto';
@@ -194,16 +209,25 @@ export default function Home() {
       {/* Background Music Sincronizada */}
       {musicPlaylist.length > 0 && (
         <audio
-          autoPlay
+          ref={audioRef}
           className="hidden"
           src={musicPlaylist[currentSongIndex]?.url}
           onLoadedData={(e) => {
             const audio = e.target as HTMLAudioElement;
-            audio.currentTime = currentTime;
+            if (isPlaying) {
+              audio.currentTime = currentTime;
+            }
           }}
           onEnded={() => {
             // Cuando termina una canción, el useEffect se encargará de cambiar a la siguiente
             setCurrentSongIndex((prev) => (prev + 1) % musicPlaylist.length);
+          }}
+          onTimeUpdate={(e) => {
+            const audio = e.target as HTMLAudioElement;
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 1) {
+              // Re-sincronizar si hay drift
+              audio.currentTime = currentTime;
+            }
           }}
         />
       )}
@@ -220,7 +244,13 @@ export default function Home() {
             <span className="drop-shadow-lg">💌</span>
             <span className="drop-shadow-lg">📸</span>
             <span className="drop-shadow-lg">📝</span>
-            <span className="drop-shadow-lg">🎵</span>
+            <button
+              onClick={startMusic}
+              className={`drop-shadow-lg transition-all duration-300 hover:scale-110 ${isPlaying ? 'text-green-400' : 'text-[var(--cream)] hover:text-green-400'}`}
+              title={isPlaying ? 'Música sincronizada activada' : 'Haz clic para activar la música sincronizada'}
+            >
+              {isPlaying ? '🎵' : '🔇'}
+            </button>
           </div>
         </div>
       </header>
