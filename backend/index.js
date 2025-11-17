@@ -117,16 +117,6 @@ app.get('/api/manuel/music', async (req, res) => {
   }
 });
 
-app.get('/api/manuel/music/active', async (req, res) => {
-  try {
-    await connectToDatabase();
-    const activeMusic = await Music.findOne({ isActive: true });
-    res.status(200).json(activeMusic || null);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch active music' });
-  }
-});
-
 app.post('/api/manuel/music', upload.single('music'), async (req, res) => {
   try {
     await connectToDatabase();
@@ -137,10 +127,14 @@ app.post('/api/manuel/music', upload.single('music'), async (req, res) => {
 
     const result = await uploadToCloudinary(req.file.buffer, 'manuel-music');
 
+    // Get the next order number
+    const lastMusic = await Music.findOne().sort({ order: -1 });
+    const nextOrder = lastMusic ? lastMusic.order + 1 : 1;
+
     const music = new Music({
       name: req.file.originalname,
       url: result.secure_url,
-      isActive: false,
+      order: nextOrder,
     });
 
     await music.save();
@@ -151,27 +145,13 @@ app.post('/api/manuel/music', upload.single('music'), async (req, res) => {
   }
 });
 
-app.put('/api/manuel/music/:id/activate', async (req, res) => {
+app.delete('/api/manuel/music/:id', async (req, res) => {
   try {
     await connectToDatabase();
-
-    // Deactivate all music first
-    await Music.updateMany({}, { isActive: false });
-
-    // Activate the selected music
-    const music = await Music.findByIdAndUpdate(
-      req.params.id,
-      { isActive: true },
-      { new: true }
-    );
-
-    if (!music) {
-      return res.status(404).json({ error: 'Music not found' });
-    }
-
-    res.status(200).json(music);
+    await Music.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Music deleted' });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to activate music' });
+    res.status(500).json({ error: 'Failed to delete music' });
   }
 });
 

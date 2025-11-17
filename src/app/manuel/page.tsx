@@ -23,8 +23,6 @@ interface MusicFile {
 export default function Manuel() {
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState<'notes' | 'music'>('notes');
-
   // Notes state
   const [notes, setNotes] = useState<ManuelNote[]>([]);
   const [noteTitle, setNoteTitle] = useState('');
@@ -34,7 +32,6 @@ export default function Manuel() {
   // Music state
   const [musicFiles, setMusicFiles] = useState<MusicFile[]>([]);
   const [selectedMusic, setSelectedMusic] = useState<File | null>(null);
-  const [activeMusic, setActiveMusic] = useState<MusicFile | null>(null);
 
   const [message, setMessage] = useState('');
 
@@ -42,7 +39,6 @@ export default function Manuel() {
     if (loggedIn) {
       fetchNotes();
       fetchMusicFiles();
-      fetchActiveMusic();
     }
   }, [loggedIn]);
 
@@ -78,17 +74,6 @@ export default function Manuel() {
     }
   };
 
-  const fetchActiveMusic = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/active`);
-      if (res.ok) {
-        const data = await res.json();
-        setActiveMusic(data);
-      }
-    } catch (error) {
-      console.error('Error fetching active music:', error);
-    }
-  };
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,23 +128,6 @@ export default function Manuel() {
     }
   };
 
-  const handleSetActiveMusic = async (musicId: string) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/${musicId}/activate`, {
-        method: 'PUT',
-      });
-
-      if (res.ok) {
-        setMessage('Música activada para el sitio!');
-        fetchActiveMusic();
-        fetchMusicFiles();
-      } else {
-        setMessage('Error activando música');
-      }
-    } catch (error) {
-      setMessage('Error de conexión');
-    }
-  };
 
   const handleDeleteNote = async (noteId: string) => {
     if (!confirm('¿Estás seguro de que quieres eliminar esta nota?')) return;
@@ -213,43 +181,16 @@ export default function Manuel() {
             👨 Panel Personal de Manuel
           </h1>
           <p className="text-[var(--coffee-brown)] opacity-75">
-            Gestiona tus notas, imágenes y la música del sitio 💕
+            Sube dibujos, escribe notas y agrega música para Kimberly 💕
           </p>
         </header>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-white kawaii-card p-2 flex rounded-xl">
-            <button
-              onClick={() => setActiveTab('notes')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-                activeTab === 'notes'
-                  ? 'bg-[var(--soft-pink)] text-[var(--coffee-brown)]'
-                  : 'text-[var(--coffee-brown)] hover:bg-[var(--pastel-pink)]'
-              }`}
-            >
-              📝 Notas e Imágenes
-            </button>
-            <button
-              onClick={() => setActiveTab('music')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-                activeTab === 'music'
-                  ? 'bg-[var(--soft-pink)] text-[var(--coffee-brown)]'
-                  : 'text-[var(--coffee-brown)] hover:bg-[var(--pastel-pink)]'
-              }`}
-            >
-              🎵 Música
-            </button>
-          </div>
-        </div>
-
-        {/* Notes Tab */}
-        {activeTab === 'notes' && (
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Add Note Form */}
-            <div className="kawaii-card bg-white p-6">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Add Content Form */}
+          <div className="lg:col-span-1">
+            <div className="kawaii-card bg-white p-6 mb-6">
               <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
-                ➕ Agregar Nota o Imagen
+                ➕ Agregar Dibujo o Nota
               </h2>
               <form onSubmit={handleAddNote}>
                 <div className="mb-4">
@@ -262,24 +203,23 @@ export default function Manuel() {
                     onChange={(e) => setNoteTitle(e.target.value)}
                     required
                     className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl focus:border-[var(--soft-pink)] focus:outline-none"
-                    placeholder="Título de la nota..."
+                    placeholder="Título..."
                   />
                 </div>
                 <div className="mb-4">
                   <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
-                    Contenido
+                    Nota (opcional si hay imagen)
                   </label>
                   <textarea
                     value={noteContent}
                     onChange={(e) => setNoteContent(e.target.value)}
-                    required={!noteImage}
-                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl h-32 focus:border-[var(--soft-pink)] focus:outline-none resize-none"
-                    placeholder="Escribe tu nota aquí..."
+                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl h-24 focus:border-[var(--soft-pink)] focus:outline-none resize-none"
+                    placeholder="Escribe algo bonito..."
                   />
                 </div>
                 <div className="mb-4">
                   <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
-                    Imagen (opcional)
+                    Dibujo/Imagen
                   </label>
                   <input
                     type="file"
@@ -292,68 +232,20 @@ export default function Manuel() {
                   type="submit"
                   className="w-full bg-[var(--soft-pink)] text-[var(--coffee-brown)] p-3 rounded-xl font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
                 >
-                  💾 Guardar Nota
+                  🎨 Agregar al Sitio
                 </button>
               </form>
             </div>
 
-            {/* Notes List */}
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
-                📚 Tus Notas ({notes.length})
-              </h2>
-              {notes.length === 0 ? (
-                <div className="kawaii-card bg-white p-6 text-center">
-                  <p className="text-[var(--coffee-brown)] opacity-75">
-                    Aún no tienes notas. ¡Agrega la primera! 📝
-                  </p>
-                </div>
-              ) : (
-                notes.map((note) => (
-                  <div key={note._id} className="kawaii-card bg-white p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
-                        {note.title}
-                      </h3>
-                      <button
-                        onClick={() => handleDeleteNote(note._id)}
-                        className="text-red-500 hover:text-red-700 text-xl"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                    {note.type === 'image' && note.imageUrl && (
-                      <img
-                        src={note.imageUrl}
-                        alt={note.title}
-                        className="w-full rounded-xl mb-3 max-h-48 object-cover"
-                      />
-                    )}
-                    <p className="text-[var(--coffee-brown)] whitespace-pre-wrap">
-                      {note.content}
-                    </p>
-                    <p className="text-sm text-[var(--coffee-brown)] opacity-50 mt-2">
-                      📅 {new Date(note.date).toLocaleDateString()}
-                    </p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Music Tab */}
-        {activeTab === 'music' && (
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Upload Music */}
+            {/* Music Upload */}
             <div className="kawaii-card bg-white p-6">
               <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
-                🎵 Subir Música
+                🎵 Agregar Música
               </h2>
               <form onSubmit={handleUploadMusic}>
                 <div className="mb-4">
                   <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
-                    Archivo de Música (MP3/MP4)
+                    Archivo MP3/MP4
                   </label>
                   <input
                     type="file"
@@ -367,64 +259,94 @@ export default function Manuel() {
                   type="submit"
                   className="w-full bg-[var(--soft-pink)] text-[var(--coffee-brown)] p-3 rounded-xl font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
                 >
-                  ⬆️ Subir Música
+                  🎶 Agregar a Playlist
                 </button>
               </form>
+            </div>
+          </div>
 
-              {/* Active Music Display */}
-              {activeMusic && (
-                <div className="mt-6 p-4 bg-[var(--pastel-pink)] rounded-xl">
-                  <h3 className="text-lg font-semibold text-[var(--coffee-brown)] mb-2">
-                    🎶 Música Activa en el Sitio
-                  </h3>
-                  <p className="text-[var(--coffee-brown)]">{activeMusic.name}</p>
-                  <audio controls className="w-full mt-2">
-                    <source src={activeMusic.url} type="audio/mpeg" />
-                  </audio>
+          {/* Content Display */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Notes/Drawings */}
+            <div>
+              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
+                🎨 Dibujos y Notas Subidos ({notes.length})
+              </h2>
+              {notes.length === 0 ? (
+                <div className="kawaii-card bg-white p-8 text-center">
+                  <p className="text-[var(--coffee-brown)] opacity-75 text-lg">
+                    Aún no has subido nada. ¡Agrega dibujos y notas para Kimberly! 💕
+                  </p>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-4">
+                  {notes.map((note) => (
+                    <div key={note._id} className="kawaii-card bg-white p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
+                          {note.title}
+                        </h3>
+                        <button
+                          onClick={() => handleDeleteNote(note._id)}
+                          className="text-red-500 hover:text-red-700 text-xl"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                      {note.type === 'image' && note.imageUrl && (
+                        <img
+                          src={note.imageUrl}
+                          alt={note.title}
+                          className="w-full rounded-xl mb-3 max-h-48 object-cover"
+                        />
+                      )}
+                      {note.content && (
+                        <p className="text-[var(--coffee-brown)] whitespace-pre-wrap text-sm">
+                          {note.content}
+                        </p>
+                      )}
+                      <p className="text-xs text-[var(--coffee-brown)] opacity-50 mt-2">
+                        📅 {new Date(note.date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
 
             {/* Music Library */}
-            <div className="space-y-4">
+            <div>
               <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
-                📚 Biblioteca de Música ({musicFiles.length})
+                🎵 Playlist de Música ({musicFiles.length})
               </h2>
               {musicFiles.length === 0 ? (
-                <div className="kawaii-card bg-white p-6 text-center">
-                  <p className="text-[var(--coffee-brown)] opacity-75">
-                    No hay archivos de música. ¡Sube el primero! 🎵
+                <div className="kawaii-card bg-white p-8 text-center">
+                  <p className="text-[var(--coffee-brown)] opacity-75 text-lg">
+                    No hay música subida. ¡Agrega canciones para el sitio! 🎶
                   </p>
                 </div>
               ) : (
-                musicFiles.map((music) => (
-                  <div key={music._id} className="kawaii-card bg-white p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
-                        {music.name}
-                      </h3>
-                      {music.isActive ? (
-                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                          🎵 Activa
+                <div className="space-y-3">
+                  {musicFiles.map((music) => (
+                    <div key={music._id} className="kawaii-card bg-white p-4">
+                      <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
+                          {music.name}
+                        </h3>
+                        <span className="text-sm text-[var(--coffee-brown)] opacity-75">
+                          #{music.order}
                         </span>
-                      ) : (
-                        <button
-                          onClick={() => handleSetActiveMusic(music._id)}
-                          className="bg-[var(--soft-pink)] text-[var(--coffee-brown)] px-4 py-2 rounded-lg font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
-                        >
-                          🎵 Activar
-                        </button>
-                      )}
+                      </div>
+                      <audio controls className="w-full">
+                        <source src={music.url} type="audio/mpeg" />
+                      </audio>
                     </div>
-                    <audio controls className="w-full">
-                      <source src={music.url} type="audio/mpeg" />
-                    </audio>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
             </div>
           </div>
-        )}
+        </div>
 
         {/* Message Display */}
         {message && (

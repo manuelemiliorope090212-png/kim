@@ -12,7 +12,7 @@ interface Memory {
 
 export default function Home() {
   const [memories, setMemories] = useState<Memory[]>([]);
-  const [activeMusic, setActiveMusic] = useState<string | null>(null);
+  const [musicPlaylist, setMusicPlaylist] = useState<any[]>([]);
 
   useEffect(() => {
     // Fetch memories
@@ -21,15 +21,11 @@ export default function Home() {
       .then(data => setMemories(data))
       .catch(err => console.error(err));
 
-    // Fetch active music
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/active`)
+    // Fetch music playlist
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music`)
       .then(res => res.json())
-      .then(data => {
-        if (data && data.url) {
-          setActiveMusic(data.url);
-        }
-      })
-      .catch(err => console.error('Error fetching active music:', err));
+      .then(data => setMusicPlaylist(data.sort((a: any, b: any) => a.order - b.order)))
+      .catch(err => console.error('Error fetching music playlist:', err));
   }, []);
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
@@ -47,10 +43,12 @@ export default function Home() {
         <span className="absolute top-1/3 right-5 text-2xl floating-cat">🍪</span>
       </div>
 
-      {/* Background Music */}
-      {activeMusic && (
+      {/* Background Music Playlist */}
+      {musicPlaylist.length > 0 && (
         <audio autoPlay loop className="hidden">
-          <source src={activeMusic} type="audio/mpeg" />
+          {musicPlaylist.map((music) => (
+            <source key={music._id} src={music.url} type="audio/mpeg" />
+          ))}
         </audio>
       )}
 
@@ -59,7 +57,7 @@ export default function Home() {
         <h1 className="text-5xl font-bold text-[var(--coffee-brown)] mb-4 animate-pulse">
           💖 Para Kimberly 💖
         </h1>
-        <p className="text-xl text-[var(--coffee-brown)]">Un collage kawaii de amor y creatividad 🐱☕</p>
+        <p className="text-xl text-[var(--coffee-brown)]">☕</p>
         <div className="mt-4 flex justify-center space-x-4">
           <span className="text-2xl">🎨</span>
           <span className="text-2xl">💌</span>
@@ -100,8 +98,26 @@ export default function Home() {
                   style={{ maxHeight: '300px', objectFit: 'cover' }}
                 />
               ) : (
-                <div className="bg-[var(--pastel-pink)] p-4 rounded-xl text-[var(--coffee-brown)] whitespace-pre-wrap text-sm leading-relaxed">
-                  {memory.content}
+                <div className="notebook-note bg-white border-2 border-[var(--coffee-brown)] p-6 rounded-lg shadow-lg text-[var(--coffee-brown)] whitespace-pre-wrap text-sm leading-relaxed relative">
+                  {/* Líneas de cuaderno */}
+                  <div className="absolute inset-0 pointer-events-none opacity-20">
+                    {[...Array(10)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-full border-b border-[var(--coffee-brown)]"
+                        style={{ top: `${(i + 1) * 2}rem` }}
+                      />
+                    ))}
+                  </div>
+                  {/* Agujeros del cuaderno */}
+                  <div className="absolute left-0 top-4 bottom-4 flex flex-col justify-around">
+                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
+                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
+                    <div className="w-3 h-3 bg-[var(--coffee-brown)] rounded-full opacity-60"></div>
+                  </div>
+                  <div className="pl-6">
+                    {memory.content}
+                  </div>
                 </div>
               )}
               <div className="mt-4 flex justify-end space-x-2">
