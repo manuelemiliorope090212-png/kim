@@ -150,9 +150,16 @@ export default function Manuel() {
 
   if (!loggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#fef7ed] via-[#fce7f3] to-[#fef7ed]">
-        <div className="kawaii-card bg-white p-8 max-w-md mx-4">
-          <h1 className="text-3xl font-bold text-[var(--coffee-brown)] mb-6 text-center">
+      <div className="min-h-screen flex items-center justify-center text-[var(--cream)] relative overflow-hidden">
+        {/* Floating Coffee Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <span className="absolute top-20 left-10 text-4xl floating-heart">☕</span>
+          <span className="absolute bottom-20 right-10 text-3xl floating-cat">🫖</span>
+          <span className="absolute top-1/2 right-20 text-2xl floating-heart">🔒</span>
+        </div>
+
+        <div className="aesthetic-card p-6 md:p-8 max-w-md mx-4 relative z-10">
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-6 text-center animate-pulse drop-shadow-lg">
             👨 Panel de Manuel
           </h1>
           <input
@@ -160,11 +167,11 @@ export default function Manuel() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Contraseña"
-            className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl mb-4 focus:border-[var(--soft-pink)] focus:outline-none"
+            className="w-full p-3 border-2 border-[var(--cream)] border-opacity-30 rounded-xl mb-4 focus:border-[var(--cream)] focus:outline-none bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70"
           />
           <button
             onClick={handleLogin}
-            className="w-full bg-[var(--soft-pink)] text-[var(--coffee-brown)] p-3 rounded-xl font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
+            className="w-full bg-[var(--coffee-light)] text-[var(--cream)] p-3 rounded-xl font-semibold hover:bg-[var(--coffee-medium)] transition-colors drop-shadow-lg"
           >
             Entrar 🚪
           </button>
@@ -174,22 +181,34 @@ export default function Manuel() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fef7ed] via-[#fce7f3] to-[#fef7ed] p-4">
-      <div className="max-w-6xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-[var(--coffee-brown)] mb-2">
-            👨 Panel Personal de Manuel
-          </h1>
-          <p className="text-[var(--coffee-brown)] opacity-75">
-            Sube dibujos, escribe notas y agrega música para Kimberly 💕
-          </p>
+    <div className="min-h-screen text-[var(--cream)] relative overflow-hidden p-4">
+      {/* Floating Coffee Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <span className="absolute top-10 left-10 text-3xl floating-heart">☕</span>
+        <span className="absolute top-20 right-20 text-2xl floating-cat">🫖</span>
+        <span className="absolute bottom-40 left-20 text-xl floating-heart">🎨</span>
+        <span className="absolute bottom-20 right-10 text-3xl floating-cat">📝</span>
+        <span className="absolute top-1/2 left-5 text-2xl floating-heart">💖</span>
+        <span className="absolute top-1/3 right-5 text-xl floating-cat">🎵</span>
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <header className="text-center py-8 md:py-12 mb-8">
+          <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-3 md:mb-4 animate-pulse drop-shadow-lg">
+              👨 Panel Personal de Manuel
+            </h1>
+            <p className="text-lg md:text-xl text-[var(--cream)] opacity-90">
+              Sube dibujos, escribe notas y agrega música para Kimberly 💕
+            </p>
+          </div>
         </header>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Add Content Form */}
           <div className="lg:col-span-1">
-            <div className="kawaii-card bg-white p-6 mb-6">
-              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
+            <div className="aesthetic-card p-6 mb-6">
+              <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
                 ➕ Agregar Dibujo o Nota
               </h2>
               <form onSubmit={handleAddNote}>
@@ -202,35 +221,35 @@ export default function Manuel() {
                     value={noteTitle}
                     onChange={(e) => setNoteTitle(e.target.value)}
                     required
-                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl focus:border-[var(--soft-pink)] focus:outline-none"
+                    className="w-full p-3 border-2 border-[var(--cream)] border-opacity-30 rounded-xl focus:border-[var(--cream)] focus:outline-none bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70"
                     placeholder="Título..."
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
+                  <label className="block text-[var(--cream)] font-semibold mb-2">
                     Nota (opcional si hay imagen)
                   </label>
                   <textarea
                     value={noteContent}
                     onChange={(e) => setNoteContent(e.target.value)}
-                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl h-24 focus:border-[var(--soft-pink)] focus:outline-none resize-none"
+                    className="w-full p-3 border-2 border-[var(--cream)] border-opacity-30 rounded-xl h-24 focus:border-[var(--cream)] focus:outline-none resize-none bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70"
                     placeholder="Escribe algo bonito..."
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
+                  <label className="block text-[var(--cream)] font-semibold mb-2">
                     Dibujo/Imagen
                   </label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setNoteImage(e.target.files?.[0] || null)}
-                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--pastel-pink)] file:text-[var(--coffee-brown)] hover:file:bg-[var(--soft-pink)]"
+                    className="w-full p-3 border-2 border-[var(--cream)] border-opacity-30 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--coffee-light)] file:text-[var(--cream)] hover:file:bg-[var(--coffee-medium)] bg-[rgba(254,247,237,0.1)]"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[var(--soft-pink)] text-[var(--coffee-brown)] p-3 rounded-xl font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
+                  className="w-full bg-[var(--coffee-light)] text-[var(--cream)] p-3 rounded-xl font-semibold hover:bg-[var(--coffee-medium)] transition-colors drop-shadow-lg"
                 >
                   🎨 Agregar al Sitio
                 </button>
@@ -238,13 +257,13 @@ export default function Manuel() {
             </div>
 
             {/* Music Upload */}
-            <div className="kawaii-card bg-white p-6">
-              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
+            <div className="aesthetic-card p-6">
+              <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
                 🎵 Agregar Música
               </h2>
               <form onSubmit={handleUploadMusic}>
                 <div className="mb-4">
-                  <label className="block text-[var(--coffee-brown)] font-semibold mb-2">
+                  <label className="block text-[var(--cream)] font-semibold mb-2">
                     Archivo MP3/MP4
                   </label>
                   <input
@@ -252,12 +271,12 @@ export default function Manuel() {
                     accept="audio/*,video/*"
                     onChange={(e) => setSelectedMusic(e.target.files?.[0] || null)}
                     required
-                    className="w-full p-3 border-2 border-[var(--pastel-pink)] rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--pastel-pink)] file:text-[var(--coffee-brown)] hover:file:bg-[var(--soft-pink)]"
+                    className="w-full p-3 border-2 border-[var(--cream)] border-opacity-30 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--coffee-light)] file:text-[var(--cream)] hover:file:bg-[var(--coffee-medium)] bg-[rgba(254,247,237,0.1)]"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[var(--soft-pink)] text-[var(--coffee-brown)] p-3 rounded-xl font-semibold hover:bg-[var(--pastel-pink)] transition-colors"
+                  className="w-full bg-[var(--coffee-light)] text-[var(--cream)] p-3 rounded-xl font-semibold hover:bg-[var(--coffee-medium)] transition-colors drop-shadow-lg"
                 >
                   🎶 Agregar a Playlist
                 </button>
@@ -269,26 +288,26 @@ export default function Manuel() {
           <div className="lg:col-span-2 space-y-6">
             {/* Notes/Drawings */}
             <div>
-              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
+              <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
                 🎨 Dibujos y Notas Subidos ({notes.length})
               </h2>
               {notes.length === 0 ? (
-                <div className="kawaii-card bg-white p-8 text-center">
-                  <p className="text-[var(--coffee-brown)] opacity-75 text-lg">
+                <div className="aesthetic-card p-8 text-center">
+                  <p className="text-[var(--cream)] opacity-75 text-lg">
                     Aún no has subido nada. ¡Agrega dibujos y notas para Kimberly! 💕
                   </p>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-4">
                   {notes.map((note) => (
-                    <div key={note._id} className="kawaii-card bg-white p-4">
+                    <div key={note._id} className="aesthetic-card p-4">
                       <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
+                        <h3 className="text-lg font-semibold text-[var(--cream)]">
                           {note.title}
                         </h3>
                         <button
                           onClick={() => handleDeleteNote(note._id)}
-                          className="text-red-500 hover:text-red-700 text-xl"
+                          className="text-red-300 hover:text-red-100 text-xl"
                         >
                           🗑️
                         </button>
@@ -301,11 +320,11 @@ export default function Manuel() {
                         />
                       )}
                       {note.content && (
-                        <p className="text-[var(--coffee-brown)] whitespace-pre-wrap text-sm">
+                        <p className="text-[var(--cream)] whitespace-pre-wrap text-sm">
                           {note.content}
                         </p>
                       )}
-                      <p className="text-xs text-[var(--coffee-brown)] opacity-50 mt-2">
+                      <p className="text-xs text-[var(--cream)] opacity-50 mt-2">
                         📅 {new Date(note.date).toLocaleDateString()}
                       </p>
                     </div>
@@ -316,24 +335,24 @@ export default function Manuel() {
 
             {/* Music Library */}
             <div>
-              <h2 className="text-2xl font-bold text-[var(--coffee-brown)] mb-4">
+              <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
                 🎵 Playlist de Música ({musicFiles.length})
               </h2>
               {musicFiles.length === 0 ? (
-                <div className="kawaii-card bg-white p-8 text-center">
-                  <p className="text-[var(--coffee-brown)] opacity-75 text-lg">
+                <div className="aesthetic-card p-8 text-center">
+                  <p className="text-[var(--cream)] opacity-75 text-lg">
                     No hay música subida. ¡Agrega canciones para el sitio! 🎶
                   </p>
                 </div>
               ) : (
                 <div className="space-y-3">
                   {musicFiles.map((music) => (
-                    <div key={music._id} className="kawaii-card bg-white p-4">
+                    <div key={music._id} className="aesthetic-card p-4">
                       <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-semibold text-[var(--coffee-brown)]">
+                        <h3 className="text-lg font-semibold text-[var(--cream)]">
                           {music.name}
                         </h3>
-                        <span className="text-sm text-[var(--coffee-brown)] opacity-75">
+                        <span className="text-sm text-[var(--cream)] opacity-75">
                           #{music.order}
                         </span>
                       </div>
@@ -350,11 +369,11 @@ export default function Manuel() {
 
         {/* Message Display */}
         {message && (
-          <div className="fixed bottom-4 right-4 kawaii-card bg-white p-4 max-w-sm">
-            <p className="text-[var(--coffee-brown)]">{message}</p>
+          <div className="fixed bottom-4 right-4 aesthetic-card p-4 max-w-sm">
+            <p className="text-[var(--cream)]">{message}</p>
             <button
               onClick={() => setMessage('')}
-              className="absolute top-2 right-2 text-[var(--coffee-brown)] opacity-50 hover:opacity-100"
+              className="absolute top-2 right-2 text-[var(--cream)] opacity-50 hover:opacity-100"
             >
               ✕
             </button>

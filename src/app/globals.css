@@ -58,6 +58,72 @@ body {
   }
 }
 
+/* Mobile-first responsive improvements */
+@media (max-width: 768px) {
+  .aesthetic-card {
+    margin: 0 1rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .notebook-note {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .floating-heart, .floating-cat {
+    font-size: 2rem;
+  }
+
+  /* Better text centering on mobile */
+  .text-center {
+    text-align: center;
+  }
+
+  /* Improved spacing for mobile */
+  .p-4 {
+    padding: 1rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aesthetic-card {
+    margin: 0 0.5rem;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  .floating-heart, .floating-cat {
+    font-size: 1.5rem;
+  }
+
+  /* Stack columns vertically on very small screens */
+  .columns-1, .columns-2, .columns-3 {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+}
+
 /* Aesthetic glass-morphism cards */
 .aesthetic-card {
   border-radius: 24px;

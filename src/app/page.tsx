@@ -55,15 +55,15 @@ export default function Home() {
       )}
 
       {/* Header */}
-      <header className="relative text-center py-16 mx-4 mt-8">
-        <div className="aesthetic-card p-8 max-w-2xl mx-auto">
-          <h1 className="text-6xl font-bold text-[var(--cream)] mb-6 animate-pulse drop-shadow-lg">
+      <header className="relative text-center py-12 md:py-16 px-4 mt-8">
+        <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
             ☕ Para Kimberly ☕
           </h1>
-          <p className="text-2xl text-[var(--cream)] opacity-90 mb-6">
+          <p className="text-lg md:text-2xl text-[var(--cream)] opacity-90 mb-4 md:mb-6 px-2">
             Un rincón aesthetic de amor y creatividad
           </p>
-          <div className="flex justify-center space-x-6 text-3xl">
+          <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">
             <span className="drop-shadow-lg">🎨</span>
             <span className="drop-shadow-lg">💌</span>
             <span className="drop-shadow-lg">📸</span>
@@ -74,8 +74,8 @@ export default function Home() {
       </header>
 
       {/* Collage */}
-      <main className="relative max-w-6xl mx-auto p-4 pb-20">
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+      <main className="relative max-w-6xl mx-auto px-4 py-8 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {memories.map((memory, index) => (
             <div
               key={memory._id}
