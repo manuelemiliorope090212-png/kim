@@ -16,8 +16,11 @@ export default function GlobalMusicPlayer() {
     audioRef
   } = useMusic();
 
+  console.log('🎵 GlobalMusicPlayer rendered - musicFiles:', musicFiles.length, 'currentSongIndex:', currentSongIndex, 'isPlaying:', isPlaying);
+
   // Sync when song changes (triggered by server updates)
   useEffect(() => {
+    console.log('🎵 useEffect triggered for sync - musicFiles.length:', musicFiles.length);
     if (musicFiles.length === 0) return;
 
     const checkForSongChanges = async () => {
