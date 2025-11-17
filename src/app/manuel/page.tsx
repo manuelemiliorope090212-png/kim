@@ -17,7 +17,7 @@ interface MusicFile {
   _id: string;
   name: string;
   url: string;
-  isActive: boolean;
+  order: number;
 }
 
 export default function Manuel() {
