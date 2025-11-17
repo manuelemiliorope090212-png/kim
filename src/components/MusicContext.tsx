@@ -48,28 +48,46 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const playSong = async (index: number) => {
-    if (!audioRef.current || musicFiles.length === 0) return;
+    console.log('🎵 playSong called with index:', index);
+    if (!audioRef.current || musicFiles.length === 0) {
+      console.error('❌ No audio ref or no music files');
+      return;
+    }
 
     const music = musicFiles[index];
-    if (!music) return;
+    if (!music) {
+      console.error('❌ No music found at index:', index);
+      return;
+    }
+
+    console.log('🎵 Playing song:', music.name, 'URL:', music.url);
 
     try {
       // Set the source and load
       audioRef.current.src = music.url;
+      console.log('🎵 Set audio src to:', music.url);
       audioRef.current.load(); // Force reload for mobile compatibility
+      console.log('🎵 Called audio.load()');
 
       // Wait a bit for loading on mobile
+      console.log('🎵 Waiting 100ms for loading...');
       await new Promise(resolve => setTimeout(resolve, 100));
 
+      console.log('🎵 Attempting to play...');
       // Try to play
       const playPromise = audioRef.current.play();
       if (playPromise !== undefined) {
+        console.log('🎵 Play promise created, awaiting...');
         await playPromise;
+        console.log('✅ Audio started playing successfully!');
         setIsPlaying(true);
         setCurrentSongIndex(index);
+      } else {
+        console.warn('⚠️ Play promise is undefined');
       }
     } catch (err) {
-      console.error('Error playing:', err);
+      console.error('❌ Error playing:', err);
+      console.error('❌ Error details:', err.message, err.name);
       // On mobile, this might fail due to autoplay restrictions
       // The audio will be prepared but won't play until user interaction
       setCurrentSongIndex(index);

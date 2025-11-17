@@ -37,26 +37,36 @@ export default function GlobalMusicPlayer() {
             }
           }}
           onCanPlayThrough={() => {
-            console.log('Audio can play through');
+            console.log('🎵 onCanPlayThrough triggered');
+            console.log('🎵 isPlaying:', isPlaying, 'currentTime:', currentTime);
             if (audioRef.current && isPlaying) {
               const audio = audioRef.current;
+              console.log('🎵 Audio duration:', audio.duration);
               if (currentTime < audio.duration) {
                 audio.currentTime = currentTime;
+                console.log('🎵 Set currentTime to:', currentTime);
               } else {
                 audio.currentTime = 0;
+                console.log('🎵 Reset currentTime to 0 (invalid time)');
               }
               // Only try to play if we have user interaction context
               // On mobile, this might fail due to autoplay restrictions
+              console.log('🎵 Attempting to play from onCanPlayThrough...');
               const playPromise = audio.play();
               if (playPromise !== undefined) {
                 playPromise.then(() => {
-                  console.log('Audio started playing');
+                  console.log('✅ Audio started playing from onCanPlayThrough');
                 }).catch(err => {
-                  console.error('Autoplay prevented:', err);
+                  console.error('❌ Autoplay prevented in onCanPlayThrough:', err);
+                  console.error('❌ Error details:', err.message, err.name);
                   // On mobile, mark as not playing since autoplay failed
                   setIsPlaying(false);
                 });
+              } else {
+                console.warn('⚠️ Play promise is undefined in onCanPlayThrough');
               }
+            } else {
+              console.log('🎵 Not playing or no audio ref in onCanPlayThrough');
             }
           }}
           onEnded={() => {
@@ -74,12 +84,21 @@ export default function GlobalMusicPlayer() {
             setCurrentTime(audio.currentTime);
           }}
           onError={(e) => {
-            console.error('Error loading audio:', e);
+            console.error('❌ Error loading audio:', e);
+            console.error('❌ Audio error details:', e.target?.error);
             const nextIndex = (currentSongIndex + 1) % musicFiles.length;
+            console.log('🎵 Trying next song due to error:', nextIndex);
             if (audioRef.current) {
               audioRef.current.src = musicFiles[nextIndex].url;
             }
           }}
+          onLoadStart={() => console.log('🎵 Audio load started')}
+          onLoadedData={() => console.log('🎵 Audio data loaded')}
+          onLoadedMetadata={() => console.log('🎵 Audio metadata loaded')}
+          onProgress={() => console.log('🎵 Audio progress event')}
+          onStalled={() => console.log('🎵 Audio stalled')}
+          onSuspend={() => console.log('🎵 Audio suspended')}
+          onWaiting={() => console.log('🎵 Audio waiting')}
         />
       )}
     </>

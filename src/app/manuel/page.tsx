@@ -533,13 +533,17 @@ export default function Manuel() {
                           onDrop={(e) => handleDrop(e, index)}
                           onDragEnd={handleDragEnd}
                           onClick={async () => {
+                            console.log('🎵 Song clicked:', music.name, 'index:', index);
                             try {
+                              console.log('🎵 Calling playSong...');
                               await playSong(index);
+                              console.log('🎵 playSong completed successfully');
                               setAutoplayFailed(false);
                               setMessage(`🎵 Reproduciendo: ${music.name}`);
                               setTimeout(() => setMessage(''), 3000);
 
                               // Update server with new song selection
+                              console.log('🎵 Updating server with song selection...');
                               await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
@@ -548,8 +552,9 @@ export default function Manuel() {
                                   currentTime: 0
                                 })
                               });
+                              console.log('🎵 Server updated successfully');
                             } catch (error) {
-                              console.error('Error playing song:', error);
+                              console.error('❌ Error in song click handler:', error);
                               setAutoplayFailed(true);
                               setMessage('En móvil, usa los controles de audio visibles 📱');
                               setTimeout(() => setMessage(''), 5000);
