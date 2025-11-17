@@ -123,7 +123,6 @@ export default function GlobalMusicPlayer() {
             }
           }}
           onLoadStart={() => console.log('🎵 Audio load started')}
-          onLoadedData={() => console.log('🎵 Audio data loaded')}
           onLoadedMetadata={() => console.log('🎵 Audio metadata loaded')}
           onProgress={() => console.log('🎵 Audio progress event')}
           onStalled={() => console.log('🎵 Audio stalled')}
