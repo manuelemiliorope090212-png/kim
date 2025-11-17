@@ -14,8 +14,49 @@ export default function GlobalMusicPlayer() {
     audioRef
   } = useMusic();
 
-  // Removed automatic 30-second sync as requested
-  // Only sync when manually triggered or when song changes
+  // Sync when song changes (triggered by server updates)
+  useEffect(() => {
+    if (musicFiles.length === 0) return;
+
+    const checkForSongChanges = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.currentSong) {
+            const serverSongIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
+            if (serverSongIndex !== -1 && serverSongIndex !== currentSongIndex) {
+              console.log('🎵 Server song changed, updating local player:', data.currentSong.name);
+              // Update immediately when server song changes
+              setCurrentSongIndex(serverSongIndex);
+              setCurrentTime(data.currentTime);
+              setIsPlaying(true); // Start playing the new song
+              if (audioRef.current) {
+                audioRef.current.src = musicFiles[serverSongIndex].url;
+                audioRef.current.currentTime = data.currentTime;
+                // Try to play immediately
+                const playPromise = audioRef.current.play();
+                if (playPromise !== undefined) {
+                  playPromise.catch(err => {
+                    console.error('❌ Could not auto-play new song:', err);
+                    setIsPlaying(false);
+                  });
+                }
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error checking for song changes:', error);
+      }
+    };
+
+    // Check immediately and then every 2 seconds for faster sync
+    checkForSongChanges();
+    const interval = setInterval(checkForSongChanges, 2000);
+
+    return () => clearInterval(interval);
+  }, [musicFiles, currentSongIndex, isPlaying, setCurrentSongIndex, setCurrentTime, setIsPlaying]);
 
   return (
     <>

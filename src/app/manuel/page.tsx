@@ -542,7 +542,7 @@ export default function Manuel() {
                               setMessage(`🎵 Reproduciendo: ${music.name}`);
                               setTimeout(() => setMessage(''), 3000);
 
-                              // Update server with new song selection
+                              // Update server with new song selection - this will trigger sync for all users
                               console.log('🎵 Updating server with song selection...');
                               await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
                                 method: 'POST',
@@ -552,7 +552,7 @@ export default function Manuel() {
                                   currentTime: 0
                                 })
                               });
-                              console.log('🎵 Server updated successfully');
+                              console.log('🎵 Server updated successfully - all users should now sync to this song');
                             } catch (error) {
                               console.error('❌ Error in song click handler:', error);
                               setAutoplayFailed(true);
