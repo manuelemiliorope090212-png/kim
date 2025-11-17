@@ -8,8 +8,19 @@ cloudinary.config({
 
 const uploadToCloudinary = (file, folder = 'memories') => {
   return new Promise((resolve, reject) => {
+    // Configuración especial para archivos de audio
+    const options = {
+      folder,
+      resource_type: 'auto' // Permite detectar automáticamente el tipo de archivo
+    };
+
+    // Si es carpeta de música, especificar que es audio
+    if (folder === 'manuel-music') {
+      options.resource_type = 'video'; // Cloudinary trata audio como video
+    }
+
     cloudinary.uploader.upload_stream(
-      { folder },
+      options,
       (error, result) => {
         if (error) reject(error);
         else resolve(result);

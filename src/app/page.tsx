@@ -192,7 +192,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative text-center py-12 mx-4 mb-4">
         <div className="aesthetic-card p-8 max-w-lg mx-auto">
-          <p className="text-xl text-[var(--cream)] mb-2">Con amor eterno,</p>
+          <p className="text-xl text-[var(--cream)] mb-2"></p>
           <p className="text-2xl font-bold text-[var(--cream)] mb-4">Kimberly 💕</p>
           <p className="text-lg text-[var(--cream)] opacity-75 mb-6">🐱☕🎶✨</p>
           <div className="flex justify-center space-x-3">
