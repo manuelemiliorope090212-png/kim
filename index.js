@@ -186,9 +186,9 @@ app.get('/api/manuel/music/current', async (req, res) => {
       return res.status(200).json({ currentSong: null, currentTime: 0 });
     }
 
-    // Calculate current song and time based on server time
+    // Calculate current song and time based on UTC time to ensure consistency
     const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
     const elapsedMs = now.getTime() - startOfDay.getTime();
     const elapsedSeconds = elapsedMs / 1000;
 

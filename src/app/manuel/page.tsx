@@ -251,14 +251,29 @@ export default function Manuel() {
           onLoadedData={(e) => {
             const audio = e.target as HTMLAudioElement;
             if (isPlaying) {
-              audio.currentTime = currentTime;
+              // Solo ajustar currentTime si no excede la duración de la canción
+              if (currentTime < audio.duration) {
+                audio.currentTime = currentTime;
+              } else {
+                audio.currentTime = 0;
+              }
             }
           }}
           onCanPlayThrough={() => {
-            // Cuando está lista, reproduce automáticamente
-            if (isPlaying && audioRef.current) {
-              audioRef.current.currentTime = currentTime;
-              audioRef.current.play().catch(err => console.error('Error reproduciendo:', err));
+            // Cuando está lista, ajustar el tiempo actual si es razonable
+            if (audioRef.current) {
+              const audio = audioRef.current;
+              // Solo ajustar currentTime si no excede la duración de la canción
+              if (currentTime < audio.duration) {
+                audio.currentTime = currentTime;
+              } else {
+                // Si currentTime excede la duración, empezar desde el principio
+                audio.currentTime = 0;
+              }
+              // Solo reproducir si está configurado para reproducir
+              if (isPlaying) {
+                audio.play().catch(err => console.error('Error reproduciendo:', err));
+              }
             }
           }}
           onEnded={() => {
