@@ -69,12 +69,11 @@ export default function GlobalMusicPlayer() {
   return (
     <>
       {musicFiles.length > 0 && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <audio
-            ref={audioRef}
-            className="hidden"
-            src={musicFiles[currentSongIndex]?.url}
-            preload="auto"
+        <audio
+          ref={audioRef}
+          className="hidden"
+          src={musicFiles[currentSongIndex]?.url}
+          preload="auto"
           onLoadedData={(e) => {
             const audio = e.target as HTMLAudioElement;
             if (isPlaying) {
@@ -146,44 +145,7 @@ export default function GlobalMusicPlayer() {
           onStalled={() => console.log('🎵 Audio stalled')}
           onSuspend={() => console.log('🎵 Audio suspended')}
           onWaiting={() => console.log('🎵 Audio waiting')}
-          />
-
-          {/* Custom play button for user interaction */}
-          {!isPlaying && (
-            <button
-              onClick={() => {
-                if (audioRef.current) {
-                  audioRef.current.play().then(() => {
-                    setIsPlaying(true);
-                    console.log('✅ User started playing music');
-                  }).catch(err => {
-                    console.error('❌ Error playing on user click:', err);
-                  });
-                }
-              }}
-              className="bg-[var(--coffee-light)] text-[var(--cream)] p-3 rounded-full shadow-lg hover:bg-[var(--coffee-medium)] transition-colors"
-              title="Reproducir música"
-            >
-              🎵 ▶️
-            </button>
-          )}
-
-          {isPlaying && (
-            <button
-              onClick={() => {
-                if (audioRef.current) {
-                  audioRef.current.pause();
-                  setIsPlaying(false);
-                  console.log('⏸️ User paused music');
-                }
-              }}
-              className="bg-[var(--coffee-medium)] text-[var(--cream)] p-3 rounded-full shadow-lg hover:bg-[var(--coffee-dark)] transition-colors"
-              title="Pausar música"
-            >
-              ⏸️
-            </button>
-          )}
-        </div>
+        />
       )}
     </>
   );
