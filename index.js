@@ -129,7 +129,7 @@ app.delete('/api/manuel/notes/:id', async (req, res) => {
 app.get('/api/manuel/music', async (req, res) => {
   try {
     await connectToDatabase();
-    const musicFiles = await Music.find({}).sort({ uploadedAt: -1 });
+    const musicFiles = await Music.find({}).sort({ order: 1 }); // Sort by order instead of uploadedAt
     res.status(200).json(musicFiles);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch music files' });
@@ -171,6 +171,63 @@ app.delete('/api/manuel/music/:id', async (req, res) => {
     res.status(200).json({ message: 'Music deleted' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete music' });
+  }
+});
+
+// Current music state API
+app.get('/api/manuel/music/current', async (req, res) => {
+  try {
+    await connectToDatabase();
+
+    // Get all music files sorted by order
+    const musicFiles = await Music.find({}).sort({ order: 1 });
+
+    if (musicFiles.length === 0) {
+      return res.status(200).json({ currentSong: null, currentTime: 0 });
+    }
+
+    // Calculate current song and time based on server time
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const elapsedMs = now.getTime() - startOfDay.getTime();
+    const elapsedSeconds = elapsedMs / 1000;
+
+    // Assume 3 minutes (180 seconds) per song
+    const songDuration = 180;
+    const totalPlaylistDuration = musicFiles.length * songDuration;
+
+    // Calculate position in loop
+    const positionInLoop = elapsedSeconds % totalPlaylistDuration;
+
+    // Find current song
+    let accumulatedTime = 0;
+    let currentSongIndex = 0;
+    let currentSongTime = 0;
+
+    for (let i = 0; i < musicFiles.length; i++) {
+      if (positionInLoop < accumulatedTime + songDuration) {
+        currentSongIndex = i;
+        currentSongTime = positionInLoop - accumulatedTime;
+        break;
+      }
+      accumulatedTime += songDuration;
+    }
+
+    const currentSong = musicFiles[currentSongIndex];
+
+    res.status(200).json({
+      currentSong: {
+        _id: currentSong._id,
+        name: currentSong.name,
+        url: currentSong.url,
+        order: currentSong.order
+      },
+      currentTime: Math.floor(currentSongTime),
+      totalSongs: musicFiles.length
+    });
+  } catch (error) {
+    console.error('Error getting current music state:', error);
+    res.status(500).json({ error: 'Failed to get current music state' });
   }
 });
 
