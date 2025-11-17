@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const MANUEL_PASSWORD = 'manuel123'; // Change this to a secure password
 
@@ -32,6 +32,10 @@ export default function Manuel() {
   // Music state
   const [musicFiles, setMusicFiles] = useState<MusicFile[]>([]);
   const [selectedMusic, setSelectedMusic] = useState<File | null>(null);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const [message, setMessage] = useState('');
 
@@ -41,6 +45,64 @@ export default function Manuel() {
       fetchMusicFiles();
     }
   }, [loggedIn]);
+
+  // Sincronización de música en vivo (igual que en la página principal)
+  useEffect(() => {
+    if (musicFiles.length === 0) return;
+
+    const syncMusic = () => {
+      // Timestamp base: medianoche del día actual
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const elapsedMs = now.getTime() - startOfDay.getTime();
+      const elapsedSeconds = elapsedMs / 1000;
+
+      // Duración estimada por canción (3 minutos = 180 segundos)
+      const songDuration = 180;
+      const totalPlaylistDuration = musicFiles.length * songDuration;
+
+      // Calcular posición en el loop infinito
+      const positionInLoop = elapsedSeconds % totalPlaylistDuration;
+
+      // Encontrar qué canción debería estar sonando
+      let accumulatedTime = 0;
+      let currentSongIdx = 0;
+      let currentSongTime = 0;
+
+      for (let i = 0; i < musicFiles.length; i++) {
+        if (positionInLoop < accumulatedTime + songDuration) {
+          currentSongIdx = i;
+          currentSongTime = positionInLoop - accumulatedTime;
+          break;
+        }
+        accumulatedTime += songDuration;
+      }
+
+      setCurrentSongIndex(currentSongIdx);
+      setCurrentTime(currentSongTime);
+    };
+
+    // Sincronizar inmediatamente
+    syncMusic();
+
+    // Actualizar cada segundo para mantener sincronización
+    const interval = setInterval(syncMusic, 1000);
+
+    return () => clearInterval(interval);
+  }, [musicFiles]);
+
+  // Función para iniciar música
+  const startMusic = async () => {
+    if (!audioRef.current || musicFiles.length === 0) return;
+
+    try {
+      audioRef.current.currentTime = currentTime;
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } catch (error) {
+      console.error('Error al reproducir música:', error);
+    }
+  };
 
   const handleLogin = () => {
     if (password === MANUEL_PASSWORD) {
@@ -192,6 +254,47 @@ export default function Manuel() {
         <span className="absolute top-1/3 right-5 text-xl floating-cat">🎵</span>
       </div>
 
+      {/* Música sincronizada (siempre reproduciendo) */}
+      {musicFiles.length > 0 && (
+        <audio
+          ref={audioRef}
+          className="hidden"
+          src={musicFiles[currentSongIndex]?.url}
+          preload="auto"
+          onLoadedData={(e) => {
+            const audio = e.target as HTMLAudioElement;
+            if (isPlaying) {
+              audio.currentTime = currentTime;
+            }
+          }}
+          onCanPlayThrough={() => {
+            // Cuando está lista, reproduce automáticamente
+            if (isPlaying && audioRef.current) {
+              audioRef.current.currentTime = currentTime;
+              audioRef.current.play().catch(err => console.error('Error reproduciendo:', err));
+            }
+          }}
+          onEnded={() => {
+            // Cambiar inmediatamente a la siguiente canción para reproducción continua
+            const nextIndex = (currentSongIndex + 1) % musicFiles.length;
+            setCurrentSongIndex(nextIndex);
+          }}
+          onTimeUpdate={(e) => {
+            const audio = e.target as HTMLAudioElement;
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 1) {
+              // Re-sincronizar si hay drift significativo
+              audio.currentTime = currentTime;
+            }
+          }}
+          onError={(e) => {
+            console.error('Error cargando audio:', e);
+            // Intentar pasar a la siguiente canción si hay error
+            const nextIndex = (currentSongIndex + 1) % musicFiles.length;
+            setCurrentSongIndex(nextIndex);
+          }}
+        />
+      )}
+
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="text-center py-8 md:py-12 mb-8">
           <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
@@ -333,10 +436,10 @@ export default function Manuel() {
               )}
             </div>
 
-            {/* Music Library */}
+            {/* Canción Actual */}
             <div>
               <h2 className="text-2xl font-bold text-[var(--cream)] mb-4">
-                🎵 Playlist de Música ({musicFiles.length})
+                🎵 Canción Reproduciendo Ahora
               </h2>
               {musicFiles.length === 0 ? (
                 <div className="aesthetic-card p-8 text-center">
@@ -345,22 +448,29 @@ export default function Manuel() {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {musicFiles.map((music) => (
-                    <div key={music._id} className="aesthetic-card p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-semibold text-[var(--cream)]">
-                          {music.name}
-                        </h3>
-                        <span className="text-sm text-[var(--cream)] opacity-75">
-                          #{music.order}
-                        </span>
-                      </div>
-                      <audio controls className="w-full">
-                        <source src={music.url} type="audio/mpeg" />
-                      </audio>
+                <div className="aesthetic-card p-6">
+                  <div className="text-center mb-4">
+                    <div className="text-4xl mb-2">
+                      {isPlaying ? '🎵' : '⏸️'}
                     </div>
-                  ))}
+                    <h3 className="text-xl font-bold text-[var(--cream)] mb-2">
+                      {musicFiles[currentSongIndex]?.name}
+                    </h3>
+                    <p className="text-[var(--cream)] opacity-75">
+                      Canción {currentSongIndex + 1} de {musicFiles.length}
+                    </p>
+                    {!isPlaying && (
+                      <button
+                        onClick={startMusic}
+                        className="mt-4 px-6 py-2 bg-[var(--coffee-light)] text-[var(--cream)] rounded-lg font-semibold hover:bg-[var(--coffee-medium)] transition-colors"
+                      >
+                        ▶️ Reproducir Música
+                      </button>
+                    )}
+                  </div>
+                  <div className="text-sm text-[var(--cream)] opacity-60 text-center">
+                    <p>🎶 Música sincronizada - Todos escuchan lo mismo 🎶</p>
+                  </div>
                 </div>
               )}
             </div>
