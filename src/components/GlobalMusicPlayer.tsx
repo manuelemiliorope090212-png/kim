@@ -33,11 +33,19 @@ export default function GlobalMusicPlayer() {
               if (data.currentTime !== undefined) {
                 setCurrentTime(data.currentTime);
               }
-              // Try to play the new song if audio is available
-              if (audioRef.current && !isPlaying) {
+              // Try to play the new song
+              if (audioRef.current) {
                 audioRef.current.src = musicFiles[serverSongIndex].url;
                 audioRef.current.currentTime = data.currentTime || 0;
-                audioRef.current.play().catch(err => console.error('Error playing synced song:', err));
+                audioRef.current.play()
+                  .then(() => {
+                    console.log('✅ Synced song started playing');
+                    setIsPlaying(true);
+                  })
+                  .catch(err => {
+                    console.error('❌ Error playing synced song:', err);
+                    setIsPlaying(false);
+                  });
               }
             }
           }
