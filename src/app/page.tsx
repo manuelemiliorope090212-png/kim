@@ -26,6 +26,8 @@ export default function Home() {
   const [manuelNotes, setManuelNotes] = useState<ManuelNote[]>([]);
   const [musicPlaylist, setMusicPlaylist] = useState<any[]>([]);
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
   useEffect(() => {
     // Fetch memories
@@ -56,6 +58,51 @@ export default function Home() {
 
     setAllContent(combined);
   }, [memories, manuelNotes]);
+
+  // Sincronización de música en vivo
+  useEffect(() => {
+    if (musicPlaylist.length === 0) return;
+
+    const syncMusic = () => {
+      // Timestamp base: medianoche del día actual (en zona horaria del usuario)
+      const now = new Date();
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const elapsedMs = now.getTime() - startOfDay.getTime();
+      const elapsedSeconds = elapsedMs / 1000;
+
+      // Duración estimada por canción (3 minutos = 180 segundos)
+      const songDuration = 180;
+      const totalPlaylistDuration = musicPlaylist.length * songDuration;
+
+      // Calcular posición en el loop infinito
+      const positionInLoop = elapsedSeconds % totalPlaylistDuration;
+
+      // Encontrar qué canción debería estar sonando
+      let accumulatedTime = 0;
+      let currentSongIdx = 0;
+      let currentSongTime = 0;
+
+      for (let i = 0; i < musicPlaylist.length; i++) {
+        if (positionInLoop < accumulatedTime + songDuration) {
+          currentSongIdx = i;
+          currentSongTime = positionInLoop - accumulatedTime;
+          break;
+        }
+        accumulatedTime += songDuration;
+      }
+
+      setCurrentSongIndex(currentSongIdx);
+      setCurrentTime(currentSongTime);
+    };
+
+    // Sincronizar inmediatamente
+    syncMusic();
+
+    // Actualizar cada segundo para mantener sincronización
+    const interval = setInterval(syncMusic, 1000);
+
+    return () => clearInterval(interval);
+  }, [musicPlaylist]);
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
   const getRandomSize = () => Math.random() > 0.5 ? 'w-full' : 'w-3/4 mx-auto';
@@ -144,13 +191,21 @@ export default function Home() {
         <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">✨</span>
       </div>
 
-      {/* Background Music Playlist */}
+      {/* Background Music Sincronizada */}
       {musicPlaylist.length > 0 && (
-        <audio autoPlay loop className="hidden">
-          {musicPlaylist.map((music) => (
-            <source key={music._id} src={music.url} type="audio/mpeg" />
-          ))}
-        </audio>
+        <audio
+          autoPlay
+          className="hidden"
+          src={musicPlaylist[currentSongIndex]?.url}
+          onLoadedData={(e) => {
+            const audio = e.target as HTMLAudioElement;
+            audio.currentTime = currentTime;
+          }}
+          onEnded={() => {
+            // Cuando termina una canción, el useEffect se encargará de cambiar a la siguiente
+            setCurrentSongIndex((prev) => (prev + 1) % musicPlaylist.length);
+          }}
+        />
       )}
 
       {/* Header */}
