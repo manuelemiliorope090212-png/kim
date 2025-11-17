@@ -119,6 +119,26 @@ export default function Home() {
     }
   };
 
+  // Efecto para reproducir automáticamente cuando cambia la canción (si ya está activada)
+  useEffect(() => {
+    if (isPlaying && audioRef.current && musicPlaylist.length > 0) {
+      const playCurrentSong = async () => {
+        try {
+          // Pequeño delay para asegurar que el src se haya actualizado
+          setTimeout(async () => {
+            if (audioRef.current) {
+              audioRef.current.currentTime = currentTime;
+              await audioRef.current.play();
+            }
+          }, 100);
+        } catch (error) {
+          console.error('Error al cambiar canción:', error);
+        }
+      };
+      playCurrentSong();
+    }
+  }, [currentSongIndex, isPlaying, musicPlaylist.length]);
+
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
   const getRandomSize = () => Math.random() > 0.5 ? 'w-full' : 'w-3/4 mx-auto';
 
@@ -212,22 +232,37 @@ export default function Home() {
           ref={audioRef}
           className="hidden"
           src={musicPlaylist[currentSongIndex]?.url}
+          preload="auto"
           onLoadedData={(e) => {
             const audio = e.target as HTMLAudioElement;
             if (isPlaying) {
               audio.currentTime = currentTime;
             }
           }}
+          onCanPlayThrough={() => {
+            // Cuando la canción está completamente cargada y lista
+            if (isPlaying && audioRef.current) {
+              audioRef.current.currentTime = currentTime;
+              audioRef.current.play().catch(err => console.error('Error reproduciendo:', err));
+            }
+          }}
           onEnded={() => {
-            // Cuando termina una canción, el useEffect se encargará de cambiar a la siguiente
-            setCurrentSongIndex((prev) => (prev + 1) % musicPlaylist.length);
+            // Cambiar inmediatamente a la siguiente canción para reproducción continua
+            const nextIndex = (currentSongIndex + 1) % musicPlaylist.length;
+            setCurrentSongIndex(nextIndex);
           }}
           onTimeUpdate={(e) => {
             const audio = e.target as HTMLAudioElement;
             if (isPlaying && Math.abs(audio.currentTime - currentTime) > 1) {
-              // Re-sincronizar si hay drift
+              // Re-sincronizar si hay drift significativo
               audio.currentTime = currentTime;
             }
+          }}
+          onError={(e) => {
+            console.error('Error cargando audio:', e);
+            // Intentar pasar a la siguiente canción si hay error
+            const nextIndex = (currentSongIndex + 1) % musicPlaylist.length;
+            setCurrentSongIndex(nextIndex);
           }}
         />
       )}
