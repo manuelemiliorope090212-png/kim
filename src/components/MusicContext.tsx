@@ -14,11 +14,13 @@ interface MusicContextType {
   currentSongIndex: number;
   currentTime: number;
   isPlaying: boolean;
+  autoplayFailed: boolean;
   setMusicFiles: (files: MusicFile[]) => void;
   setCurrentSongIndex: (index: number) => void;
   setCurrentTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
-  playSong: (index: number) => void;
+  setAutoplayFailed: (failed: boolean) => void;
+  playSong: (index: number) => Promise<void>;
   seekTo: (time: number) => void;
   audioRef: React.RefObject<HTMLAudioElement>;
 }
@@ -42,20 +44,39 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [autoplayFailed, setAutoplayFailed] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const playSong = (index: number) => {
+  const playSong = async (index: number) => {
     if (!audioRef.current || musicFiles.length === 0) return;
 
     const music = musicFiles[index];
     if (!music) return;
 
-    audioRef.current.src = music.url;
-    audioRef.current.currentTime = 0;
-    audioRef.current.play().then(() => {
-      setIsPlaying(true);
+    try {
+      // Set the source and load
+      audioRef.current.src = music.url;
+      audioRef.current.load(); // Force reload for mobile compatibility
+
+      // Wait a bit for loading on mobile
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Try to play
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+        setIsPlaying(true);
+        setCurrentSongIndex(index);
+      }
+    } catch (err) {
+      console.error('Error playing:', err);
+      // On mobile, this might fail due to autoplay restrictions
+      // The audio will be prepared but won't play until user interaction
       setCurrentSongIndex(index);
-    }).catch(err => console.error('Error playing:', err));
+      setAutoplayFailed(true);
+      // Don't set isPlaying to true if autoplay failed
+      throw err; // Re-throw so caller can handle it
+    }
   };
 
   const seekTo = (time: number) => {
@@ -73,10 +94,12 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     currentSongIndex,
     currentTime,
     isPlaying,
+    autoplayFailed,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
+    setAutoplayFailed,
     playSong,
     seekTo,
     audioRef,

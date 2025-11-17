@@ -36,10 +36,12 @@ export default function Manuel() {
     currentSongIndex,
     currentTime,
     isPlaying,
+    autoplayFailed,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
+    setAutoplayFailed,
     playSong,
     seekTo,
     audioRef
@@ -122,9 +124,15 @@ export default function Manuel() {
     if (musicFiles.length === 0) return;
 
     try {
-      playSong(currentSongIndex);
+      await playSong(currentSongIndex);
+      setAutoplayFailed(false);
+      setMessage('Música iniciada! 🎵');
+      setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       console.error('Error al reproducir música:', error);
+      setAutoplayFailed(true);
+      setMessage('En móvil, toca el botón de play en el reproductor de audio visible 📱');
+      setTimeout(() => setMessage(''), 5000);
     }
   };
 
@@ -470,6 +478,15 @@ export default function Manuel() {
                           </button>
                         )}
                       </div>
+ 
+                      {/* Mobile autoplay warning */}
+                      {autoplayFailed && (
+                        <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg text-center">
+                          <p className="text-yellow-800 text-sm">
+                            📱 En móvil: usa los controles de audio visibles abajo para reproducir la música
+                          </p>
+                        </div>
+                      )}
  
                       {/* Progress Bar */}
                       <div className="mt-4">
