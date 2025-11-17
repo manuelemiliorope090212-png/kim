@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useMusic } from '../components/MusicContext';
 
 interface Memory {
   _id: string;
@@ -22,6 +23,7 @@ interface ManuelNote {
 type ContentItem = (Memory | ManuelNote) & { source: 'memory' | 'manuel' };
 
 export default function Home() {
+  const { setMusicFiles } = useMusic();
   const [memories, setMemories] = useState<Memory[]>([]);
   const [manuelNotes, setManuelNotes] = useState<ManuelNote[]>([]);
   const [musicPlaylist, setMusicPlaylist] = useState<any[]>([]);
@@ -50,7 +52,11 @@ export default function Home() {
     // Fetch music playlist
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music`)
       .then(res => res.json())
-      .then(data => setMusicPlaylist(data.sort((a: any, b: any) => a.order - b.order)))
+      .then(data => {
+        const sortedData = data.sort((a: any, b: any) => a.order - b.order);
+        setMusicPlaylist(sortedData);
+        setMusicFiles(sortedData); // Populate the context
+      })
       .catch(err => console.error('Error fetching music playlist:', err));
   }, []);
 
