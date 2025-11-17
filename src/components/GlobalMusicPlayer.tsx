@@ -33,19 +33,12 @@ export default function GlobalMusicPlayer() {
               if (data.currentTime !== undefined) {
                 setCurrentTime(data.currentTime);
               }
-              // Try to play the new song
+              // Set the new song and let onCanPlayThrough handle playing
               if (audioRef.current) {
+                console.log('🎵 Setting synced song src and currentTime');
                 audioRef.current.src = musicFiles[serverSongIndex].url;
                 audioRef.current.currentTime = data.currentTime || 0;
-                audioRef.current.play()
-                  .then(() => {
-                    console.log('✅ Synced song started playing');
-                    setIsPlaying(true);
-                  })
-                  .catch(err => {
-                    console.error('❌ Error playing synced song:', err);
-                    setIsPlaying(false);
-                  });
+                setIsPlaying(true); // Set playing state so onCanPlayThrough will play it
               }
             }
           }
