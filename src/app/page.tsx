@@ -288,7 +288,7 @@ export default function Home() {
               <div className="mb-8">
                 <span className="text-6xl mb-4 block animate-bounce">🔒</span>
                 <h2 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-4 drop-shadow-lg">
-                  Bienvenida Kimberly
+                  Olaaaaa Kim
                 </h2>
                 <p className="text-lg text-[var(--cream)] opacity-75 mb-6">
                   💕🐱☕
@@ -323,7 +323,7 @@ export default function Home() {
               </div>
 
               <div className="mt-8 text-sm text-[var(--cream)] opacity-60">
-                <p className="drop-shadow-lg">💕 Con amor eterno 💕</p>
+                <p className="drop-shadow-lg">💕 ---------  💕</p>
               </div>
             </div>
           </div>
