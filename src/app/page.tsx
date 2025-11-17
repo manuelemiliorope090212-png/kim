@@ -36,17 +36,6 @@ export default function Home() {
   const [showPasswordError, setShowPasswordError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Device detection - redirect PC users to /pc
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-                      window.innerWidth < 768;
-      if (!isMobile) {
-        console.log('PC detected, redirecting to /pc');
-        window.location.href = '/pc';
-      }
-    }
-  }, []);
 
   useEffect(() => {
     // Fetch memories
