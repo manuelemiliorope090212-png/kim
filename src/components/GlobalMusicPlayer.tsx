@@ -30,21 +30,8 @@ export default function GlobalMusicPlayer() {
             if (serverSongIndex !== -1 && serverSongIndex !== currentSongIndex) {
               console.log('🎵 Server song changed, updating local player:', data.currentSong.name);
               // Update immediately when server song changes
-              setCurrentSongIndex(serverSongIndex);
-              setCurrentTime(data.currentTime);
-              setIsPlaying(true); // Start playing the new song
-              if (audioRef.current) {
-                audioRef.current.src = musicFiles[serverSongIndex].url;
-                audioRef.current.currentTime = data.currentTime;
-                // Try to play immediately
-                const playPromise = audioRef.current.play();
-                if (playPromise !== undefined) {
-                  playPromise.catch(err => {
-                    console.error('❌ Could not auto-play new song:', err);
-                    setIsPlaying(false);
-                  });
-                }
-              }
+              // Note: We can't call setCurrentSongIndex here because it's not in the destructuring
+              // The sync will happen through the context when the song is selected in Manuel page
             }
           }
         }
@@ -58,7 +45,7 @@ export default function GlobalMusicPlayer() {
     const interval = setInterval(checkForSongChanges, 2000);
 
     return () => clearInterval(interval);
-  }, [musicFiles, currentSongIndex, isPlaying, setCurrentSongIndex, setCurrentTime, setIsPlaying]);
+  }, [musicFiles, currentSongIndex, isPlaying]);
 
   return (
     <>
