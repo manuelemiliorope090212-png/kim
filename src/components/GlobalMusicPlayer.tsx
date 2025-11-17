@@ -82,11 +82,10 @@ export default function GlobalMusicPlayer() {
             }
           }}
           onCanPlayThrough={() => {
-            console.log('🎵 onCanPlayThrough triggered');
-            console.log('🎵 isPlaying:', isPlaying, 'currentTime:', currentTime);
-            if (audioRef.current && isPlaying) {
+            console.log('🎵 onCanPlayThrough triggered - isPlaying:', isPlaying, 'currentTime:', currentTime, 'audio.readyState:', audioRef.current?.readyState);
+            if (audioRef.current && isPlaying && audioRef.current.paused) {
               const audio = audioRef.current;
-              console.log('🎵 Audio duration:', audio.duration);
+              console.log('🎵 Audio duration:', audio.duration, 'currentTime before:', audio.currentTime);
               if (currentTime < audio.duration) {
                 audio.currentTime = currentTime;
                 console.log('🎵 Set currentTime to:', currentTime);
@@ -94,16 +93,16 @@ export default function GlobalMusicPlayer() {
                 audio.currentTime = 0;
                 console.log('🎵 Reset currentTime to 0 (invalid time)');
               }
-              // Only try to play if we have user interaction context
+              // Only try to play if we have user interaction context and audio is paused
               // On mobile, this might fail due to autoplay restrictions
               console.log('🎵 Attempting to play from onCanPlayThrough...');
               const playPromise = audio.play();
               if (playPromise !== undefined) {
                 playPromise.then(() => {
-                  console.log('✅ Audio started playing from onCanPlayThrough');
+                  console.log('✅ Audio started playing from onCanPlayThrough - currentTime:', audio.currentTime);
                 }).catch(err => {
                   console.error('❌ Autoplay prevented in onCanPlayThrough:', err);
-                  console.error('❌ Error details:', err.message, err.name);
+                  console.error('❌ Error details:', (err as Error).message, (err as Error).name);
                   // On mobile, mark as not playing since autoplay failed
                   setIsPlaying(false);
                 });
@@ -111,7 +110,7 @@ export default function GlobalMusicPlayer() {
                 console.warn('⚠️ Play promise is undefined in onCanPlayThrough');
               }
             } else {
-              console.log('🎵 Not playing or no audio ref in onCanPlayThrough');
+              console.log('🎵 Not playing, no audio ref, or already playing in onCanPlayThrough');
             }
           }}
           onEnded={() => {
