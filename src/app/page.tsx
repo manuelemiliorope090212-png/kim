@@ -64,52 +64,34 @@ export default function Home() {
     setAllContent(combined);
   }, [memories, manuelNotes]);
 
-  // Sincronización de música en vivo
+  // Sincronización de música con el servidor
   useEffect(() => {
     if (musicPlaylist.length === 0) return;
 
-    // Detectar si es dispositivo móvil
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    const syncMusic = () => {
-      // Timestamp base: medianoche del día actual (en zona horaria del usuario)
-      const now = new Date();
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const elapsedMs = now.getTime() - startOfDay.getTime();
-      const elapsedSeconds = elapsedMs / 1000;
-
-      // Duración estimada por canción (3 minutos = 180 segundos)
-      const songDuration = 180;
-      const totalPlaylistDuration = musicPlaylist.length * songDuration;
-
-      // Calcular posición en el loop infinito
-      const positionInLoop = elapsedSeconds % totalPlaylistDuration;
-
-      // Encontrar qué canción debería estar sonando
-      let accumulatedTime = 0;
-      let currentSongIdx = 0;
-      let currentSongTime = 0;
-
-      for (let i = 0; i < musicPlaylist.length; i++) {
-        if (positionInLoop < accumulatedTime + songDuration) {
-          currentSongIdx = i;
-          currentSongTime = positionInLoop - accumulatedTime;
-          break;
+    const syncWithServer = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.currentSong) {
+            // Encontrar el índice de la canción actual en la playlist
+            const songIndex = musicPlaylist.findIndex(song => song._id === data.currentSong._id);
+            if (songIndex !== -1) {
+              setCurrentSongIndex(songIndex);
+              setCurrentTime(data.currentTime);
+            }
+          }
         }
-        accumulatedTime += songDuration;
+      } catch (error) {
+        console.error('Error syncing with server:', error);
       }
-
-      setCurrentSongIndex(currentSongIdx);
-      setCurrentTime(currentSongTime);
     };
 
-    // Sincronizar inmediatamente
-    syncMusic();
+    // Sincronizar inmediatamente al cargar
+    syncWithServer();
 
-    // En móvil: sincronizar cada 30 segundos
-    // En PC: sincronizar cada 5 minutos (300 segundos) para evitar interrupciones
-    const syncInterval = isMobile ? 30000 : 300000;
-    const interval = setInterval(syncMusic, syncInterval);
+    // Sincronizar cada 30 segundos para mantener consistencia
+    const interval = setInterval(syncWithServer, 30000);
 
     return () => clearInterval(interval);
   }, [musicPlaylist]);
@@ -392,14 +374,10 @@ export default function Home() {
             setCurrentSongIndex(nextIndex);
           }}
           onTimeUpdate={(e) => {
+            // Solo corregir si hay un drift muy grande (más de 60 segundos)
+            // Esto permite que la música fluya naturalmente pero se corrija si hay problemas grandes
             const audio = e.target as HTMLAudioElement;
-            // Detectar si es dispositivo móvil para ajustar sincronización
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const driftThreshold = isMobile ? 30 : 300; // 30s para móvil, 5 minutos para PC
-
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > driftThreshold) {
-              // En PC: drift muy grande necesario para evitar interrupciones
-              // En móvil: sincronización más frecuente pero no tan agresiva
+            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 60) {
               audio.currentTime = currentTime;
             }
           }}
