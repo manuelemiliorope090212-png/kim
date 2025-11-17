@@ -9,6 +9,8 @@ export default function GlobalMusicPlayer() {
     currentSongIndex,
     currentTime,
     isPlaying,
+    setMusicFiles,
+    setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
     audioRef
