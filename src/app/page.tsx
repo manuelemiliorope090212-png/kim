@@ -251,47 +251,98 @@ export default function Home() {
   // Si no está autenticado, mostrar pantalla de contraseña
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 flex items-center justify-center p-4">
-        <div className="aesthetic-card p-8 md:p-12 max-w-md w-full text-center">
-          <div className="mb-8">
-            <span className="text-6xl mb-4 block">🔒</span>
-            <h1 className="text-3xl md:text-4xl font-bold text-[var(--coffee)] mb-4">
-              Bienvenida Kimberly
-            </h1>
-            <p className="text-lg text-[var(--coffee)] opacity-75 mb-6">
-              💕🐱☕
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Ingresa la fecha especial..."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
-              className="w-full px-4 py-3 text-center text-xl border-2 border-[var(--coffee)] border-opacity-30 rounded-xl bg-white bg-opacity-80 focus:border-[var(--coffee)] focus:outline-none transition-all duration-300"
-              autoFocus
-            />
-
-            {showPasswordError && (
-              <p className="text-red-500 text-sm animate-pulse">
-                Fecha incorrecta 💔
-              </p>
-            )}
-
-            <button
-              onClick={checkPassword}
-              className="w-full py-3 px-6 bg-[var(--coffee)] text-white rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              ✨ Entrar ✨
-            </button>
-          </div>
-
-          <div className="mt-8 text-sm text-[var(--coffee)] opacity-60">
-            <p>💕 Con amor eterno 💕</p>
-          </div>
+      <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
+        {/* Floating Coffee Elements - mismos que el sitio principal */}
+        <div className="absolute inset-0 pointer-events-none">
+          <span className="absolute top-10 left-10 text-4xl floating-heart">☕</span>
+          <span className="absolute top-20 right-20 text-3xl floating-cat">🫖</span>
+          <span className="absolute bottom-40 left-20 text-2xl floating-heart">🍪</span>
+          <span className="absolute bottom-20 right-10 text-4xl floating-cat">🥐</span>
+          <span className="absolute top-1/2 left-5 text-3xl floating-heart">🌸</span>
+          <span className="absolute top-1/3 right-5 text-2xl floating-cat">💖</span>
+          <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🐱</span>
+          <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">✨</span>
         </div>
+
+        {/* Header igual que el sitio principal */}
+        <header className="relative text-center py-12 md:py-16 px-4 mt-8">
+          <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
+              ☕ Para Kimberly ☕
+            </h1>
+
+            <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">
+              <span className="drop-shadow-lg">🎨</span>
+              <span className="drop-shadow-lg">💌</span>
+              <span className="drop-shadow-lg">📸</span>
+              <span className="drop-shadow-lg">📝</span>
+              <span className="drop-shadow-lg">🎵</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Pantalla de contraseña con el mismo estilo */}
+        <main className="relative max-w-4xl mx-auto px-4 py-8 pb-20">
+          <div className="text-center">
+            <div className="aesthetic-card p-8 md:p-12 max-w-lg mx-auto">
+              <div className="mb-8">
+                <span className="text-6xl mb-4 block animate-bounce">🔒</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-4 drop-shadow-lg">
+                  Bienvenida Kimberly
+                </h2>
+                <p className="text-lg text-[var(--cream)] opacity-75 mb-6">
+                  💕🐱☕
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg">
+                  <input
+                    type="text"
+                    placeholder="Ingresa la fecha especial..."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
+                    className="w-full text-center text-xl bg-transparent border-none outline-none text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-60"
+                    autoFocus
+                  />
+                </div>
+
+                {showPasswordError && (
+                  <p className="text-red-400 text-sm animate-pulse drop-shadow-lg">
+                    Fecha incorrecta 💔 Inténtalo de nuevo
+                  </p>
+                )}
+
+                <button
+                  onClick={checkPassword}
+                  className="aesthetic-card px-8 py-4 text-xl font-bold text-[var(--cream)] transition-all duration-300 hover:scale-110 shadow-lg border-2 border-[var(--cream)] border-opacity-50 hover:border-opacity-80"
+                >
+                  ✨ Entrar ✨
+                </button>
+              </div>
+
+              <div className="mt-8 text-sm text-[var(--cream)] opacity-60">
+                <p className="drop-shadow-lg">💕 Con amor eterno 💕</p>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Footer igual que el sitio principal */}
+        <footer className="relative text-center py-12 mx-4 mb-4">
+          <div className="aesthetic-card p-8 max-w-lg mx-auto">
+            <p className="text-xl text-[var(--cream)] mb-2"></p>
+            <p className="text-2xl font-bold text-[var(--cream)] mb-4">Kimberly 💕</p>
+            <p className="text-lg text-[var(--cream)] opacity-75 mb-6">🐱☕🎶✨</p>
+            <div className="flex justify-center space-x-3">
+              <span className="text-3xl animate-bounce drop-shadow-lg">🌸</span>
+              <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.2s' }}>💖</span>
+              <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.4s' }}>🐱</span>
+              <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.6s' }}>☕</span>
+            </div>
+          </div>
+        </footer>
       </div>
     );
   }
