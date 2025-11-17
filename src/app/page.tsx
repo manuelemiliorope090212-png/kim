@@ -12,12 +12,24 @@ interface Memory {
 
 export default function Home() {
   const [memories, setMemories] = useState<Memory[]>([]);
+  const [activeMusic, setActiveMusic] = useState<string | null>(null);
 
   useEffect(() => {
+    // Fetch memories
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/memories`)
       .then(res => res.json())
       .then(data => setMemories(data))
       .catch(err => console.error(err));
+
+    // Fetch active music
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/active`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.url) {
+          setActiveMusic(data.url);
+        }
+      })
+      .catch(err => console.error('Error fetching active music:', err));
   }, []);
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
@@ -36,10 +48,11 @@ export default function Home() {
       </div>
 
       {/* Background Music */}
-      <audio autoPlay loop className="hidden">
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav" />
-        {/* Placeholder - replace with actual music URL */}
-      </audio>
+      {activeMusic && (
+        <audio autoPlay loop className="hidden">
+          <source src={activeMusic} type="audio/mpeg" />
+        </audio>
+      )}
 
       {/* Header */}
       <header className="relative text-center py-12 bg-gradient-to-r from-[var(--pastel-pink)] to-[var(--soft-pink)] rounded-b-3xl shadow-lg mx-4 mt-4">

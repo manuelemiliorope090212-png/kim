@@ -7,6 +7,8 @@ require('dotenv').config();
 const connectToDatabase = require('./lib/mongodb');
 const { uploadToCloudinary } = require('./lib/cloudinary');
 const Memory = require('./models/Memory');
+const ManuelNote = require('./models/ManuelNote');
+const Music = require('./models/Music');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +54,124 @@ app.post('/api/memories', upload.single('file'), async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create memory' });
+  }
+});
+
+// Manuel's Notes API
+app.get('/api/manuel/notes', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const notes = await ManuelNote.find({}).sort({ date: -1 });
+    res.status(200).json(notes);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch notes' });
+  }
+});
+
+app.post('/api/manuel/notes', upload.single('image'), async (req, res) => {
+  try {
+    await connectToDatabase();
+
+    const { title, content, type } = req.body;
+
+    let imageUrl = null;
+    if (type === 'image' && req.file) {
+      const result = await uploadToCloudinary(req.file.buffer, 'manuel-notes');
+      imageUrl = result.secure_url;
+    }
+
+    const note = new ManuelNote({
+      title,
+      content,
+      type,
+      imageUrl,
+      date: new Date(),
+    });
+
+    await note.save();
+    res.status(201).json(note);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create note' });
+  }
+});
+
+app.delete('/api/manuel/notes/:id', async (req, res) => {
+  try {
+    await connectToDatabase();
+    await ManuelNote.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Note deleted' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete note' });
+  }
+});
+
+// Music API
+app.get('/api/manuel/music', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const musicFiles = await Music.find({}).sort({ uploadedAt: -1 });
+    res.status(200).json(musicFiles);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch music files' });
+  }
+});
+
+app.get('/api/manuel/music/active', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const activeMusic = await Music.findOne({ isActive: true });
+    res.status(200).json(activeMusic || null);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch active music' });
+  }
+});
+
+app.post('/api/manuel/music', upload.single('music'), async (req, res) => {
+  try {
+    await connectToDatabase();
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No music file provided' });
+    }
+
+    const result = await uploadToCloudinary(req.file.buffer, 'manuel-music');
+
+    const music = new Music({
+      name: req.file.originalname,
+      url: result.secure_url,
+      isActive: false,
+    });
+
+    await music.save();
+    res.status(201).json(music);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to upload music' });
+  }
+});
+
+app.put('/api/manuel/music/:id/activate', async (req, res) => {
+  try {
+    await connectToDatabase();
+
+    // Deactivate all music first
+    await Music.updateMany({}, { isActive: false });
+
+    // Activate the selected music
+    const music = await Music.findByIdAndUpdate(
+      req.params.id,
+      { isActive: true },
+      { new: true }
+    );
+
+    if (!music) {
+      return res.status(404).json({ error: 'Music not found' });
+    }
+
+    res.status(200).json(music);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to activate music' });
   }
 });
 
