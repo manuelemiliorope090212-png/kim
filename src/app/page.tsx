@@ -60,9 +60,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
             ☕ Para Kimberly ☕
           </h1>
-          <p className="text-lg md:text-2xl text-[var(--cream)] opacity-90 mb-4 md:mb-6 px-2">
-            Un rincón aesthetic de amor y creatividad
-          </p>
+
           <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">
             <span className="drop-shadow-lg">🎨</span>
             <span className="drop-shadow-lg">💌</span>
