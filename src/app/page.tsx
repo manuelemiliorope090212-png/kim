@@ -29,6 +29,9 @@ export default function Home() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [showPasswordError, setShowPasswordError] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -106,6 +109,31 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [musicPlaylist]);
 
+  // Función para validar contraseña
+  const checkPassword = () => {
+    // La fecha especial: 27 de octubre de 2025
+    const specialDate = '27/10/2025';
+    const alternativeFormats = [
+      '27/10/2025',
+      '27-10-2025',
+      '27102025',
+      '27 10 2025',
+      '27.10.2025'
+    ];
+
+    const normalizedPassword = password.trim().toLowerCase();
+
+    if (alternativeFormats.some(format => normalizedPassword === format.toLowerCase())) {
+      setIsAuthenticated(true);
+      setShowPasswordError(false);
+      // Iniciar música automáticamente al autenticar
+      setTimeout(() => startMusic(), 500);
+    } else {
+      setShowPasswordError(true);
+      setTimeout(() => setShowPasswordError(false), 3000);
+    }
+  };
+
   // Función para iniciar música después de interacción del usuario
   const startMusic = async () => {
     if (!audioRef.current || musicPlaylist.length === 0) return;
@@ -116,6 +144,14 @@ export default function Home() {
       setIsPlaying(true);
     } catch (error) {
       console.error('Error al reproducir música:', error);
+    }
+  };
+
+  // Función para detener música
+  const stopMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -212,6 +248,54 @@ export default function Home() {
     );
   };
 
+  // Si no está autenticado, mostrar pantalla de contraseña
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 flex items-center justify-center p-4">
+        <div className="aesthetic-card p-8 md:p-12 max-w-md w-full text-center">
+          <div className="mb-8">
+            <span className="text-6xl mb-4 block">🔒</span>
+            <h1 className="text-3xl md:text-4xl font-bold text-[var(--coffee)] mb-4">
+              Bienvenida Kimberly
+            </h1>
+            <p className="text-lg text-[var(--coffee)] opacity-75 mb-6">
+              💕🐱☕
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Ingresa la fecha especial..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
+              className="w-full px-4 py-3 text-center text-xl border-2 border-[var(--coffee)] border-opacity-30 rounded-xl bg-white bg-opacity-80 focus:border-[var(--coffee)] focus:outline-none transition-all duration-300"
+              autoFocus
+            />
+
+            {showPasswordError && (
+              <p className="text-red-500 text-sm animate-pulse">
+                Fecha incorrecta 💔
+              </p>
+            )}
+
+            <button
+              onClick={checkPassword}
+              className="w-full py-3 px-6 bg-[var(--coffee)] text-white rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              ✨ Entrar ✨
+            </button>
+          </div>
+
+          <div className="mt-8 text-sm text-[var(--coffee)] opacity-60">
+            <p>💕 Con amor eterno 💕</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
       {/* Floating Coffee Elements */}
@@ -279,13 +363,7 @@ export default function Home() {
             <span className="drop-shadow-lg">💌</span>
             <span className="drop-shadow-lg">📸</span>
             <span className="drop-shadow-lg">📝</span>
-            <button
-              onClick={startMusic}
-              className={`drop-shadow-lg transition-all duration-300 hover:scale-110 ${isPlaying ? 'text-green-400' : 'text-[var(--cream)] hover:text-green-400'}`}
-              title={isPlaying ? 'Música sincronizada activada' : 'Haz clic para activar la música sincronizada'}
-            >
-              {isPlaying ? '🎵' : '🔇'}
-            </button>
+            <span className="drop-shadow-lg">🎵</span>
           </div>
         </div>
       </header>
@@ -315,6 +393,18 @@ export default function Home() {
           <p className="text-xl text-[var(--cream)] mb-2"></p>
           <p className="text-2xl font-bold text-[var(--cream)] mb-4">Kimberly 💕</p>
           <p className="text-lg text-[var(--cream)] opacity-75 mb-6">🐱☕🎶✨</p>
+
+          {/* Botón de mute más visible */}
+          <div className="mb-6">
+            <button
+              onClick={isPlaying ? stopMusic : startMusic}
+              className="aesthetic-card px-8 py-4 text-2xl font-bold transition-all duration-300 hover:scale-110 shadow-lg border-2 border-[var(--cream)] border-opacity-50"
+              title={isPlaying ? 'Pausar música' : 'Reanudar música'}
+            >
+              {isPlaying ? '🔇 Pausar Música' : '🎵 Reanudar Música'}
+            </button>
+          </div>
+
           <div className="flex justify-center space-x-3">
             <span className="text-3xl animate-bounce drop-shadow-lg">🌸</span>
             <span className="text-3xl animate-bounce drop-shadow-lg" style={{ animationDelay: '0.2s' }}>💖</span>
