@@ -410,7 +410,7 @@ export default function Manuel() {
                         <img
                           src={note.imageUrl}
                           alt={note.title}
-                          className="w-full rounded-xl mb-3 max-h-96 md:max-h-48 object-contain md:object-cover"
+                          className="w-full rounded-xl mb-3 max-h-48 object-cover"
                         />
                       )}
                       {note.content && (
