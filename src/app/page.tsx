@@ -206,7 +206,7 @@ export default function Home() {
           <img
             src={isManuelNote ? (item as ManuelNote).imageUrl! : (item as Memory).content}
             alt={item.title}
-            className="w-full rounded-xl mb-4 max-h-[500px] md:max-h-72 object-contain md:object-cover"
+            className="w-full rounded-xl mb-4 max-h-[500px] md:max-h-72 object-contain md:object-cover border border-[var(--cream)] border-opacity-30"
           />
         )}
         {isText && (
