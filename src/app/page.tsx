@@ -203,11 +203,13 @@ export default function Home() {
           📅 {new Date(item.date).toLocaleDateString()}
         </p>
         {isImage && (
-          <img
-            src={isManuelNote ? (item as ManuelNote).imageUrl! : (item as Memory).content}
-            alt={item.title}
-            className="w-full rounded-xl mb-4 max-h-[500px] md:max-h-72 object-contain md:object-cover"
-          />
+          <div className="rounded-xl overflow-hidden mb-4">
+            <img
+              src={isManuelNote ? (item as ManuelNote).imageUrl! : (item as Memory).content}
+              alt={item.title}
+              className="w-full max-h-[500px] md:max-h-72 object-contain md:object-cover"
+            />
+          </div>
         )}
         {isText && (
           <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg text-[var(--cream)] whitespace-pre-wrap text-sm leading-relaxed relative">
