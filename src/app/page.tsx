@@ -257,6 +257,14 @@ export default function Home() {
           <span className="absolute top-1/3 right-5 text-2xl floating-cat">💖</span>
           <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🐱</span>
           <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">✨</span>
+          <span className="absolute top-1/4 left-1/4 text-3xl floating-heart">🍰</span>
+          <span className="absolute bottom-1/4 right-1/4 text-2xl floating-cat">🧁</span>
+          <span className="absolute top-2/3 left-1/2 text-4xl floating-heart">🎨</span>
+          <span className="absolute bottom-1/2 right-1/2 text-3xl floating-cat">💌</span>
+          <span className="absolute top-1/5 right-1/3 text-2xl floating-heart">📸</span>
+          <span className="absolute bottom-1/5 left-1/2 text-3xl floating-cat">📝</span>
+          <span className="absolute top-3/5 left-1/4 text-2xl floating-heart">🎵</span>
+          <span className="absolute bottom-2/5 right-1/3 text-4xl floating-cat">💕</span>
         </div>
 
         {/* Header igual que el sitio principal */}
