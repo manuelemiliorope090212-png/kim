@@ -29,6 +29,10 @@
   }
 }
 
+html {
+  background-color: var(--coffee-dark);
+}
+
 body {
   background: var(--coffee-dark);
   background: linear-gradient(
