@@ -249,32 +249,44 @@ export default function Home() {
       <div className="min-h-screen text-[var(--cream)] relative overflow-hidden">
         {/* Floating Coffee Elements - mismos que el sitio principal */}
         <div className="absolute inset-0 pointer-events-none">
-          <span className="absolute top-10 left-10 text-4xl floating-heart">☕</span>
-          <span className="absolute top-20 right-20 text-3xl floating-cat">☕</span>
-          <span className="absolute bottom-40 left-20 text-2xl floating-heart">☕</span>
-          <span className="absolute bottom-20 right-10 text-4xl floating-cat">☕</span>
-          <span className="absolute top-1/2 left-5 text-3xl floating-heart">☕</span>
-          <span className="absolute top-1/3 right-5 text-2xl floating-cat">☕</span>
-          <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">☕</span>
-          <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">☕</span>
-          <span className="absolute top-1/4 left-1/4 text-3xl floating-heart">☕</span>
-          <span className="absolute bottom-1/4 right-1/4 text-2xl floating-cat">☕</span>
-          <span className="absolute top-2/3 left-1/2 text-4xl floating-heart">☕</span>
-          <span className="absolute bottom-1/2 right-1/2 text-3xl floating-cat">☕</span>
-          <span className="absolute top-1/5 right-1/3 text-2xl floating-heart">☕</span>
-          <span className="absolute bottom-1/5 left-1/2 text-3xl floating-cat">☕</span>
-          <span className="absolute top-3/5 left-1/4 text-2xl floating-heart">☕</span>
-          <span className="absolute bottom-2/5 right-1/3 text-4xl floating-cat">☕</span>
-          <span className="absolute top-1/6 left-1/6 text-3xl floating-heart">☕</span>
-          <span className="absolute bottom-1/6 right-1/6 text-2xl floating-cat">☕</span>
-          <span className="absolute top-2/6 left-2/6 text-4xl floating-heart">☕</span>
-          <span className="absolute bottom-2/6 right-2/6 text-3xl floating-cat">☕</span>
-          <span className="absolute top-3/6 left-3/6 text-2xl floating-heart">☕</span>
-          <span className="absolute bottom-3/6 right-3/6 text-4xl floating-cat">☕</span>
-          <span className="absolute top-4/6 left-4/6 text-3xl floating-heart">☕</span>
-          <span className="absolute bottom-4/6 right-4/6 text-2xl floating-cat">☕</span>
-          <span className="absolute top-5/6 left-5/6 text-4xl floating-heart">☕</span>
-          <span className="absolute bottom-5/6 right-5/6 text-3xl floating-cat">☕</span>
+          {/* Emojis de café flotantes */}
+          <span className="absolute top-[5%] left-[5%] text-4xl floating-heart">☕</span>
+          <span className="absolute top-[5%] right-[5%] text-3xl floating-cat">☕</span>
+          <span className="absolute top-[15%] left-[15%] text-2xl floating-heart">☕</span>
+          <span className="absolute top-[15%] right-[15%] text-4xl floating-cat">☕</span>
+          <span className="absolute top-[25%] left-[25%] text-3xl floating-heart">☕</span>
+          <span className="absolute top-[25%] right-[25%] text-2xl floating-cat">☕</span>
+          <span className="absolute top-[35%] left-[35%] text-4xl floating-heart">☕</span>
+          <span className="absolute top-[35%] right-[35%] text-3xl floating-cat">☕</span>
+          <span className="absolute top-[45%] left-[45%] text-2xl floating-heart">☕</span>
+          <span className="absolute top-[45%] right-[45%] text-4xl floating-cat">☕</span>
+          <span className="absolute top-[55%] left-[55%] text-3xl floating-heart">☕</span>
+          <span className="absolute top-[55%] right-[55%] text-2xl floating-cat">☕</span>
+          <span className="absolute top-[65%] left-[65%] text-4xl floating-heart">☕</span>
+          <span className="absolute top-[65%] right-[65%] text-3xl floating-cat">☕</span>
+          <span className="absolute top-[75%] left-[75%] text-2xl floating-heart">☕</span>
+          <span className="absolute top-[75%] right-[75%] text-4xl floating-cat">☕</span>
+          <span className="absolute top-[85%] left-[85%] text-3xl floating-heart">☕</span>
+          <span className="absolute top-[85%] right-[85%] text-2xl floating-cat">☕</span>
+          <span className="absolute top-[95%] left-[95%] text-4xl floating-heart">☕</span>
+          <span className="absolute top-[95%] right-[95%] text-3xl floating-cat">☕</span>
+          
+          {/* Imágenes de bigmix.png como emojis flotantes */}
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] left-[10%] w-12 h-12 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] right-[10%] w-10 h-10 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] left-[30%] w-14 h-14 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] right-[30%] w-11 h-11 floating-cat opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] left-[50%] w-9 h-9 floating-heart opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] right-[50%] w-13 h-13 floating-cat opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[70%] left-[70%] w-10 h-10 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[70%] right-[70%] w-12 h-12 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[90%] left-[90%] w-8 h-8 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[90%] right-[90%] w-15 h-15 floating-cat opacity-40" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[20%] left-[80%] w-11 h-11 floating-heart opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[80%] left-[20%] w-9 h-9 floating-cat opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[40%] left-[60%] w-13 h-13 floating-heart opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[60%] left-[40%] w-10 h-10 floating-cat opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[80%] left-[80%] w-12 h-12 floating-heart opacity-50" />
         </div>
 
         {/* Header igual que el sitio principal */}
