@@ -250,21 +250,31 @@ export default function Home() {
         {/* Floating Coffee Elements - mismos que el sitio principal */}
         <div className="absolute inset-0 pointer-events-none">
           <span className="absolute top-10 left-10 text-4xl floating-heart">☕</span>
-          <span className="absolute top-20 right-20 text-3xl floating-cat">🫖</span>
-          <span className="absolute bottom-40 left-20 text-2xl floating-heart">🍪</span>
-          <span className="absolute bottom-20 right-10 text-4xl floating-cat">🥐</span>
-          <span className="absolute top-1/2 left-5 text-3xl floating-heart">🌸</span>
-          <span className="absolute top-1/3 right-5 text-2xl floating-cat">💖</span>
-          <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🐱</span>
-          <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">✨</span>
-          <span className="absolute top-1/4 left-1/4 text-3xl floating-heart">🍰</span>
-          <span className="absolute bottom-1/4 right-1/4 text-2xl floating-cat">🧁</span>
-          <span className="absolute top-2/3 left-1/2 text-4xl floating-heart">🎨</span>
-          <span className="absolute bottom-1/2 right-1/2 text-3xl floating-cat">💌</span>
-          <span className="absolute top-1/5 right-1/3 text-2xl floating-heart">📸</span>
-          <span className="absolute bottom-1/5 left-1/2 text-3xl floating-cat">📝</span>
-          <span className="absolute top-3/5 left-1/4 text-2xl floating-heart">🎵</span>
-          <span className="absolute bottom-2/5 right-1/3 text-4xl floating-cat">💕</span>
+          <span className="absolute top-20 right-20 text-3xl floating-cat">☕</span>
+          <span className="absolute bottom-40 left-20 text-2xl floating-heart">☕</span>
+          <span className="absolute bottom-20 right-10 text-4xl floating-cat">☕</span>
+          <span className="absolute top-1/2 left-5 text-3xl floating-heart">☕</span>
+          <span className="absolute top-1/3 right-5 text-2xl floating-cat">☕</span>
+          <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">☕</span>
+          <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">☕</span>
+          <span className="absolute top-1/4 left-1/4 text-3xl floating-heart">☕</span>
+          <span className="absolute bottom-1/4 right-1/4 text-2xl floating-cat">☕</span>
+          <span className="absolute top-2/3 left-1/2 text-4xl floating-heart">☕</span>
+          <span className="absolute bottom-1/2 right-1/2 text-3xl floating-cat">☕</span>
+          <span className="absolute top-1/5 right-1/3 text-2xl floating-heart">☕</span>
+          <span className="absolute bottom-1/5 left-1/2 text-3xl floating-cat">☕</span>
+          <span className="absolute top-3/5 left-1/4 text-2xl floating-heart">☕</span>
+          <span className="absolute bottom-2/5 right-1/3 text-4xl floating-cat">☕</span>
+          <span className="absolute top-1/6 left-1/6 text-3xl floating-heart">☕</span>
+          <span className="absolute bottom-1/6 right-1/6 text-2xl floating-cat">☕</span>
+          <span className="absolute top-2/6 left-2/6 text-4xl floating-heart">☕</span>
+          <span className="absolute bottom-2/6 right-2/6 text-3xl floating-cat">☕</span>
+          <span className="absolute top-3/6 left-3/6 text-2xl floating-heart">☕</span>
+          <span className="absolute bottom-3/6 right-3/6 text-4xl floating-cat">☕</span>
+          <span className="absolute top-4/6 left-4/6 text-3xl floating-heart">☕</span>
+          <span className="absolute bottom-4/6 right-4/6 text-2xl floating-cat">☕</span>
+          <span className="absolute top-5/6 left-5/6 text-4xl floating-heart">☕</span>
+          <span className="absolute bottom-5/6 right-5/6 text-3xl floating-cat">☕</span>
         </div>
 
         {/* Header igual que el sitio principal */}
