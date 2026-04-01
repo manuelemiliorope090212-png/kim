@@ -318,7 +318,7 @@ export default function Home() {
               </div>
 
               <div className="mt-8 text-sm text-[var(--cream)] opacity-60">
-                <p className="drop-shadow-lg">💕 pista: 27/10/2025 💕</p>
+                <p className="drop-shadow-lg">💕 pista: 27 de octubre de 2025 💕</p>
               </div>
             </div>
           </div>
