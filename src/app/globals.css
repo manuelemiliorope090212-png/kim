@@ -78,7 +78,7 @@ header, footer, .fixed, .sticky {
 
 /* Ensure full height on iOS */
 html, body {
-  height: 100%;
+  min-height: 100%;
   min-height: -webkit-fill-available;
 }
 
