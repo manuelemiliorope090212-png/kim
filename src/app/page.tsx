@@ -294,11 +294,11 @@ export default function Home() {
                 <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg">
                   <input
                     type="text"
-                    placeholder="cuando empezamos a hablar por primera vez?"
+                    placeholder="¿Cuándo empezamos a hablar?"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
-                    className="w-full text-center text-xl bg-transparent border-none outline-none text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-60"
+                    className="w-full text-center text-base md:text-xl bg-transparent border-none outline-none text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-60"
                     autoFocus
                   />
                 </div>
