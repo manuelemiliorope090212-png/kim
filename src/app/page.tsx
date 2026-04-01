@@ -294,7 +294,7 @@ export default function Home() {
                 <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg">
                   <input
                     type="text"
-                    placeholder="Ingresa la fecha especial..."
+                    placeholder="cuando empezamos a hablar por primera vez"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && checkPassword()}
