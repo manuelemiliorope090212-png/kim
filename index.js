@@ -9,6 +9,7 @@ const { uploadToCloudinary } = require('./backend/lib/cloudinary');
 const Memory = require('./backend/models/Memory');
 const ManuelNote = require('./backend/models/ManuelNote');
 const Music = require('./backend/models/Music');
+const PlaybackState = require('./backend/models/PlaybackState');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -179,14 +180,23 @@ app.put('/api/manuel/music/:id', async (req, res) => {
 app.post('/api/manuel/music/current', async (req, res) => {
   try {
     await connectToDatabase();
-    const { currentSongId, currentTime } = req.body;
+    const { currentSongId, currentTime, isPlaying } = req.body;
 
-    // For now, we'll just acknowledge the update
-    // In a more complex system, you might store this in a global state
-    // But since we're using time-based calculation, manual seeks will override the automatic sync
+    // Update or create the singular playback state
+    await PlaybackState.findOneAndUpdate(
+      {}, // Empty filter means it will update the first document (we only ever want one)
+      {
+        currentSongId,
+        seekTime: currentTime || 0,
+        isPlaying: isPlaying !== undefined ? isPlaying : true,
+        serverTimestamp: new Date()
+      },
+      { upsert: true, new: true }
+    );
 
     res.status(200).json({ message: 'Current music state updated' });
   } catch (error) {
+    console.error('Error updating current music state:', error);
     res.status(500).json({ error: 'Failed to update current music state' });
   }
 });
@@ -206,41 +216,62 @@ app.get('/api/manuel/music/current', async (req, res) => {
   try {
     await connectToDatabase();
 
-    // Get all music files sorted by order
+    // Try to get the latest playback state
+    const state = await PlaybackState.findOne({});
     const musicFiles = await Music.find({}).sort({ order: 1 });
 
-    if (musicFiles.length === 0) {
+    if (!state) {
+      if (musicFiles.length === 0) {
+        return res.status(200).json({ currentSong: null, currentTime: 0 });
+      }
+
+      // Fallback to UTC calculation if no state exists
+      const now = new Date();
+      const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+      const elapsedSeconds = (now.getTime() - startOfDay.getTime()) / 1000;
+      const songDuration = 180;
+      const totalPlaylistDuration = musicFiles.length * songDuration;
+      const positionInLoop = elapsedSeconds % totalPlaylistDuration;
+
+      let accumulatedTime = 0;
+      let currentSongIndex = 0;
+      let currentSongTime = 0;
+
+      for (let i = 0; i < musicFiles.length; i++) {
+        if (positionInLoop < accumulatedTime + songDuration) {
+          currentSongIndex = i;
+          currentSongTime = positionInLoop - accumulatedTime;
+          break;
+        }
+        accumulatedTime += songDuration;
+      }
+
+      const currentSong = musicFiles[currentSongIndex];
+      return res.status(200).json({
+        currentSong: {
+          _id: currentSong._id,
+          name: currentSong.name,
+          url: currentSong.url,
+          order: currentSong.order
+        },
+        currentTime: Math.floor(currentSongTime),
+        totalSongs: musicFiles.length
+      });
+    }
+
+    // Use stored state
+    const currentSong = musicFiles.find(s => s._id.toString() === state.currentSongId.toString());
+    
+    if (!currentSong) {
       return res.status(200).json({ currentSong: null, currentTime: 0 });
     }
 
-    // Calculate current song and time based on UTC time to ensure consistency
-    const now = new Date();
-    const startOfDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-    const elapsedMs = now.getTime() - startOfDay.getTime();
-    const elapsedSeconds = elapsedMs / 1000;
-
-    // Assume 3 minutes (180 seconds) per song
-    const songDuration = 180;
-    const totalPlaylistDuration = musicFiles.length * songDuration;
-
-    // Calculate position in loop
-    const positionInLoop = elapsedSeconds % totalPlaylistDuration;
-
-    // Find current song
-    let accumulatedTime = 0;
-    let currentSongIndex = 0;
-    let currentSongTime = 0;
-
-    for (let i = 0; i < musicFiles.length; i++) {
-      if (positionInLoop < accumulatedTime + songDuration) {
-        currentSongIndex = i;
-        currentSongTime = positionInLoop - accumulatedTime;
-        break;
-      }
-      accumulatedTime += songDuration;
+    // Calculate current time based on elapsed time since serverTimestamp
+    let calculatedTime = state.seekTime;
+    if (state.isPlaying) {
+      const msSinceUpdate = new Date().getTime() - new Date(state.serverTimestamp).getTime();
+      calculatedTime += msSinceUpdate / 1000;
     }
-
-    const currentSong = musicFiles[currentSongIndex];
 
     res.status(200).json({
       currentSong: {
@@ -249,8 +280,9 @@ app.get('/api/manuel/music/current', async (req, res) => {
         url: currentSong.url,
         order: currentSong.order
       },
-      currentTime: Math.floor(currentSongTime),
-      totalSongs: musicFiles.length
+      currentTime: Math.floor(calculatedTime),
+      totalSongs: musicFiles.length,
+      isPlaying: state.isPlaying
     });
   } catch (error) {
     console.error('Error getting current music state:', error);

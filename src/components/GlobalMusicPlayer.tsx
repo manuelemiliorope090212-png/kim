@@ -18,50 +18,51 @@ export default function GlobalMusicPlayer() {
 
   console.log('🎵 GlobalMusicPlayer rendered - musicFiles:', musicFiles.length, 'currentSongIndex:', currentSongIndex, 'isPlaying:', isPlaying);
 
-  // Sync when song changes (triggered by server updates)
   useEffect(() => {
-    console.log('🎵 useEffect triggered for sync - musicFiles.length:', musicFiles.length);
-    if (musicFiles.length === 0) return;
-
-    const checkForSongChanges = async () => {
+    const syncWithServer = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
         if (response.ok) {
           const data = await response.json();
           if (data.currentSong) {
             const serverSongIndex = musicFiles.findIndex(song => song._id === data.currentSong._id);
-            if (serverSongIndex !== -1 && serverSongIndex !== currentSongIndex) {
-              console.log('🎵 Server song changed, updating local player:', data.currentSong.name);
-              setCurrentSongIndex(serverSongIndex);
-              if (data.currentTime !== undefined) {
-                setCurrentTime(data.currentTime);
+            if (serverSongIndex !== -1) {
+              // 1. Sync Song
+              if (serverSongIndex !== currentSongIndex) {
+                console.log('🎵 Song sync: server has', data.currentSong.name);
+                setCurrentSongIndex(serverSongIndex);
+                if (audioRef.current) {
+                  audioRef.current.src = musicFiles[serverSongIndex].url;
+                  audioRef.current.currentTime = data.currentTime || 0;
+                }
+              } else {
+                // 2. Sync Time Drift (only if drift > 3s)
+                if (audioRef.current && Math.abs(audioRef.current.currentTime - data.currentTime) > 3) {
+                   console.log('🎵 Time drift sync: adjusting by', Math.abs(audioRef.current.currentTime - data.currentTime), 'seconds');
+                   audioRef.current.currentTime = data.currentTime;
+                }
               }
-              // Set the new song and try to auto-play (user interaction may have occurred)
-              if (audioRef.current) {
-                console.log('🎵 Setting synced song src and currentTime, attempting auto-play');
-                audioRef.current.src = musicFiles[serverSongIndex].url;
-                audioRef.current.currentTime = data.currentTime || 0;
-
-                // Try to auto-play, but handle failure gracefully
-                audioRef.current.play().then(() => {
-                  console.log('✅ Auto-play succeeded for synced song');
-                  setIsPlaying(true);
-                }).catch(err => {
-                  console.log('⚠️ Auto-play failed for synced song (expected on some browsers):', err.message);
-                  // Keep isPlaying as false so play button shows
-                });
+              
+              // 3. Sync Playing State
+              if (data.isPlaying !== undefined && audioRef.current) {
+                if (data.isPlaying && audioRef.current.paused) {
+                  audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+                } else if (!data.isPlaying && !audioRef.current.paused) {
+                  audioRef.current.pause();
+                  setIsPlaying(false);
+                }
               }
             }
           }
         }
       } catch (error) {
-        console.error('Error checking for song changes:', error);
+        console.error('Error syncing with server:', error);
       }
     };
 
-    // Check immediately and then every 2 seconds for faster sync
-    checkForSongChanges();
-    const interval = setInterval(checkForSongChanges, 2000);
+    // Check every 4 seconds for a balance between "real-time" and "less load"
+    syncWithServer();
+    const interval = setInterval(syncWithServer, 4000);
 
     return () => clearInterval(interval);
   }, [musicFiles, currentSongIndex, isPlaying]);
@@ -118,11 +119,23 @@ export default function GlobalMusicPlayer() {
           }}
           onEnded={() => {
             const nextIndex = (currentSongIndex + 1) % musicFiles.length;
-            if (audioRef.current) {
-              audioRef.current.src = musicFiles[nextIndex].url;
+            const nextSong = musicFiles[nextIndex];
+            if (audioRef.current && nextSong) {
+              audioRef.current.src = nextSong.url;
               audioRef.current.currentTime = 0;
               audioRef.current.play().then(() => {
                 setIsPlaying(true);
+                setCurrentSongIndex(nextIndex);
+                // Update server so everyone follows the playlist
+                fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    currentSongId: nextSong._id,
+                    currentTime: 0,
+                    isPlaying: true
+                  })
+                }).catch(() => {});
               }).catch(err => console.error('Error playing next:', err));
             }
           }}

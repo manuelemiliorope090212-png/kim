@@ -486,7 +486,8 @@ export default function Manuel() {
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                   currentSongId: musicFiles[currentSongIndex]?._id,
-                                  currentTime: newTime
+                                  currentTime: newTime,
+                                  isPlaying: true
                                 })
                               }).catch(err => console.error('Error updating server time:', err));
                             }}
@@ -564,7 +565,8 @@ export default function Manuel() {
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                   currentSongId: music._id,
-                                  currentTime: 0
+                                  currentTime: 0,
+                                  isPlaying: true
                                 })
                               });
                               console.log('🎵 Server updated successfully - all users should now sync to this song');

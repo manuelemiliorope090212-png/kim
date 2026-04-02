@@ -80,14 +80,33 @@ export default function Home() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
         if (response.ok) {
           const data = await response.json();
-          if (data.currentSong) {
-            // Encontrar el índice de la canción actual en la playlist
-            const songIndex = musicPlaylist.findIndex(song => song._id === data.currentSong._id);
-            if (songIndex !== -1) {
-              setCurrentSongIndex(songIndex);
-              setCurrentTime(data.currentTime);
+            if (data.currentSong) {
+              const songIndex = musicPlaylist.findIndex(song => song._id === data.currentSong._id);
+              if (songIndex !== -1) {
+                // Si la canción cambió, actualizarla
+                if (songIndex !== currentSongIndex) {
+                  setCurrentSongIndex(songIndex);
+                  setCurrentTime(data.currentTime);
+                } else {
+                  // Si es la misma canción, solo sincronizar tiempo si el drift es > 3 segundos
+                  if (Math.abs(currentTime - data.currentTime) > 3) {
+                    setCurrentTime(data.currentTime);
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = data.currentTime;
+                    }
+                  }
+                }
+                
+                // Sincronizar estado de reproducción
+                if (data.isPlaying !== undefined) {
+                  if (data.isPlaying && !isPlaying) {
+                    setIsPlaying(true);
+                  } else if (!data.isPlaying && isPlaying) {
+                    setIsPlaying(false);
+                  }
+                }
+              }
             }
-          }
         }
       } catch (error) {
         console.error('Error syncing with server:', error);
@@ -97,8 +116,8 @@ export default function Home() {
     // Sincronizar inmediatamente al cargar
     syncWithServer();
 
-    // Sincronizar cada 30 segundos para mantener consistencia
-    const interval = setInterval(syncWithServer, 30000);
+    // Sincronizar cada 5 segundos para mantener consistencia
+    const interval = setInterval(syncWithServer, 5000);
 
     return () => clearInterval(interval);
   }, [musicPlaylist]);
@@ -149,25 +168,7 @@ export default function Home() {
     }
   };
 
-  // Efecto para reproducir automáticamente cuando cambia la canción (si ya está activada)
-  useEffect(() => {
-    if (isPlaying && audioRef.current && musicPlaylist.length > 0) {
-      const playCurrentSong = async () => {
-        try {
-          // Pequeño delay para asegurar que el src se haya actualizado
-          setTimeout(async () => {
-            if (audioRef.current) {
-              audioRef.current.currentTime = currentTime;
-              await audioRef.current.play();
-            }
-          }, 100);
-        } catch (error) {
-          console.error('Error al cambiar canción:', error);
-        }
-      };
-      playCurrentSong();
-    }
-  }, [currentSongIndex, isPlaying, musicPlaylist.length]);
+
 
   const getRandomRotation = () => Math.random() * 6 - 3; // -3 to 3 degrees
   const getRandomSize = () => 'w-full'; // Tamaño consistente para mejor concentración
@@ -500,91 +501,51 @@ export default function Home() {
         <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">🧁</span>
 
         {/* Imágenes flotantes de tuli_azul - 20 imágenes moviéndose por toda la pantalla */}
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-1 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-2 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-3 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-4 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-5 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-6 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-7 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-8 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-9 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-10 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-11 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-12 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-13 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-14 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-15 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-16 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-17 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-18 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-19 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-20 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-1 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-2 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-3 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-4 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-5 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-6 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-7 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-8 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-9 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-10 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-11 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-12 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-13 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-14 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-15 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-16 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-17 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-18 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-19 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-tulip-20 opacity-65" />
 
         {/* Imágenes flotantes de volley3 con rotación - 20 imágenes moviéndose por toda la pantalla */}
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-21 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-22 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-23 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-24 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-25 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-26 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-27 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-28 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-29 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-30 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-31 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-32 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-33 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-34 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-35 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-36 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-37 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-38 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-39 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-40 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-1 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-2 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-3 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-4 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-5 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-6 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-7 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-8 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-9 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-10 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-11 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-12 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-13 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-14 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-15 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-16 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-17 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-18 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-19 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-volley-20 opacity-60 animate-spin" />
       </div>
 
-      {/* Background Music Sincronizada */}
-      {musicPlaylist.length > 0 && (
-        <audio
-          ref={audioRef}
-          className="hidden"
-          src={musicPlaylist[currentSongIndex]?.url}
-          preload="auto"
-          onLoadedData={(e) => {
-            const audio = e.target as HTMLAudioElement;
-            if (isPlaying) {
-              audio.currentTime = currentTime;
-            }
-          }}
-          onCanPlayThrough={() => {
-            // Cuando la canción está completamente cargada y lista
-            if (isPlaying && audioRef.current) {
-              audioRef.current.currentTime = currentTime;
-              audioRef.current.play().catch(err => console.error('Error reproduciendo:', err));
-            }
-          }}
-          onEnded={() => {
-            // Cambiar inmediatamente a la siguiente canción para reproducción continua
-            const nextIndex = (currentSongIndex + 1) % musicPlaylist.length;
-            setCurrentSongIndex(nextIndex);
-          }}
-          onTimeUpdate={(e) => {
-            // Solo corregir si hay un drift muy grande (más de 60 segundos)
-            // Esto permite que la música fluya naturalmente pero se corrija si hay problemas grandes
-            const audio = e.target as HTMLAudioElement;
-            if (isPlaying && Math.abs(audio.currentTime - currentTime) > 60) {
-              audio.currentTime = currentTime;
-            }
-          }}
-          onError={(e) => {
-            console.error('Error cargando audio:', e);
-            // Intentar pasar a la siguiente canción si hay error
-            const nextIndex = (currentSongIndex + 1) % musicPlaylist.length;
-            setCurrentSongIndex(nextIndex);
-          }}
-        />
-      )}
+
 
       {/* Header */}
       <header className="relative text-center py-12 md:py-16 px-4 mt-8">
