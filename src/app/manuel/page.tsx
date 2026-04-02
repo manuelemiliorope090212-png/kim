@@ -49,8 +49,11 @@ export default function Manuel() {
     addToQueue,
     removeFromQueue,
     clearQueue,
+    isRepeating,
+    setIsRepeating,
     playSong,
     seekTo,
+    skipSong,
     audioRef
   } = useMusic();
 
@@ -499,6 +502,44 @@ export default function Manuel() {
                       >
                         🔄 Sincronizar Estado Actual con Kimberly
                       </button>
+
+                      {/* Control de Reproducción Avanzado */}
+                      <div className="mt-4 grid grid-cols-2 gap-3">
+                        <button
+                          onClick={async () => {
+                            const nextRepeating = !isRepeating;
+                            setIsRepeating(nextRepeating);
+                            // Update server
+                            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                currentSongId: musicFiles[currentSongIndex]?._id,
+                                isRepeating: nextRepeating
+                              })
+                            });
+                            setMessage(nextRepeating ? '🔂 Repetir canción: ACTIVADO' : '🔂 Repetir canción: DESACTIVADO');
+                            setTimeout(() => setMessage(''), 3000);
+                          }}
+                          className={`flex items-center justify-center gap-2 p-2 rounded-lg text-sm font-bold transition-all ${
+                            isRepeating 
+                            ? 'bg-blue-400 text-white shadow-inner' 
+                            : 'bg-[rgba(254,247,237,0.1)] text-[var(--cream)] hover:bg-[rgba(254,247,237,0.2)]'
+                          }`}
+                        >
+                          {isRepeating ? '🔂 Repitiendo' : '🔂 Repetir'}
+                        </button>
+                        <button
+                          onClick={() => {
+                            skipSong();
+                            setMessage('⏭️ Saltando a la siguiente canción...');
+                            setTimeout(() => setMessage(''), 3000);
+                          }}
+                          className="flex items-center justify-center gap-2 p-2 rounded-lg text-sm font-bold bg-[rgba(254,247,237,0.1)] text-[var(--cream)] hover:bg-[rgba(254,247,237,0.2)] transition-all"
+                        >
+                          ⏭️ Saltar
+                        </button>
+                      </div>
  
                       {/* Progress Bar */}
                       <div className="mt-4">
@@ -723,7 +764,8 @@ export default function Manuel() {
                               <button
                                 onClick={async (e) => {
                                   e.stopPropagation();
-                                  const newOriginalId = queue.length === 0 ? musicFiles[currentSongIndex]?._id : originalSongId;
+                                  // Re-calculate context locally for the add action
+                                  const newOriginalId = (queue.length === 0 && !originalSongId) ? musicFiles[currentSongIndex]?._id : originalSongId;
                                   const newQueue = [...queue, music];
                                   
                                   addToQueue(music);

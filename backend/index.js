@@ -168,6 +168,7 @@ app.get('/api/manuel/music/current', async (req, res) => {
         isPlaying: state.isPlaying,
         queue: state.queue || [],
         originalSongId: state.originalSongId?._id || null,
+        isRepeating: state.isRepeating || false,
         isManaged: true
       });
     }
@@ -223,7 +224,7 @@ app.get('/api/manuel/music/current', async (req, res) => {
 app.post('/api/manuel/music/current', async (req, res) => {
   try {
     await connectToDatabase();
-    const { currentSongId, currentTime, isPlaying, queue, originalSongId } = req.body;
+    const { currentSongId, currentTime, isPlaying, queue, originalSongId, isRepeating } = req.body;
 
     if (!currentSongId) {
       return res.status(400).json({ error: 'currentSongId is required' });
@@ -238,6 +239,7 @@ app.post('/api/manuel/music/current', async (req, res) => {
       state.isPlaying = isPlaying !== undefined ? isPlaying : true;
       state.queue = queue || state.queue || [];
       state.originalSongId = originalSongId !== undefined ? (originalSongId || null) : state.originalSongId;
+      state.isRepeating = isRepeating !== undefined ? isRepeating : state.isRepeating;
       state.serverTimestamp = new Date();
       await state.save();
     } else {
@@ -247,6 +249,7 @@ app.post('/api/manuel/music/current', async (req, res) => {
         isPlaying: isPlaying !== undefined ? isPlaying : true,
         queue: queue || [],
         originalSongId: originalSongId || null,
+        isRepeating: isRepeating || false,
         serverTimestamp: new Date()
       });
       await state.save();

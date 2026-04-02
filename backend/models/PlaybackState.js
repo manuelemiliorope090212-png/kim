@@ -6,6 +6,7 @@ const PlaybackStateSchema = new mongoose.Schema({
   isPlaying: { type: Boolean, default: false },
   queue: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Music' }],
   originalSongId: { type: mongoose.Schema.Types.ObjectId, ref: 'Music' },
+  isRepeating: { type: Boolean, default: false },
   serverTimestamp: { type: Date, default: Date.now },
 });
 

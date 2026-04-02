@@ -17,6 +17,7 @@ interface MusicContextType {
   autoplayFailed: boolean;
   queue: MusicFile[];
   originalSongId: string | null;
+  isRepeating: boolean;
   setMusicFiles: (files: MusicFile[]) => void;
   setCurrentSongIndex: (index: number) => void;
   setCurrentTime: (time: number) => void;
@@ -24,11 +25,13 @@ interface MusicContextType {
   setAutoplayFailed: (failed: boolean) => void;
   setQueue: (queue: MusicFile[]) => void;
   setOriginalSongId: (id: string | null) => void;
+  setIsRepeating: (repeating: boolean) => void;
   addToQueue: (song: MusicFile) => void;
   removeFromQueue: (songId: string) => void;
   clearQueue: () => void;
   playSong: (index: number) => Promise<void>;
   seekTo: (time: number) => void;
+  skipSong: () => void;
   audioRef: React.RefObject<HTMLAudioElement>;
 }
 
@@ -54,6 +57,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const [autoplayFailed, setAutoplayFailed] = useState(false);
   const [queue, setQueue] = useState<MusicFile[]>([]);
   const [originalSongId, setOriginalSongId] = useState<string | null>(null);
+  const [isRepeating, setIsRepeating] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -134,10 +138,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   // Only sync when manually triggered
 
   const addToQueue = (song: MusicFile) => {
-    setQueue(prev => {
-      if (prev.find(s => s._id === song._id)) return prev;
-      return [...prev, song];
-    });
+    setQueue(prev => [...prev, song]);
   };
 
   const removeFromQueue = (songId: string) => {
@@ -149,6 +150,15 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     setOriginalSongId(null);
   };
 
+  const skipSong = () => {
+    if (audioRef.current) {
+      // Manually trigger the onEnded logic by dispatching the event or just calling it
+      // Since onEnded is in GlobalMusicPlayer, we can't call it directly easily.
+      // Better: set the currentTime to the end and let the browser fire the event.
+      audioRef.current.currentTime = audioRef.current.duration - 0.1;
+    }
+  };
+
   const value: MusicContextType = {
     musicFiles,
     currentSongIndex,
@@ -157,6 +167,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     autoplayFailed,
     queue,
     originalSongId,
+    isRepeating,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
@@ -164,11 +175,13 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     setAutoplayFailed,
     setQueue,
     setOriginalSongId,
+    setIsRepeating,
     addToQueue,
     removeFromQueue,
     clearQueue,
     playSong,
     seekTo,
+    skipSong,
     audioRef,
   };
 

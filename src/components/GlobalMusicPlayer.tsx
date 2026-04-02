@@ -11,12 +11,14 @@ export default function GlobalMusicPlayer() {
     isPlaying,
     queue,
     originalSongId,
+    isRepeating,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
     setQueue,
     setOriginalSongId,
+    setIsRepeating,
     audioRef
   } = useMusic();
 
@@ -75,6 +77,9 @@ export default function GlobalMusicPlayer() {
               if (data.originalSongId !== undefined) {
                 setOriginalSongId(data.originalSongId);
               }
+              if (data.isRepeating !== undefined) {
+                setIsRepeating(data.isRepeating);
+              }
             }
           }
         }
@@ -93,7 +98,7 @@ export default function GlobalMusicPlayer() {
     const interval = setInterval(syncWithServer, intervalTime);
 
     return () => clearInterval(interval);
-  }, [musicFiles, currentSongIndex, isPlaying, queue, originalSongId]);
+  }, [musicFiles, currentSongIndex, isPlaying, queue, originalSongId, isRepeating]);
 
   return (
     <>
@@ -146,7 +151,17 @@ export default function GlobalMusicPlayer() {
             }
           }}
           onEnded={() => {
-            console.log('🎵 Song ended. Checking queue...');
+            console.log('🎵 Song ended. Checking repeat mode...');
+            
+            // 0. Check if repeat is ON
+            if (isRepeating && audioRef.current) {
+              console.log('🔂 Repeat is ON. Restarting song...');
+              audioRef.current.currentTime = 0;
+              audioRef.current.play().catch(err => console.error('Error restarting song:', err));
+              return;
+            }
+
+            console.log('🎵 No repeat. Checking queue...');
             
             // 1. Check if there is something in the queue
             if (queue && queue.length > 0) {
