@@ -37,11 +37,18 @@ export default function Manuel() {
     currentTime,
     isPlaying,
     autoplayFailed,
+    queue,
+    originalSongId,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
     setAutoplayFailed,
+    setQueue,
+    setOriginalSongId,
+    addToQueue,
+    removeFromQueue,
+    clearQueue,
     playSong,
     seekTo,
     audioRef
@@ -524,6 +531,58 @@ export default function Manuel() {
                           {Math.floor(currentTime / 60)}:{String(Math.floor(currentTime % 60)).padStart(2, '0')} / {Math.floor((audioRef.current?.duration || 180) / 60)}:{String(Math.floor((audioRef.current?.duration || 180) % 60)).padStart(2, '0')}
                         </div>
                       </div>
+
+                      {/* Queue Visualization */}
+                      {queue.length > 0 && (
+                        <div className="mt-6 border-t border-[var(--cream)] border-opacity-20 pt-4">
+                          <h4 className="text-sm font-bold text-[var(--cream)] mb-3 flex items-center gap-2">
+                             ⏳ Cola de Reproducción ({queue.length})
+                          </h4>
+                          <div className="space-y-2">
+                            {queue.map((song, idx) => (
+                              <div key={`${song._id}-${idx}`} className="flex items-center justify-between bg-[rgba(254,247,237,0.05)] p-2 rounded-lg text-xs">
+                                <span className="text-[var(--cream)] truncate max-w-[150px]">
+                                  {idx + 1}. {song.name}
+                                </span>
+                                <button 
+                                  onClick={async () => {
+                                    const newQueue = queue.filter((_: MusicFile, i: number) => i !== idx);
+                                    setQueue(newQueue);
+                                    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        currentSongId: musicFiles[currentSongIndex]?._id,
+                                        queue: newQueue.map((s: MusicFile) => s._id)
+                                      })
+                                    });
+                                  }}
+                                  className="text-red-300 hover:text-red-100"
+                                >
+                                  Quitar
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          <button
+                            onClick={async () => {
+                              clearQueue();
+                              await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  currentSongId: musicFiles[currentSongIndex]?._id,
+                                  queue: [],
+                                  originalSongId: null
+                                })
+                              });
+                            }}
+                            className="mt-3 text-xs text-red-200 hover:text-red-100 underline"
+                          >
+                            Vaciar cola y cancelar regreso
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -637,7 +696,9 @@ export default function Manuel() {
                                 body: JSON.stringify({
                                   currentSongId: music._id,
                                   currentTime: 0,
-                                  isPlaying: true
+                                  isPlaying: true,
+                                  queue: [], // Clearing queue when manually playing a song
+                                  originalSongId: null
                                 })
                               });
                               console.log('🎵 Server updated successfully - all users should now sync to this song');
@@ -655,11 +716,39 @@ export default function Manuel() {
                                 {currentSongIndex === index && isPlaying ? '🎵' : '🎶'} {music.name}
                               </h4>
                               <p className="text-[var(--cream)] opacity-60 text-sm">
-                                #{music.order} • Haz clic para reproducir desde el inicio
+                                #{music.order} • Haz clic para reproducir
                               </p>
                             </div>
-                            <div className="text-[var(--cream)] opacity-75">
-                              {currentSongIndex === index && isPlaying ? '🔊 Reproduciendo' : '🔇 Lista'}
+                            <div className="flex items-center gap-3">
+                              <button
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  const newOriginalId = queue.length === 0 ? musicFiles[currentSongIndex]?._id : originalSongId;
+                                  const newQueue = [...queue, music];
+                                  
+                                  addToQueue(music);
+                                  if (queue.length === 0) setOriginalSongId(newOriginalId || null);
+                                  
+                                  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      currentSongId: musicFiles[currentSongIndex]?._id,
+                                      queue: newQueue.map((s: MusicFile) => s._id),
+                                      originalSongId: newOriginalId
+                                    })
+                                  });
+                                  
+                                  setMessage(`➕ "${music.name}" añadida a la cola`);
+                                  setTimeout(() => setMessage(''), 3000);
+                                }}
+                                className="bg-[var(--coffee-light)] text-[var(--cream)] px-2 py-1 rounded text-xs hover:bg-[var(--coffee-medium)] transition-colors"
+                              >
+                                ➕ Cola
+                              </button>
+                              <div className="text-[var(--cream)] opacity-75 text-xs whitespace-nowrap">
+                                {currentSongIndex === index && isPlaying ? '🔊 Reproduciendo' : '🔇 Lista'}
+                              </div>
                             </div>
                           </div>
                         </div>

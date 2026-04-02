@@ -9,10 +9,14 @@ export default function GlobalMusicPlayer() {
     currentSongIndex,
     currentTime,
     isPlaying,
+    queue,
+    originalSongId,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
+    setQueue,
+    setOriginalSongId,
     audioRef
   } = useMusic();
 
@@ -46,7 +50,7 @@ export default function GlobalMusicPlayer() {
                 }
               }
               
-              // 3. Sync Playing State
+               // 3. Sync Playing State
               if (data.isPlaying !== undefined && audioRef.current) {
                 if (data.isPlaying && audioRef.current.paused) {
                   console.log('🎵 State sync: Server says PLAY, local is PAUSED. Playing...');
@@ -62,6 +66,14 @@ export default function GlobalMusicPlayer() {
                   audioRef.current.pause();
                   setIsPlaying(false);
                 }
+              }
+
+              // 4. Sync Queue and Original Song
+              if (data.queue) {
+                setQueue(data.queue);
+              }
+              if (data.originalSongId !== undefined) {
+                setOriginalSongId(data.originalSongId);
               }
             }
           }
@@ -81,7 +93,7 @@ export default function GlobalMusicPlayer() {
     const interval = setInterval(syncWithServer, intervalTime);
 
     return () => clearInterval(interval);
-  }, [musicFiles, currentSongIndex, isPlaying]);
+  }, [musicFiles, currentSongIndex, isPlaying, queue, originalSongId]);
 
   return (
     <>
@@ -134,6 +146,70 @@ export default function GlobalMusicPlayer() {
             }
           }}
           onEnded={() => {
+            console.log('🎵 Song ended. Checking queue...');
+            
+            // 1. Check if there is something in the queue
+            if (queue && queue.length > 0) {
+              const nextSong = queue[0];
+              const remainingQueue = queue.slice(1);
+              const nextIndex = musicFiles.findIndex(s => s._id === nextSong._id);
+
+              console.log('🎵 Playing next song in queue:', nextSong.name);
+              
+              if (audioRef.current && nextSong && nextIndex !== -1) {
+                audioRef.current.src = nextSong.url;
+                audioRef.current.currentTime = 0;
+                audioRef.current.play().then(() => {
+                  setIsPlaying(true);
+                  setCurrentSongIndex(nextIndex);
+                  setQueue(remainingQueue);
+                  // Update server: pop from queue
+                  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      currentSongId: nextSong._id,
+                      currentTime: 0,
+                      isPlaying: true,
+                      queue: remainingQueue.map(s => s._id)
+                    })
+                  }).catch(() => {});
+                }).catch(err => console.error('Error playing next from queue:', err));
+              }
+              return;
+            }
+
+            // 2. Check if we have an original song to return to
+            if (originalSongId) {
+              const prevSongIndex = musicFiles.findIndex(s => s._id === originalSongId);
+              const prevSong = musicFiles[prevSongIndex];
+
+              console.log('🎵 Queue finished. Returning to original song:', prevSong?.name);
+
+              if (audioRef.current && prevSong && prevSongIndex !== -1) {
+                audioRef.current.src = prevSong.url;
+                audioRef.current.currentTime = 0;
+                audioRef.current.play().then(() => {
+                  setIsPlaying(true);
+                  setCurrentSongIndex(prevSongIndex);
+                  setOriginalSongId(null);
+                  // Update server: clear originalSongId
+                  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      currentSongId: prevSong._id,
+                      currentTime: 0,
+                      isPlaying: true,
+                      originalSongId: null
+                    })
+                  }).catch(() => {});
+                }).catch(err => console.error('Error returning to original song:', err));
+              }
+              return;
+            }
+
+            // 3. Fallback to normal sequence
             const nextIndex = (currentSongIndex + 1) % musicFiles.length;
             const nextSong = musicFiles[nextIndex];
             if (audioRef.current && nextSong) {
@@ -142,7 +218,7 @@ export default function GlobalMusicPlayer() {
               audioRef.current.play().then(() => {
                 setIsPlaying(true);
                 setCurrentSongIndex(nextIndex);
-                // Update server so everyone follows the playlist
+                // Update server
                 fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -152,7 +228,7 @@ export default function GlobalMusicPlayer() {
                     isPlaying: true
                   })
                 }).catch(() => {});
-              }).catch(err => console.error('Error playing next:', err));
+              }).catch(err => console.error('Error playing next in sequence:', err));
             }
           }}
           onTimeUpdate={(e) => {

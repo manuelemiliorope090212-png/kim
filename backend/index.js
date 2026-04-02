@@ -143,7 +143,11 @@ app.get('/api/manuel/music/current', async (req, res) => {
     await connectToDatabase();
 
     // 1. Try to get the latest PlaybackState
-    const state = await PlaybackState.findOne().sort({ serverTimestamp: -1 }).populate('currentSongId');
+    const state = await PlaybackState.findOne()
+      .sort({ serverTimestamp: -1 })
+      .populate('currentSongId')
+      .populate('queue')
+      .populate('originalSongId');
 
     if (state && state.currentSongId) {
       const now = new Date();
@@ -162,6 +166,8 @@ app.get('/api/manuel/music/current', async (req, res) => {
         },
         currentTime: Math.floor(currentTime),
         isPlaying: state.isPlaying,
+        queue: state.queue || [],
+        originalSongId: state.originalSongId?._id || null,
         isManaged: true
       });
     }
@@ -217,20 +223,21 @@ app.get('/api/manuel/music/current', async (req, res) => {
 app.post('/api/manuel/music/current', async (req, res) => {
   try {
     await connectToDatabase();
-    const { currentSongId, currentTime, isPlaying } = req.body;
+    const { currentSongId, currentTime, isPlaying, queue, originalSongId } = req.body;
 
     if (!currentSongId) {
       return res.status(400).json({ error: 'currentSongId is required' });
     }
 
     // Update or create the singleton state
-    // We update the existing one if it exists, or create a new one
     let state = await PlaybackState.findOne();
     
     if (state) {
       state.currentSongId = currentSongId;
       state.seekTime = currentTime || 0;
       state.isPlaying = isPlaying !== undefined ? isPlaying : true;
+      state.queue = queue || state.queue || [];
+      state.originalSongId = originalSongId !== undefined ? (originalSongId || null) : state.originalSongId;
       state.serverTimestamp = new Date();
       await state.save();
     } else {
@@ -238,12 +245,20 @@ app.post('/api/manuel/music/current', async (req, res) => {
         currentSongId,
         seekTime: currentTime || 0,
         isPlaying: isPlaying !== undefined ? isPlaying : true,
+        queue: queue || [],
+        originalSongId: originalSongId || null,
         serverTimestamp: new Date()
       });
       await state.save();
     }
 
-    res.status(200).json(state);
+    // Return the updated state fully populated
+    const populatedState = await PlaybackState.findById(state._id)
+      .populate('currentSongId')
+      .populate('queue')
+      .populate('originalSongId');
+
+    res.status(200).json(populatedState);
   } catch (error) {
     console.error('Error updating music state:', error);
     res.status(500).json({ error: 'Failed to update music state' });

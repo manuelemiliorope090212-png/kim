@@ -15,11 +15,18 @@ interface MusicContextType {
   currentTime: number;
   isPlaying: boolean;
   autoplayFailed: boolean;
+  queue: MusicFile[];
+  originalSongId: string | null;
   setMusicFiles: (files: MusicFile[]) => void;
   setCurrentSongIndex: (index: number) => void;
   setCurrentTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
   setAutoplayFailed: (failed: boolean) => void;
+  setQueue: (queue: MusicFile[]) => void;
+  setOriginalSongId: (id: string | null) => void;
+  addToQueue: (song: MusicFile) => void;
+  removeFromQueue: (songId: string) => void;
+  clearQueue: () => void;
   playSong: (index: number) => Promise<void>;
   seekTo: (time: number) => void;
   audioRef: React.RefObject<HTMLAudioElement>;
@@ -45,6 +52,8 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoplayFailed, setAutoplayFailed] = useState(false);
+  const [queue, setQueue] = useState<MusicFile[]>([]);
+  const [originalSongId, setOriginalSongId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -124,17 +133,40 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   // Removed automatic 30-second sync as requested
   // Only sync when manually triggered
 
+  const addToQueue = (song: MusicFile) => {
+    setQueue(prev => {
+      if (prev.find(s => s._id === song._id)) return prev;
+      return [...prev, song];
+    });
+  };
+
+  const removeFromQueue = (songId: string) => {
+    setQueue(prev => prev.filter(s => s._id !== songId));
+  };
+
+  const clearQueue = () => {
+    setQueue([]);
+    setOriginalSongId(null);
+  };
+
   const value: MusicContextType = {
     musicFiles,
     currentSongIndex,
     currentTime,
     isPlaying,
     autoplayFailed,
+    queue,
+    originalSongId,
     setMusicFiles,
     setCurrentSongIndex,
     setCurrentTime,
     setIsPlaying,
     setAutoplayFailed,
+    setQueue,
+    setOriginalSongId,
+    addToQueue,
+    removeFromQueue,
+    clearQueue,
     playSong,
     seekTo,
     audioRef,
