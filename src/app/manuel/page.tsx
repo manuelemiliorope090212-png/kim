@@ -467,6 +467,31 @@ export default function Manuel() {
                           </p>
                         </div>
                       )}
+
+                      <button
+                        onClick={async () => {
+                          if (musicFiles[currentSongIndex]) {
+                            try {
+                              await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                  currentSongId: musicFiles[currentSongIndex]._id,
+                                  currentTime: currentTime,
+                                  isPlaying: isPlaying
+                                })
+                              });
+                              setMessage('✅ ¡Sincronizado con Kimberly! 💕');
+                              setTimeout(() => setMessage(''), 3000);
+                            } catch (err) {
+                              setMessage('❌ Error al sincronizar');
+                            }
+                          }
+                        }}
+                        className="mt-4 w-full bg-[var(--cream)] text-[var(--coffee-brown)] p-2 rounded-lg text-sm font-bold hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"
+                      >
+                        🔄 Sincronizar Estado Actual con Kimberly
+                      </button>
  
                       {/* Progress Bar */}
                       <div className="mt-4">
@@ -516,21 +541,67 @@ export default function Manuel() {
                       <label className="block text-[var(--cream)] font-medium mb-2">
                         ⏰ Segundo personalizado (opcional):
                       </label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="180"
-                        placeholder="0"
-                        className="w-full p-2 border-2 border-[var(--cream)] border-opacity-30 rounded-lg bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70 focus:border-[var(--cream)] focus:outline-none"
-                        onChange={(e) => {
-                          const customTime = parseInt(e.target.value) || 0;
-                          if (audioRef.current && isPlaying) {
-                            audioRef.current.currentTime = customTime;
-                          }
-                        }}
-                      />
-                      <p className="text-xs text-[var(--cream)] opacity-60 mt-1">
-                        Cambia el segundo mientras la canción está reproduciéndose
+                      <div className="flex gap-2">
+                        <input
+                          type="number"
+                          min="0"
+                          max={Math.floor(audioRef.current?.duration || 600)}
+                          placeholder="Ir al segundo..."
+                          className="flex-1 p-2 border-2 border-[var(--cream)] border-opacity-30 rounded-lg bg-[rgba(254,247,237,0.1)] text-[var(--cream)] placeholder-[var(--cream)] placeholder-opacity-70 focus:border-[var(--cream)] focus:outline-none"
+                          onKeyPress={async (e) => {
+                            if (e.key === 'Enter') {
+                              const customTime = parseInt((e.target as HTMLInputElement).value) || 0;
+                              if (musicFiles[currentSongIndex]) {
+                                try {
+                                  seekTo(customTime);
+                                  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      currentSongId: musicFiles[currentSongIndex]._id,
+                                      currentTime: customTime,
+                                      isPlaying: true
+                                    })
+                                  });
+                                  setMessage(`⏰ Sincronizado al segundo ${customTime}`);
+                                  setTimeout(() => setMessage(''), 3000);
+                                } catch (err) {
+                                  console.error('Error syncing custom time:', err);
+                                }
+                              }
+                            }
+                          }}
+                        />
+                        <button 
+                          onClick={async () => {
+                            const input = document.querySelector('input[placeholder="Ir al segundo..."]') as HTMLInputElement;
+                            const customTime = parseInt(input?.value) || 0;
+                            if (musicFiles[currentSongIndex]) {
+                              try {
+                                seekTo(customTime);
+                                await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({
+                                    currentSongId: musicFiles[currentSongIndex]._id,
+                                    currentTime: customTime,
+                                    isPlaying: true
+                                  })
+                                });
+                                setMessage(`⏰ Sincronizado al segundo ${customTime}`);
+                                setTimeout(() => setMessage(''), 3000);
+                              } catch (err) {
+                                console.error('Error syncing custom time:', err);
+                              }
+                            }
+                          }}
+                          className="bg-[var(--coffee-light)] px-4 py-2 rounded-lg font-semibold hover:bg-[var(--coffee-medium)] transition-colors"
+                        >
+                          Ir ➔
+                        </button>
+                      </div>
+                      <p className="text-xs text-[var(--cream)] opacity-60 mt-2">
+                        Presiona Enter o el botón para saltar y sincronizar con todos
                       </p>
                     </div>
 

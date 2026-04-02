@@ -9,6 +9,7 @@ const { uploadToCloudinary } = require('./lib/cloudinary');
 const Memory = require('./models/Memory');
 const ManuelNote = require('./models/ManuelNote');
 const Music = require('./models/Music');
+const PlaybackState = require('./models/PlaybackState');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -141,27 +142,46 @@ app.get('/api/manuel/music/current', async (req, res) => {
   try {
     await connectToDatabase();
 
-    // Get all music files sorted by order
+    // 1. Try to get the latest PlaybackState
+    const state = await PlaybackState.findOne().sort({ serverTimestamp: -1 }).populate('currentSongId');
+
+    if (state && state.currentSongId) {
+      const now = new Date();
+      const elapsedSeconds = state.isPlaying 
+        ? (now.getTime() - state.serverTimestamp.getTime()) / 1000 
+        : 0;
+      
+      const currentTime = state.seekTime + elapsedSeconds;
+
+      return res.status(200).json({
+        currentSong: {
+          _id: state.currentSongId._id,
+          name: state.currentSongId.name,
+          url: state.currentSongId.url,
+          order: state.currentSongId.order
+        },
+        currentTime: Math.floor(currentTime),
+        isPlaying: state.isPlaying,
+        isManaged: true
+      });
+    }
+
+    // 2. Fallback to automatic sequence if no state exists
     const musicFiles = await Music.find({}).sort({ order: 1 });
 
     if (musicFiles.length === 0) {
-      return res.status(200).json({ currentSong: null, currentTime: 0 });
+      return res.status(200).json({ currentSong: null, currentTime: 0, isPlaying: false });
     }
 
-    // Calculate current song and time based on server time
     const now = new Date();
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const elapsedMs = now.getTime() - startOfDay.getTime();
     const elapsedSeconds = elapsedMs / 1000;
 
-    // Assume 3 minutes (180 seconds) per song
     const songDuration = 180;
     const totalPlaylistDuration = musicFiles.length * songDuration;
-
-    // Calculate position in loop
     const positionInLoop = elapsedSeconds % totalPlaylistDuration;
 
-    // Find current song
     let accumulatedTime = 0;
     let currentSongIndex = 0;
     let currentSongTime = 0;
@@ -185,11 +205,48 @@ app.get('/api/manuel/music/current', async (req, res) => {
         order: currentSong.order
       },
       currentTime: Math.floor(currentSongTime),
-      totalSongs: musicFiles.length
+      isPlaying: true,
+      isManaged: false
     });
   } catch (error) {
     console.error('Error getting current music state:', error);
     res.status(500).json({ error: 'Failed to get current music state' });
+  }
+});
+
+app.post('/api/manuel/music/current', async (req, res) => {
+  try {
+    await connectToDatabase();
+    const { currentSongId, currentTime, isPlaying } = req.body;
+
+    if (!currentSongId) {
+      return res.status(400).json({ error: 'currentSongId is required' });
+    }
+
+    // Update or create the singleton state
+    // We update the existing one if it exists, or create a new one
+    let state = await PlaybackState.findOne();
+    
+    if (state) {
+      state.currentSongId = currentSongId;
+      state.seekTime = currentTime || 0;
+      state.isPlaying = isPlaying !== undefined ? isPlaying : true;
+      state.serverTimestamp = new Date();
+      await state.save();
+    } else {
+      state = new PlaybackState({
+        currentSongId,
+        seekTime: currentTime || 0,
+        isPlaying: isPlaying !== undefined ? isPlaying : true,
+        serverTimestamp: new Date()
+      });
+      await state.save();
+    }
+
+    res.status(200).json(state);
+  } catch (error) {
+    console.error('Error updating music state:', error);
+    res.status(500).json({ error: 'Failed to update music state' });
   }
 });
 

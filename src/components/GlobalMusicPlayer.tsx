@@ -36,18 +36,29 @@ export default function GlobalMusicPlayer() {
                   audioRef.current.currentTime = data.currentTime || 0;
                 }
               } else {
-                // 2. Sync Time Drift (only if drift > 3s)
-                if (audioRef.current && Math.abs(audioRef.current.currentTime - data.currentTime) > 3) {
-                   console.log('🎵 Time drift sync: adjusting by', Math.abs(audioRef.current.currentTime - data.currentTime), 'seconds');
-                   audioRef.current.currentTime = data.currentTime;
+                // 2. Sync Time Drift (only if drift > 4s or if we just started)
+                if (audioRef.current) {
+                   const drift = Math.abs(audioRef.current.currentTime - data.currentTime);
+                   if (drift > 4) {
+                      console.log('🎵 Time drift sync: adjusting by', drift, 'seconds');
+                      audioRef.current.currentTime = data.currentTime;
+                   }
                 }
               }
               
               // 3. Sync Playing State
               if (data.isPlaying !== undefined && audioRef.current) {
                 if (data.isPlaying && audioRef.current.paused) {
-                  audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+                  console.log('🎵 State sync: Server says PLAY, local is PAUSED. Playing...');
+                  audioRef.current.play()
+                    .then(() => setIsPlaying(true))
+                    .catch(err => {
+                      console.error('❌ Could not start playback during sync:', err);
+                      // On mobile we might need a user gesture
+                      setIsPlaying(false);
+                    });
                 } else if (!data.isPlaying && !audioRef.current.paused) {
+                  console.log('🎵 State sync: Server says PAUSE, local is PLAYING. Pausing...');
                   audioRef.current.pause();
                   setIsPlaying(false);
                 }
@@ -60,9 +71,14 @@ export default function GlobalMusicPlayer() {
       }
     };
 
-    // Check every 4 seconds for a balance between "real-time" and "less load"
+    // Only run the interval if we are NOT on the Manuel page (to avoid feedback loops)
+    // Or if we are on the Manuel page, maybe run it less frequently?
+    // Let's check for the path
+    const isManuelPage = typeof window !== 'undefined' && window.location.pathname.includes('/manuel');
+    
     syncWithServer();
-    const interval = setInterval(syncWithServer, 4000);
+    const intervalTime = isManuelPage ? 10000 : 4000; // Poll less frequently on Manuel page
+    const interval = setInterval(syncWithServer, intervalTime);
 
     return () => clearInterval(interval);
   }, [musicFiles, currentSongIndex, isPlaying]);
