@@ -271,22 +271,22 @@ export default function Home() {
           <span className="absolute top-[95%] left-[95%] text-4xl floating-heart">☕</span>
           <span className="absolute top-[95%] right-[95%] text-3xl floating-cat">☕</span>
           
-          {/* Imágenes de bigmix.png como emojis flotantes */}
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] left-[10%] w-12 h-12 floating-heart opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] right-[10%] w-10 h-10 floating-cat opacity-50" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] left-[30%] w-14 h-14 floating-heart opacity-70" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] right-[30%] w-11 h-11 floating-cat opacity-55" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] left-[50%] w-9 h-9 floating-heart opacity-65" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] right-[50%] w-13 h-13 floating-cat opacity-45" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[70%] left-[70%] w-10 h-10 floating-heart opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[70%] right-[70%] w-12 h-12 floating-cat opacity-50" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[90%] left-[90%] w-8 h-8 floating-heart opacity-70" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[90%] right-[90%] w-15 h-15 floating-cat opacity-40" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[20%] left-[80%] w-11 h-11 floating-heart opacity-55" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[80%] left-[20%] w-9 h-9 floating-cat opacity-65" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[40%] left-[60%] w-13 h-13 floating-heart opacity-45" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[60%] left-[40%] w-10 h-10 floating-cat opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[80%] left-[80%] w-12 h-12 floating-heart opacity-50" />
+          {/* Imágenes de bigmix.png como emojis flotantes - distribuidas en zigzag */}
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[5%] left-[10%] w-16 h-16 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[15%] left-[50%] w-14 h-14 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[25%] left-[90%] w-18 h-18 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[35%] left-[10%] w-15 h-15 floating-cat opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[45%] left-[50%] w-17 h-17 floating-heart opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[55%] left-[90%] w-14 h-14 floating-cat opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[65%] left-[10%] w-16 h-16 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[75%] left-[50%] w-18 h-18 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[85%] left-[90%] w-15 h-15 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[95%] left-[10%] w-17 h-17 floating-cat opacity-40" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] left-[30%] w-14 h-14 floating-heart opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[20%] left-[70%] w-16 h-16 floating-cat opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] left-[30%] w-18 h-18 floating-heart opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[40%] left-[70%] w-15 h-15 floating-cat opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] left-[30%] w-17 h-17 floating-heart opacity-50" />
         </div>
 
         {/* Header igual que el sitio principal */}
