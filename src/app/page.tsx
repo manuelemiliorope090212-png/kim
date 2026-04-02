@@ -270,7 +270,7 @@ export default function Home() {
           <span className="absolute top-[85%] right-[85%] text-2xl floating-cat">☕</span>
           <span className="absolute top-[95%] left-[95%] text-4xl floating-heart">☕</span>
           <span className="absolute top-[95%] right-[95%] text-3xl floating-cat">☕</span>
-          
+
           {/* Imágenes de bigmix.png como emojis flotantes - distribuidas en zigzag */}
           <img src="/bigmix.png" alt="bigmix" className="absolute top-[5%] left-[5%] w-16 h-16 floating-heart opacity-60" />
           <img src="/bigmix.png" alt="bigmix" className="absolute top-[15%] left-[45%] w-14 h-14 floating-cat opacity-50" />
@@ -396,51 +396,6 @@ export default function Home() {
         <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-15 opacity-50 md:hidden" />
 
         {/* Many more coffee images - distributed across entire screen */}
-        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-16 opacity-30" />
-        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-17 opacity-25" />
-        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-18 opacity-35" />
-        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-19 opacity-20" />
-        <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-20 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-21 opacity-45" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-22 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-23 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-24 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-25 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-26 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-27 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-28 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-29 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-30 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-31 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-32 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-33 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-34 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-35 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-36 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-37 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-38 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-39 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-40 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-41 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-42 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-43 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-44 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-45 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-46 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-47 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-48 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-49 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-50 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-51 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-52 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-53 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-54 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-12 h-12 bouncing-coffee-55 opacity-20" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-7 h-7 bouncing-coffee-56 opacity-35" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-11 h-11 bouncing-coffee-57 opacity-25" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-8 h-8 bouncing-coffee-58 opacity-40" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-10 h-10 bouncing-coffee-59 opacity-30" />
-        <img src="/coffee.png" alt="coffee" className="absolute w-6 h-6 bouncing-coffee-60 opacity-35" />
 
         {/* Even more coffee images */}
         <img src="/coffee.png?v=1" alt="coffee" className="absolute w-9 h-9 bouncing-coffee-61 opacity-20" />
@@ -543,7 +498,7 @@ export default function Home() {
         <span className="absolute top-1/3 right-8 text-2xl floating-cat">✨</span>
         <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🍰</span>
         <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">🧁</span>
-        
+
         {/* Imágenes flotantes de tuli_azul - 20 imágenes moviéndose por toda la pantalla */}
         <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-1 opacity-70" />
         <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-2 opacity-60" />
@@ -565,28 +520,28 @@ export default function Home() {
         <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-18 opacity-70" />
         <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-19 opacity-60" />
         <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-20 opacity-65" />
-        
+
         {/* Imágenes flotantes de volley3 con rotación - 20 imágenes moviéndose por toda la pantalla */}
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-21 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-22 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-23 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-24 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-25 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-26 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-27 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-28 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-29 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-30 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-31 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-32 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-33 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-34 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-35 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-36 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-37 opacity-60 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-38 opacity-65 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-39 opacity-70 animate-spin" />
-        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-40 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-21 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-22 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-23 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-24 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-25 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-26 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-27 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-28 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-29 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-30 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-31 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-32 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-33 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-34 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-35 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-36 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-37 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-38 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-39 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 object-contain bouncing-coffee-40 opacity-60 animate-spin" />
       </div>
 
       {/* Background Music Sincronizada */}
