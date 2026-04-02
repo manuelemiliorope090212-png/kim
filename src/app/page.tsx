@@ -544,25 +544,49 @@ export default function Home() {
         <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🍰</span>
         <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">🧁</span>
         
-        {/* Imágenes flotantes de tuli_azul - misma cantidad que emojis, moviéndose por toda la pantalla */}
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-20 h-20 bouncing-coffee-1 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-16 h-16 bouncing-coffee-2 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-24 h-24 bouncing-coffee-3 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-18 h-18 bouncing-coffee-4 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-20 h-20 bouncing-coffee-5 opacity-60" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-22 h-22 bouncing-coffee-6 opacity-65" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-16 h-16 bouncing-coffee-7 opacity-70" />
-        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-24 h-24 bouncing-coffee-8 opacity-60" />
+        {/* Imágenes flotantes de tuli_azul - 20 imágenes moviéndose por toda la pantalla */}
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-1 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-2 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-3 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-4 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-5 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-6 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-7 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-8 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-9 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-10 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-11 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-12 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-13 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-14 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-15 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-16 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-17 opacity-65" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-18 opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-19 opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute w-12 h-12 bouncing-coffee-20 opacity-65" />
         
-        {/* Imágenes flotantes de voley2 con rotación - misma cantidad que emojis, moviéndose por toda la pantalla */}
-        <img src="/voley2.png" alt="voley" className="absolute w-20 h-20 bouncing-coffee-9 opacity-70 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-16 h-16 bouncing-coffee-10 opacity-60 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-24 h-24 bouncing-coffee-11 opacity-65 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-18 h-18 bouncing-coffee-12 opacity-70 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-20 h-20 bouncing-coffee-13 opacity-60 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-22 h-22 bouncing-coffee-14 opacity-65 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-16 h-16 bouncing-coffee-15 opacity-70 animate-spin" />
-        <img src="/voley2.png" alt="voley" className="absolute w-24 h-24 bouncing-coffee-16 opacity-60 animate-spin" />
+        {/* Imágenes flotantes de volley3 con rotación - 20 imágenes moviéndose por toda la pantalla */}
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-21 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-22 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-23 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-24 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-25 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-26 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-27 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-28 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-29 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-30 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-31 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-32 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-33 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-34 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-35 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-36 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-37 opacity-60 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-38 opacity-65 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-39 opacity-70 animate-spin" />
+        <img src="/volley3.png" alt="volley" className="absolute w-12 h-12 bouncing-coffee-40 opacity-60 animate-spin" />
       </div>
 
       {/* Background Music Sincronizada */}
