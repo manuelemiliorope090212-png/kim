@@ -543,6 +543,14 @@ export default function Home() {
         <span className="absolute top-1/3 right-8 text-2xl floating-cat">✨</span>
         <span className="absolute bottom-1/3 left-1/3 text-2xl floating-heart">🍰</span>
         <span className="absolute top-3/4 right-1/4 text-3xl floating-cat">🧁</span>
+        
+        {/* Imágenes flotantes de tuli_azul y voley */}
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute top-[10%] left-[15%] w-20 h-20 floating-heart opacity-70" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute top-[40%] right-[10%] w-16 h-16 floating-cat opacity-60" />
+        <img src="/tuli_azul.png" alt="tuli azul" className="absolute bottom-[20%] left-[25%] w-24 h-24 floating-heart opacity-65" />
+        <img src="/voley.png" alt="voley" className="absolute top-[15%] right-[20%] w-20 h-20 floating-cat opacity-70 animate-spin" />
+        <img src="/voley.png" alt="voley" className="absolute top-[50%] left-[10%] w-16 h-16 floating-heart opacity-60 animate-spin" />
+        <img src="/voley.png" alt="voley" className="absolute bottom-[30%] right-[15%] w-24 h-24 floating-cat opacity-65 animate-spin" />
       </div>
 
       {/* Background Music Sincronizada */}
