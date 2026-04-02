@@ -261,7 +261,7 @@ export default function Home() {
             <div className="aesthetic-card p-8 md:p-12 max-w-lg mx-auto">
               <div className="mb-8">
                 <span className="text-6xl mb-4 block animate-bounce">🔒</span>
-                <h2 className="text-sm md:text-base font-bold text-[var(--cream)] mb-4 drop-shadow-lg">
+                <h2 className="text-xs md:text-sm font-bold text-[var(--cream)] mb-4 drop-shadow-lg">
                 ⋆.𐙚˚₍ᐢ. .ᐢ₎ ₊˚⊹♡TQM⊹˚✧ִ ࣪₍^. .^₎Ⳋ𖤐°.ᐟ
                 </h2>
                 <p className="text-lg text-[var(--cream)] opacity-75 mb-6">
