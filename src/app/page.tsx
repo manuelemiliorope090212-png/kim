@@ -272,21 +272,21 @@ export default function Home() {
           <span className="absolute top-[95%] right-[95%] text-3xl floating-cat">☕</span>
           
           {/* Imágenes de bigmix.png como emojis flotantes - distribuidas en zigzag */}
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[5%] left-[10%] w-16 h-16 floating-heart opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[15%] left-[50%] w-14 h-14 floating-cat opacity-50" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[25%] left-[90%] w-18 h-18 floating-heart opacity-70" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[35%] left-[10%] w-15 h-15 floating-cat opacity-55" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[45%] left-[50%] w-17 h-17 floating-heart opacity-65" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[55%] left-[90%] w-14 h-14 floating-cat opacity-45" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[65%] left-[10%] w-16 h-16 floating-heart opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[75%] left-[50%] w-18 h-18 floating-cat opacity-50" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[85%] left-[90%] w-15 h-15 floating-heart opacity-70" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[95%] left-[10%] w-17 h-17 floating-cat opacity-40" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] left-[30%] w-14 h-14 floating-heart opacity-55" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[20%] left-[70%] w-16 h-16 floating-cat opacity-65" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] left-[30%] w-18 h-18 floating-heart opacity-45" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[40%] left-[70%] w-15 h-15 floating-cat opacity-60" />
-          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] left-[30%] w-17 h-17 floating-heart opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[5%] left-[5%] w-16 h-16 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[15%] left-[45%] w-14 h-14 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[25%] left-[85%] w-18 h-18 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[35%] left-[5%] w-15 h-15 floating-cat opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[45%] left-[45%] w-17 h-17 floating-heart opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[55%] left-[85%] w-14 h-14 floating-cat opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[65%] left-[5%] w-16 h-16 floating-heart opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[75%] left-[45%] w-18 h-18 floating-cat opacity-50" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[85%] left-[85%] w-15 h-15 floating-heart opacity-70" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[95%] left-[5%] w-17 h-17 floating-cat opacity-40" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[10%] left-[25%] w-14 h-14 floating-heart opacity-55" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[20%] left-[65%] w-16 h-16 floating-cat opacity-65" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[30%] left-[25%] w-18 h-18 floating-heart opacity-45" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[40%] left-[65%] w-15 h-15 floating-cat opacity-60" />
+          <img src="/bigmix.png" alt="bigmix" className="absolute top-[50%] left-[25%] w-17 h-17 floating-heart opacity-50" />
         </div>
 
         {/* Header igual que el sitio principal */}
