@@ -47,6 +47,23 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const [autoplayFailed, setAutoplayFailed] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  useEffect(() => {
+    // Fetch music files immediately on mount
+    const fetchMusic = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music`);
+        if (res.ok) {
+          const data = await res.json();
+          const sortedData = data.sort((a: any, b: any) => a.order - b.order);
+          setMusicFiles(sortedData);
+        }
+      } catch (error) {
+        console.error('Error fetching music in context:', error);
+      }
+    };
+    fetchMusic();
+  }, []);
+
   const playSong = async (index: number) => {
     console.log('🎵 playSong called with index:', index);
     if (!audioRef.current || musicFiles.length === 0) {

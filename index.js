@@ -255,7 +255,8 @@ app.get('/api/manuel/music/current', async (req, res) => {
           order: currentSong.order
         },
         currentTime: Math.floor(currentSongTime),
-        totalSongs: musicFiles.length
+        totalSongs: musicFiles.length,
+        isPlaying: true // Default to playing for automatic sync
       });
     }
 

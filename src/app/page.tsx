@@ -23,18 +23,22 @@ interface ManuelNote {
 type ContentItem = (Memory | ManuelNote) & { source: 'memory' | 'manuel' };
 
 export default function Home() {
-  const { setMusicFiles } = useMusic();
+  const { 
+    musicFiles, 
+    setCurrentSongIndex, 
+    setCurrentTime, 
+    setIsPlaying, 
+    isPlaying,
+    currentTime,
+    currentSongIndex,
+    audioRef 
+  } = useMusic();
   const [memories, setMemories] = useState<Memory[]>([]);
   const [manuelNotes, setManuelNotes] = useState<ManuelNote[]>([]);
-  const [musicPlaylist, setMusicPlaylist] = useState<any[]>([]);
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [showPasswordError, setShowPasswordError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
 
   useEffect(() => {
@@ -49,16 +53,6 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setManuelNotes(data))
       .catch(err => console.error('Error fetching manuel notes:', err));
-
-    // Fetch music playlist
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music`)
-      .then(res => res.json())
-      .then(data => {
-        const sortedData = data.sort((a: any, b: any) => a.order - b.order);
-        setMusicPlaylist(sortedData);
-        setMusicFiles(sortedData); // Populate the context
-      })
-      .catch(err => console.error('Error fetching music playlist:', err));
   }, []);
 
   // Combine memories and manuel notes when either changes
@@ -71,56 +65,7 @@ export default function Home() {
     setAllContent(combined);
   }, [memories, manuelNotes]);
 
-  // Sincronización de música con el servidor
-  useEffect(() => {
-    if (musicPlaylist.length === 0) return;
 
-    const syncWithServer = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`);
-        if (response.ok) {
-          const data = await response.json();
-            if (data.currentSong) {
-              const songIndex = musicPlaylist.findIndex(song => song._id === data.currentSong._id);
-              if (songIndex !== -1) {
-                // Si la canción cambió, actualizarla
-                if (songIndex !== currentSongIndex) {
-                  setCurrentSongIndex(songIndex);
-                  setCurrentTime(data.currentTime);
-                } else {
-                  // Si es la misma canción, solo sincronizar tiempo si el drift es > 3 segundos
-                  if (Math.abs(currentTime - data.currentTime) > 3) {
-                    setCurrentTime(data.currentTime);
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = data.currentTime;
-                    }
-                  }
-                }
-                
-                // Sincronizar estado de reproducción
-                if (data.isPlaying !== undefined) {
-                  if (data.isPlaying && !isPlaying) {
-                    setIsPlaying(true);
-                  } else if (!data.isPlaying && isPlaying) {
-                    setIsPlaying(false);
-                  }
-                }
-              }
-            }
-        }
-      } catch (error) {
-        console.error('Error syncing with server:', error);
-      }
-    };
-
-    // Sincronizar inmediatamente al cargar
-    syncWithServer();
-
-    // Sincronizar cada 5 segundos para mantener consistencia
-    const interval = setInterval(syncWithServer, 5000);
-
-    return () => clearInterval(interval);
-  }, [musicPlaylist]);
 
   // Función para validar contraseña
   const checkPassword = () => {
@@ -139,24 +84,15 @@ export default function Home() {
     if (alternativeFormats.some(format => normalizedPassword === format.toLowerCase())) {
       setIsAuthenticated(true);
       setShowPasswordError(false);
-      // Iniciar música automáticamente al autenticar
-      setTimeout(() => startMusic(), 500);
+      // Iniciar música automáticamente al autenticar (interacción del usuario)
+      if (audioRef.current) {
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(err => console.error('Error al iniciar música:', err));
+      }
     } else {
       setShowPasswordError(true);
       setTimeout(() => setShowPasswordError(false), 3000);
-    }
-  };
-
-  // Función para iniciar música después de interacción del usuario
-  const startMusic = async () => {
-    if (!audioRef.current || musicPlaylist.length === 0) return;
-
-    try {
-      audioRef.current.currentTime = currentTime;
-      await audioRef.current.play();
-      setIsPlaying(true);
-    } catch (error) {
-      console.error('Error al reproducir música:', error);
     }
   };
 
@@ -165,6 +101,18 @@ export default function Home() {
     if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);
+    }
+  };
+
+  // Función para iniciar música manualmente
+  const startMusic = async () => {
+    if (audioRef.current) {
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (err) {
+        console.error('Error manual play:', err);
+      }
     }
   };
 
