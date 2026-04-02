@@ -242,7 +242,7 @@ export default function Home() {
         <header className="relative text-center py-12 md:py-16 px-4 mt-8">
           <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
-              ☕ Para Kim ☕
+              ☕࣪ ˖⟡˚Kiiiiim˚⟡˖࣪ ☕
             </h1>
 
             <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">
@@ -262,7 +262,7 @@ export default function Home() {
               <div className="mb-8">
                 <span className="text-6xl mb-4 block animate-bounce">🔒</span>
                 <h2 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-4 drop-shadow-lg">
-                  Olaaaaa Kim
+                ⋆.𐙚˚₍ᐢ. .ᐢ₎ ₊˚⊹♡TQM⊹˚✧ִ ࣪₍^. .^₎Ⳋ𖤐°.ᐟ
                 </h2>
                 <p className="text-lg text-[var(--cream)] opacity-75 mb-6">
                   💕🐱☕
@@ -284,7 +284,7 @@ export default function Home() {
 
                 {showPasswordError && (
                   <p className="text-red-400 text-sm animate-pulse drop-shadow-lg">
-                    Fecha incorrecta 💔 Inténtalo de nuevo
+                    Fecha incorrecta 💔 maaaaaaaaaaaaaaaal
                   </p>
                 )}
 
@@ -499,7 +499,7 @@ export default function Home() {
       <header className="relative text-center py-12 md:py-16 px-4 mt-8">
         <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold text-[var(--cream)] mb-4 md:mb-6 animate-pulse drop-shadow-lg leading-tight">
-            ☕ Para Kimberly ☕
+            ☕࣪ ˖⟡˚Kiiiiim me gustas mucho˚⟡˖࣪ ☕
           </h1>
 
           <div className="flex justify-center space-x-4 md:space-x-6 text-2xl md:text-3xl">
