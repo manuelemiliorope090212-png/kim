@@ -263,7 +263,7 @@ export default function Manuel() {
 
         <div className="aesthetic-card p-6 md:p-8 max-w-md mx-4 relative z-10">
           <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-6 text-center animate-pulse drop-shadow-lg">
-             Panel de Manuel
+            Panel de Manuel
           </h1>
           <input
             type="password"
@@ -300,7 +300,7 @@ export default function Manuel() {
         <header className="text-center py-8 md:py-12 mb-8">
           <div className="aesthetic-card p-6 md:p-8 max-w-2xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold text-[var(--cream)] mb-3 md:mb-4 animate-pulse drop-shadow-lg">
-               Panel Personal de Manuel
+              Panel Personal de Manuel
             </h1>
             <p className="text-lg md:text-xl text-[var(--cream)] opacity-90">
               Sube dibujos, escribe notas y agrega música para Kimberly 💕
@@ -468,7 +468,7 @@ export default function Manuel() {
                       <div className="text-center text-[var(--cream)] opacity-75 text-sm">
                         🎵 Haz clic en cualquier canción para reproducirla para todos
                       </div>
- 
+
                       {/* Mobile autoplay warning */}
                       {autoplayFailed && (
                         <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg text-center">
@@ -521,11 +521,10 @@ export default function Manuel() {
                             setMessage(nextRepeating ? '🔂 Repetir canción: ACTIVADO' : '🔂 Repetir canción: DESACTIVADO');
                             setTimeout(() => setMessage(''), 3000);
                           }}
-                          className={`flex items-center justify-center gap-2 p-2 rounded-lg text-sm font-bold transition-all ${
-                            isRepeating 
-                            ? 'bg-blue-400 text-white shadow-inner' 
-                            : 'bg-[rgba(254,247,237,0.1)] text-[var(--cream)] hover:bg-[rgba(254,247,237,0.2)]'
-                          }`}
+                          className={`flex items-center justify-center gap-2 p-2 rounded-lg text-sm font-bold transition-all ${isRepeating
+                              ? 'bg-blue-400 text-white shadow-inner'
+                              : 'bg-[rgba(254,247,237,0.1)] text-[var(--cream)] hover:bg-[rgba(254,247,237,0.2)]'
+                            }`}
                         >
                           {isRepeating ? '🔂 Repitiendo' : '🔂 Repetir'}
                         </button>
@@ -540,7 +539,7 @@ export default function Manuel() {
                           ⏭️ Saltar
                         </button>
                       </div>
- 
+
                       {/* Progress Bar */}
                       <div className="mt-4">
                         <div className="flex items-center gap-2 text-[var(--cream)] text-sm">
@@ -577,7 +576,7 @@ export default function Manuel() {
                       {queue.length > 0 && (
                         <div className="mt-6 border-t border-[var(--cream)] border-opacity-20 pt-4">
                           <h4 className="text-sm font-bold text-[var(--cream)] mb-3 flex items-center gap-2">
-                             ⏳ Cola de Reproducción ({queue.length})
+                            ⏳ Cola de Reproducción ({queue.length})
                           </h4>
                           <div className="space-y-2">
                             {queue.map((song, idx) => (
@@ -585,7 +584,7 @@ export default function Manuel() {
                                 <span className="text-[var(--cream)] truncate max-w-[150px]">
                                   {idx + 1}. {song.name}
                                 </span>
-                                <button 
+                                <button
                                   onClick={async () => {
                                     const newQueue = queue.filter((_: MusicFile, i: number) => i !== idx);
                                     setQueue(newQueue);
@@ -672,7 +671,7 @@ export default function Manuel() {
                             }
                           }}
                         />
-                        <button 
+                        <button
                           onClick={async () => {
                             const input = document.querySelector('input[placeholder="Ir al segundo..."]') as HTMLInputElement;
                             const customTime = parseInt(input?.value) || 0;
@@ -710,11 +709,10 @@ export default function Manuel() {
                         <div
                           key={music._id}
                           draggable
-                          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                            currentSongIndex === index && isPlaying
+                          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${currentSongIndex === index && isPlaying
                               ? 'bg-white border-2 border-[var(--coffee-medium)] text-black'
                               : 'bg-[rgba(254,247,237,0.1)] hover:bg-[rgba(254,247,237,0.2)]'
-                          } ${draggedIndex === index ? 'opacity-50' : ''}`}
+                            } ${draggedIndex === index ? 'opacity-50' : ''}`}
                           onDragStart={(e) => handleDragStart(e, index)}
                           onDragOver={handleDragOver}
                           onDrop={(e) => handleDrop(e, index)}
@@ -767,10 +765,10 @@ export default function Manuel() {
                                   // Re-calculate context locally for the add action
                                   const newOriginalId = (queue.length === 0 && !originalSongId) ? musicFiles[currentSongIndex]?._id : originalSongId;
                                   const newQueue = [...queue, music];
-                                  
+
                                   addToQueue(music);
                                   if (queue.length === 0) setOriginalSongId(newOriginalId || null);
-                                  
+
                                   await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/manuel/music/current`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
@@ -780,7 +778,7 @@ export default function Manuel() {
                                       originalSongId: newOriginalId
                                     })
                                   });
-                                  
+
                                   setMessage(`➕ "${music.name}" añadida a la cola`);
                                   setTimeout(() => setMessage(''), 3000);
                                 }}

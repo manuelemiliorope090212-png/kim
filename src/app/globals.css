@@ -4,11 +4,12 @@
 :root {
   --background: #2c1810; /* Deep coffee brown */
   --foreground: #fef7ed; /* Cream text */
-  --coffee-brown: #92400e;
+  --coffee-brown: #5d3a1a;
   --coffee-dark: #2c1810;
   --coffee-medium: #451a03;
   --coffee-light: #78350f;
   --cream: #fef7ed;
+  --cream-light: rgba(254, 247, 237, 0.9);
   --pastel-pink: #fce7f3;
   --soft-pink: #f9a8d4;
   --kawaii-shadow: 0 8px 16px -4px rgba(44, 24, 16, 0.3), 0 4px 8px -2px rgba(44, 24, 16, 0.2);
@@ -124,8 +125,9 @@ html, body {
   }
 
   .notebook-note {
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--coffee-brown);
   }
 
   .floating-heart, .floating-cat {

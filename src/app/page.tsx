@@ -160,13 +160,13 @@ export default function Home() {
             />
           </div>
         )}
-{isText && (
-  <div className="notebook-note bg-transparent backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg text-[var(--cream)] whitespace-pre-wrap text-sm leading-relaxed relative">
-    <div className="pl-6 relative z-10">
-      {isManuelNote ? (item as ManuelNote).content : (item as Memory).content}
-    </div>
-  </div>
-)}
+        {isText && (
+          <div className="coffee-text-note bg-[var(--cream)] p-6 rounded-2xl text-[var(--coffee-brown)] whitespace-pre-wrap text-lg md:text-xl font-medium leading-relaxed relative shadow-md">
+            <div className="relative z-10">
+              {isManuelNote ? (item as ManuelNote).content : (item as Memory).content}
+            </div>
+          </div>
+        )}
         <div className="mt-4 flex justify-end space-x-2">
           <span className="text-lg">💕</span>
           <span className="text-lg">🐱</span>
