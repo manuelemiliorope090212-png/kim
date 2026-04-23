@@ -160,29 +160,13 @@ export default function Home() {
             />
           </div>
         )}
-        {isText && (
-          <div className="notebook-note bg-[rgba(254,247,237,0.1)] backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg text-[var(--cream)] whitespace-pre-wrap text-sm leading-relaxed relative">
-            {/* Líneas de cuaderno */}
-            <div className="absolute inset-0 pointer-events-none opacity-30">
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-full border-b border-[var(--cream)] border-opacity-50"
-                  style={{ top: `${(i + 1) * 2.2}rem` }}
-                />
-              ))}
-            </div>
-            {/* Agujeros del cuaderno */}
-            <div className="absolute left-0 top-4 bottom-4 flex flex-col justify-around">
-              <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
-              <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
-              <div className="w-3 h-3 bg-[var(--cream)] rounded-full opacity-40"></div>
-            </div>
-            <div className="pl-6 relative z-10">
-              {isManuelNote ? (item as ManuelNote).content : (item as Memory).content}
-            </div>
-          </div>
-        )}
+{isText && (
+  <div className="notebook-note bg-transparent backdrop-blur-sm border border-[var(--cream)] border-opacity-30 p-6 rounded-lg text-[var(--cream)] whitespace-pre-wrap text-sm leading-relaxed relative">
+    <div className="pl-6 relative z-10">
+      {isManuelNote ? (item as ManuelNote).content : (item as Memory).content}
+    </div>
+  </div>
+)}
         <div className="mt-4 flex justify-end space-x-2">
           <span className="text-lg">💕</span>
           <span className="text-lg">🐱</span>
